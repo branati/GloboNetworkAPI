@@ -1,9 +1,9 @@
 #-*- coding:utf-8 -*-
 SQL_UP = u"""
 
-INSERT INTO `permissions` (function) VALUES ('peer_group_management');
-INSERT INTO `permissions` (function) VALUES ('list_config_bgp_management');
-INSERT INTO `permissions` (function) VALUES ('route_map_management');
+INSERT INTO `permissions` (`function`) VALUES ('peer_group_management');
+INSERT INTO `permissions` (`function`) VALUES ('list_config_bgp_management');
+INSERT INTO `permissions` (`function`) VALUES ('route_map_management');
 
 """
 

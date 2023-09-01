@@ -62,16 +62,16 @@ class EnvironmentConfigurationRemoveResource(RestResource):
         except PermissionError:
             return self.not_authorized()
 
-        except IPConfigNotFoundError, e:
+        except IPConfigNotFoundError as e:
             self.log.error(u'IpCofig not registred')
             return self.response_error(301)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
 
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             self.log.error(u'Environment not registred')
             return self.response_error(112)
 

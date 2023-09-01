@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 SQL_UP = u"""
-INSERT INTO `permissions` (function) VALUES ('neighbor_create_script');
-INSERT INTO `permissions` (function) VALUES ('neighbor_remove_script');
+INSERT INTO `permissions` (`function`) VALUES ('neighbor_create_script');
+INSERT INTO `permissions` (`function`) VALUES ('neighbor_remove_script');
 
 """
 

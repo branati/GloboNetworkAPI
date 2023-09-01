@@ -98,7 +98,7 @@ def mkdir_divison_dc(divison_dc, user, acl_path=None):
                     path = '%s/%s' % (path, folder)
                     os.chdir(path)
 
-    except Exception, e:
+    except Exception as e:
         logger.error('Erro quando o usuário %s tentou criar o diretório: %s no Cvs' % (
             user.user, dir))
         logger.error(e)
@@ -156,7 +156,7 @@ def chdir(type_path, network, path=None):
 
         os.chdir(path)
 
-    except Exception, e:
+    except Exception as e:
         logger.error(e)
         raise Exception(e)
 
@@ -273,7 +273,7 @@ def createAclCvs(acl_name, environment, network, user):
         logger.info('%s criou no CVS o arquivo: %s' %
                     (user.user, (path + acl)))
 
-    except (CVSCommandError, FileError, Exception), e:
+    except (CVSCommandError, FileError, Exception) as e:
         logger.error('Erro quando o usuário %s tentou criar o arquivo: %s no Cvs' % (
             user.user, (path + acl)))
         logger.error(e)
@@ -499,7 +499,7 @@ def scriptAclCvs(acl_name, vlan, environment, network, user, template_name):
                 logger.info('%s alterou no CVS o arquivo: %s' %
                             (user.user, acl))
 
-    except (CVSCommandError, FileError, Exception), e:
+    except (CVSCommandError, FileError, Exception) as e:
         logger.error(
             'Erro quando o usuário %s tentou gerar o arquivo: %s no Cvs' % (user.user, acl))
         logger.error(e)
@@ -536,10 +536,10 @@ def checkAclCvs(acl_file_name, environment, network, user):
 
         return True
 
-    except FileError, e:
+    except FileError as e:
         return False
 
-    except (CVSCommandError, Exception), e:
+    except (CVSCommandError, Exception) as e:
         logger.error(
             'Erro quando o usuário %s tentou sincronizar no Cvs' % (user.user))
         logger.error(e)
@@ -638,7 +638,7 @@ def parse_template(vlan, network):
 
         return net, block, wmasc, special_1, special_2
 
-    except Exception, e:
+    except Exception as e:
         logger.error(
             'Erro quando realizava parse das variaveis da rede para o replace no template.')
         raise Exception(e)

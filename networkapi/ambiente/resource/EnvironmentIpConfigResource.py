@@ -97,21 +97,21 @@ class EnvironmentIpConfigResource(RestResource):
 
             return self.response(dumps_networkapi({'config_do_ambiente': conf_env_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except ConfigEnvironmentDuplicateError, e:
+        except ConfigEnvironmentDuplicateError as e:
             return self.response_error(self.CODE_MESSAGE_CONFIG_ENVIRONMENT_ALREADY_EXISTS)
 
-        except IPConfigNotFoundError, e:
+        except IPConfigNotFoundError as e:
             return self.response_error(301)
 
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             return self.response_error(112)
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
-        except (AmbienteError, GrupoError, Exception), e:
+        except (AmbienteError, GrupoError, Exception) as e:
             return self.response_error(1)

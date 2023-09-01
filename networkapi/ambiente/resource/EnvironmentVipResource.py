@@ -73,10 +73,10 @@ class EnvironmentVipResource(RestResource):
 
             return self.response(dumps_networkapi({'environment_vip': evip_list}))
 
-        except (EnvironmentVipError, GrupoError), e:
+        except (EnvironmentVipError, GrupoError) as e:
             self.log.error(e)
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             self.log.error(e)
             return self.response_error(1)
 
@@ -117,7 +117,7 @@ class EnvironmentVipResource(RestResource):
             try:
                 # Save Environment Vip
                 environment_vip.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the environment vip.')
                 raise EnvironmentVipError(
                     e, u'Failed to save the environment vip')
@@ -127,13 +127,13 @@ class EnvironmentVipResource(RestResource):
 
             return self.response(dumps_networkapi({'environment_vip': environment_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
@@ -188,20 +188,20 @@ class EnvironmentVipResource(RestResource):
                 try:
                     # Update Environment Vip
                     environment_vip.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the environment vip.')
                     raise EnvironmentVipError(
                         e, u'Failed to update the environment vip')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
@@ -254,14 +254,14 @@ class EnvironmentVipResource(RestResource):
                 try:
                     # Delete Environment Vip
                     environment_vip.delete()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to delete the environment vip.')
                     raise EnvironmentVipError(
                         e, u'Failed to delete the environment vip')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

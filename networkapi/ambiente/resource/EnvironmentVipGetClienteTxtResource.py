@@ -89,13 +89,13 @@ class EnvironmentVipGetClienteTxtResource(RestResource):
 
             return self.response(dumps_networkapi({'cliente_txt': evips_list}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
@@ -105,5 +105,5 @@ class EnvironmentVipGetClienteTxtResource(RestResource):
         except EnvironmentVipError:
             return self.response_error(1)
 
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)

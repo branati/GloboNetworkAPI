@@ -118,7 +118,7 @@ class EnvironmentEnvironmentVipAssociationResource(RestResource):
 
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EnvironmentNotFoundError:
             return self.response_error(112)
@@ -126,7 +126,7 @@ class EnvironmentEnvironmentVipAssociationResource(RestResource):
             return self.response_error(283)
         except EnvironmentEnvironmentVipDuplicatedError:
             return self.response_error(392)
-        except Exception, error:
+        except Exception as error:
             return self.response_error(1)
 
     def handle_delete(self, request, user, *args, **kwargs):
@@ -190,7 +190,7 @@ class EnvironmentEnvironmentVipAssociationResource(RestResource):
 
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EnvironmentEnvironmentVipNotFoundError:
             return self.response_error(393)
@@ -198,7 +198,7 @@ class EnvironmentEnvironmentVipAssociationResource(RestResource):
             return self.response_error(112)
         except EnvironmentVipNotFoundError:
             return self.response_error(283)
-        except EnvironmentEnvironmentServerPoolLinked, error:
+        except EnvironmentEnvironmentServerPoolLinked as error:
             return self.response_error(394, error.cause.get('environment'))
-        except Exception, error:
+        except Exception as error:
             return self.response_error(1)

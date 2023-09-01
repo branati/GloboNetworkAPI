@@ -103,14 +103,14 @@ class DivisionDcAlterRemoveResource(RestResource):
                 try:
                     # update Division Dc
                     division_dc.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the Division Dc.')
                     raise AmbienteError(
                         e, u'Failed to update the Division Dc.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -162,16 +162,16 @@ class DivisionDcAlterRemoveResource(RestResource):
                     # remove Division Dc
                     division_dc.delete()
 
-                except DivisaoDcUsedByEnvironmentError, e:
+                except DivisaoDcUsedByEnvironmentError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the Division Dc.')
                     raise AmbienteError(
                         e, u'Failed to remove the Division Dc.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 SQL_UP = u"""
-INSERT INTO `permissions` (function) VALUES ('neighbor_management');
-INSERT INTO `permissions` (function) VALUES ('virtual_interface_management');
+INSERT INTO `permissions` (`function`) VALUES ('neighbor_management');
+INSERT INTO `permissions` (`function`) VALUES ('virtual_interface_management');
 
 """
 

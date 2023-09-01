@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 SQL_UP = u"""
-INSERT INTO `permissions` (function) VALUES ('network_force');
+INSERT INTO `permissions` (`function`) VALUES ('network_force');
 """
 
 SQL_DOWN = u"""

@@ -82,18 +82,18 @@ def save_or_update(self, request, user, update=False):
 
         return self.response(dumps_networkapi({}))
 
-    except AmbienteNotFoundError, e:
+    except AmbienteNotFoundError as e:
         self.log.error('Environment not found')
         return self.response_error(112)
-    except InvalidValueError, e:
+    except InvalidValueError as e:
         self.log.error('Invalid param')
         return self.response_error(269, e.param, e.value)
     except UserNotAuthorizedError:
         return self.not_authorized()
-    except XMLError, x:
+    except XMLError as x:
         self.log.error(u'Error reading the XML request.')
         return self.response_error(3, x)
-    except Exception, e:
+    except Exception as e:
         self.log.error(e)
         return self.response_error(1)
 
@@ -156,15 +156,15 @@ class EnvironmentBlocks(RestResource):
 
             return self.response(dumps_networkapi({'blocks': blocks_list}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except Exception, e:
+        except Exception as e:
             self.log.error(e)
             return self.response_error(1)

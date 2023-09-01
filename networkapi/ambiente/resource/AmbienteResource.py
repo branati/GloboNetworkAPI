@@ -132,7 +132,7 @@ class AmbienteResource(RestResource):
                 environment_list.append(get_environment_map(environment))
         
             return self.response(dumps_networkapi({'ambiente': environment_list}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except DivisaoDcNotFoundError:
             return self.response_error(164, division_id)
@@ -343,17 +343,17 @@ class AmbienteResource(RestResource):
         except GrupoError:
             return self.response_error(1)
         
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
         
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         
-        except FilterNotFoundError, e:
+        except FilterNotFoundError as e:
             return self.response_error(339)
         
-        except IPConfigNotFoundError, e:
+        except IPConfigNotFoundError as e:
             return self.response_error(301)
         
         except GrupoL3.DoesNotExist:
@@ -368,7 +368,7 @@ class AmbienteResource(RestResource):
         except DivisaoDcNotFoundError:
             return self.response_error(164, dc_division_id)
         
-        except ConfigEnvironmentDuplicateError, e:
+        except ConfigEnvironmentDuplicateError as e:
             return self.response_error(self.CODE_MESSAGE_CONFIG_ENVIRONMENT_ALREADY_EXISTS)
         
         except AmbienteError:
@@ -571,9 +571,9 @@ class AmbienteResource(RestResource):
         
                 return self.response(dumps_networkapi({}))
         
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except FilterNotFoundError, e:
+        except FilterNotFoundError as e:
             return self.response_error(339)
         except GroupL3NotFoundError:
             return self.response_error(160, l3_group_id)
@@ -585,9 +585,9 @@ class AmbienteResource(RestResource):
             return self.response_error(219)
         except DivisaoDcNotFoundError:
             return self.response_error(164, dc_division_id)
-        except CannotDissociateFilterError, e:
+        except CannotDissociateFilterError as e:
             return self.response_error(349, e.cause)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
         except (AmbienteError, GrupoError):
@@ -635,11 +635,11 @@ class AmbienteResource(RestResource):
                 Ambiente.remove(user, environment_id)
         
                 return self.response(dumps_networkapi({}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except AmbienteNotFoundError:
             return self.response_error(112)
-        except AmbienteUsedByEquipmentVlanError, e:
+        except AmbienteUsedByEquipmentVlanError as e:
             # dict sent when a vlan cant be removed because of vip request
             # created
             if type(e.cause) is dict:

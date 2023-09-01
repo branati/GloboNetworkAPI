@@ -88,11 +88,11 @@ class EnvironmentGetByEquipResource(RestResource):
             environment_list['ambiente'] = lists_aux
             return self.response(dumps_networkapi(environment_list))
         
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(117, id_equip)
         except GrupoError:
             return self.response_error(1)

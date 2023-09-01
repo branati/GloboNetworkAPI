@@ -156,13 +156,13 @@ class EnvironmentVipSearchResource(RestResource):
 
             return self.response(dumps_networkapi({'environment_vip': evips}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
@@ -172,7 +172,7 @@ class EnvironmentVipSearchResource(RestResource):
         except EnvironmentVipError:
             return self.response_error(1)
 
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)
 
     def handle_get(self, request, user, *args, **kwargs):
@@ -201,9 +201,9 @@ class EnvironmentVipSearchResource(RestResource):
 
             return self.response(dumps_networkapi({'environment_vip': evip_list}))
 
-        except (EnvironmentVipError, GrupoError), e:
+        except (EnvironmentVipError, GrupoError) as e:
             self.log.error(e)
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             self.log.error(e)
             return self.response_error(1)

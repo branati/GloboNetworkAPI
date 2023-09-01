@@ -84,11 +84,11 @@ class EnvironmentAllGetByEnvironmentVipResource(RestResource):
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except EnvironmentVipNotFoundError:
             return self.response_error(283)
 
-        except Exception, error:
+        except Exception as error:
             return self.response_error(1)

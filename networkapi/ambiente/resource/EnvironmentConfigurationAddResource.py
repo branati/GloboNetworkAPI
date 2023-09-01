@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
-from string import split
+# from string import split
 
 from networkapi.admin_permission import AdminPermission
 from networkapi.ambiente.models import Ambiente
@@ -115,22 +115,22 @@ class EnvironmentConfigurationAddResource(RestResource):
         except PermissionError:
             return self.not_authorized()
 
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             return self.response_error(112)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
 
-        except ConfigEnvironmentInvalidError, e:
+        except ConfigEnvironmentInvalidError as e:
             return self.response_error(294)
 
-        except ConfigEnvironmentDuplicateError, e:
+        except ConfigEnvironmentDuplicateError as e:
             self.log.error(u'Environment Configuration already exists')
             return self.response_error(302)
 
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
 

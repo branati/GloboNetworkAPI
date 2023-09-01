@@ -76,12 +76,12 @@ class EnvironmentSetTemplateResource(RestResource):
 
             return self.response(dumps_networkapi({'ambiente': environment_list}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
-        except (AmbienteError, GrupoError, Exception), e:
+        except (AmbienteError, GrupoError, Exception) as e:
             return self.response_error(1)
 
     def handle_post(self, request, user, *args, **kwargs):
@@ -142,14 +142,14 @@ class EnvironmentSetTemplateResource(RestResource):
 
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except AmbienteNotFoundError:
             return self.response_error(112)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
-        except (AmbienteError, GrupoError, Exception), e:
+        except (AmbienteError, GrupoError, Exception) as e:
             return self.response_error(1)
 
 
