@@ -114,7 +114,7 @@ class VlanRemoveResource(RestResource):
                                     net4.deactivate(user, True)
                                 else:
                                     network_errors.append(str(net4.id))
-                            except Exception, e:
+                            except Exception as e:
                                 network_errors.append(str(net4.id))
                                 pass
 
@@ -129,7 +129,7 @@ class VlanRemoveResource(RestResource):
                                     net6.deactivate(user, True)
                                 else:
                                     network_errors.append(str(net6.id))
-                            except Exception, e:
+                            except Exception as e:
                                 network_errors.append(str(net6.id))
                                 pass
 
@@ -172,20 +172,20 @@ class VlanRemoveResource(RestResource):
                 else:
                     return self.response_error(2, stdout + stderr)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             return self.response_error(116)
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
         except GrupoError:
             return self.response_error(1)
-        except VlanInactiveError, e:
+        except VlanInactiveError as e:
             return self.response_error(368)
-        except VlanNetworkError, e:
+        except VlanNetworkError as e:
             return self.response_error(CODE_MESSAGE_VLAN_ERROR, e.message)
-        except VlanError, e:
+        except VlanError as e:
             return self.response_error(1)

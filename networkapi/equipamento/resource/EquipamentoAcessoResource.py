@@ -208,7 +208,7 @@ class EquipamentoAcessoResource(RestResource):
             return self.response(dumps_networkapi(networkapi_map))
         except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except EquipamentoNotFoundError:
@@ -295,7 +295,7 @@ class EquipamentoAcessoResource(RestResource):
                 # Retorna response vazio em caso de sucesso
                 return self.response(dumps_networkapi({}))
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except EquipamentoNotFoundError:

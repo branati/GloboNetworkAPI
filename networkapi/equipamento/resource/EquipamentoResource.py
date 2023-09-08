@@ -190,7 +190,7 @@ class EquipamentoResource(RestResource):
 
         try:
             xml_map, attrs_map = loads(request.raw_post_data)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
 
@@ -226,7 +226,7 @@ class EquipamentoResource(RestResource):
                     return self.response_error(response[0], response[1:len(response)])
                 return self.response_error(response[0])
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except InvalidGroupToEquipmentTypeError:
             return self.response_error(107)
@@ -337,7 +337,7 @@ class EquipamentoResource(RestResource):
                 map_list.append(equip_map)
 
             return self.response(dumps_networkapi({'equipamento': map_list}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EquipamentoNotFoundError:
             return self.response_error(117, equipment_name)
@@ -388,17 +388,17 @@ class EquipamentoResource(RestResource):
                 remove_equipment(equipment_id, user)
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EquipamentoNotFoundError:
             return self.response_error(117, equipment_id)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(345, equip.nome, e.cause, e.message)
-        except (EquipamentoError, GrupoError), e:
+        except (EquipamentoError, GrupoError) as e:
             return self.response_error(e)
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)
 
 
@@ -464,11 +464,11 @@ class EquipamentoAmbienteResource(RestResource):
 
             return self.response(dumps_networkapi(networkapi_map))
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EquipamentoAmbienteDuplicatedError:
             return self.response_error(156, equip_id, environment_id)
@@ -534,7 +534,7 @@ class EquipamentoAmbienteResource(RestResource):
                 self.log.warning(
                     u'Falha ao alterar a associação equipamento/ambiente, associação não existe %s/%s.' % (equip_id, environment_id))
                 pass
-            except Exception, e:
+            except Exception as e:
                 self.log.error(
                     u'Falha ao alterar a associação equipamento/ambiente: %s/%s.' % (equip_id, environment_id))
                 raise EquipamentoError(
@@ -548,11 +548,11 @@ class EquipamentoAmbienteResource(RestResource):
 
             return self.response(dumps_networkapi(networkapi_map))
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EquipamentoAmbienteDuplicatedError:
             return self.response_error(156, equip_id, environment_id)

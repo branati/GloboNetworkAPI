@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.db.models import get_model
+# from django.apps import apps
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -14,7 +15,7 @@ class AsnV4Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'equipments')
 
     class Meta:
-        Asn = get_model('api_asn', 'Asn')
+        Asn = apps.get_model('api_asn', 'Asn')
         model = Asn
 
         fields = (
@@ -79,7 +80,7 @@ class AsnEquipmentV4Serializer(DynamicFieldsModelSerializer):
     equipment = serializers.SerializerMethodField('get_equipment')
 
     class Meta:
-        AsnEquipment = get_model('api_asn', 'AsnEquipment')
+        AsnEquipment = apps.get_model('api_asn', 'AsnEquipment')
         model = AsnEquipment
 
         fields = (

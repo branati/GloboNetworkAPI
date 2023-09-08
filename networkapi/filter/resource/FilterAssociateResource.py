@@ -86,15 +86,15 @@ class FilterAssociateResource(RestResource):
 
             return self.response(dumps_networkapi({'equiptype_filter_xref': fil_et_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except FilterNotFoundError, e:
+        except FilterNotFoundError as e:
             return self.response_error(339)
-        except TipoEquipamentoNotFoundError, e:
+        except TipoEquipamentoNotFoundError as e:
             return self.response_error(100)
-        except FilterEquipTypeDuplicateError, e:
+        except FilterEquipTypeDuplicateError as e:
             return self.response_error(343, fil.name, tp_equip.tipo_equipamento)
-        except FilterError, e:
+        except FilterError as e:
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

@@ -15,10 +15,12 @@
 # limitations under the License.
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
+from django.db.utils import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import get_model
+from django.apps import apps
+# from django.apps import apps
 
 from networkapi.ambiente.models import Ambiente
 from networkapi.ambiente.models import AmbienteNotFoundError
@@ -33,9 +35,7 @@ from networkapi.api_vrf.models import Vrf
 from networkapi.api_vrf.exceptions import VrfNotFoundError
 
 
-
 class EquipamentoError(Exception):
-
     """Representa um erro ocorrido durante acesso à tabelas relacionadas com Equipamento."""
 
     def __init__(self, cause, message=None):
@@ -48,7 +48,6 @@ class EquipamentoError(Exception):
 
 
 class EquipamentoNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de equipamento por chave primária."""
 
     def __init__(self, cause, message=None):
@@ -56,7 +55,6 @@ class EquipamentoNotFoundError(EquipamentoError):
 
 
 class EquipamentoGrupoNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de equipamento_grupo por chave primária."""
 
     def __init__(self, cause, message=None):
@@ -64,7 +62,6 @@ class EquipamentoGrupoNotFoundError(EquipamentoError):
 
 
 class EquipamentoAmbienteNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de equipamento_ambiente por chave primária ou equipamento e ambiente."""
 
     def __init__(self, cause, message=None):
@@ -78,7 +75,6 @@ class EquipTypeCantBeChangedError(EquipamentoError):
 
 
 class EquipamentoRoteiroNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de equipamento_roteiro."""
 
     def __init__(self, cause, message=None):
@@ -86,7 +82,6 @@ class EquipamentoRoteiroNotFoundError(EquipamentoError):
 
 
 class EquipamentoRoteiroDuplicatedError(EquipamentoError):
-
     """Retorna exceção quando o equipamento_roteiro já existe."""
 
     def __init__(self, cause, message=None):
@@ -94,7 +89,6 @@ class EquipamentoRoteiroDuplicatedError(EquipamentoError):
 
 
 class EquipamentoGrupoDuplicatedError(EquipamentoError):
-
     """Retorna exceção quando o equipamento_grupo já existe."""
 
     def __init__(self, cause, message=None):
@@ -102,7 +96,6 @@ class EquipamentoGrupoDuplicatedError(EquipamentoError):
 
 
 class EquipamentoAmbienteDuplicatedError(EquipamentoError):
-
     """Retorna exceção quando o equipamento_ambiente já existe."""
 
     def __init__(self, cause, message=None):
@@ -110,7 +103,6 @@ class EquipamentoAmbienteDuplicatedError(EquipamentoError):
 
 
 class EquipmentControllerEnvironmentNotFoundError(EquipamentoError):
-
     """Retorna exceção quando o equipment_controller_environment não existe."""
 
     def __init__(self, cause, message=None):
@@ -118,7 +110,6 @@ class EquipmentControllerEnvironmentNotFoundError(EquipamentoError):
 
 
 class EquipmentControllerEnvironmentDuplicatedError(EquipamentoError):
-
     """Retorna exceção quando o equipment_controller_environment já existe."""
 
     def __init__(self, cause, message=None):
@@ -126,7 +117,6 @@ class EquipmentControllerEnvironmentDuplicatedError(EquipamentoError):
 
 
 class TipoEquipamentoNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de tipo de equipamento por chave primária."""
 
     def __init__(self, cause, message=None):
@@ -134,7 +124,6 @@ class TipoEquipamentoNotFoundError(EquipamentoError):
 
 
 class ModeloNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de modelo de equipamento por chave primária."""
 
     def __init__(self, cause, message=None):
@@ -142,7 +131,6 @@ class ModeloNotFoundError(EquipamentoError):
 
 
 class ModeloRoteiroDuplicatedError(EquipamentoError):
-
     """Retorna exceção quando o modelo_roteiro já existe."""
 
     def __init__(self, cause, message=None):
@@ -150,7 +138,6 @@ class ModeloRoteiroDuplicatedError(EquipamentoError):
 
 
 class ModeloRoteiroNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de modelo_roteiro."""
 
     def __init__(self, cause, message=None):
@@ -158,7 +145,6 @@ class ModeloRoteiroNotFoundError(EquipamentoError):
 
 
 class MarcaNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de modelo de equipamento por chave primária."""
 
     def __init__(self, cause, message=None):
@@ -166,7 +152,6 @@ class MarcaNotFoundError(EquipamentoError):
 
 
 class InvalidGroupToEquipmentTypeError(EquipamentoError):
-
     """Equipamento do grupo “Equipamentos Orquestração” somente poderá ser criado com tipo igual a “Servidor Virtual”."""
 
     def __init__(self, cause, message=None):
@@ -174,7 +159,6 @@ class InvalidGroupToEquipmentTypeError(EquipamentoError):
 
 
 class EquipamentoNameDuplicatedError(EquipamentoError):
-
     """Retorna exceção porque já existe um Equipamento cadastrado com o mesmo nome."""
 
     def __init__(self, cause, message=None):
@@ -182,7 +166,6 @@ class EquipamentoNameDuplicatedError(EquipamentoError):
 
 
 class EquipamentoAccessDuplicatedError(EquipamentoError):
-
     """Retorna exceção porque já existe um Equipamento cadastrado com o mesmo nome."""
 
     def __init__(self, cause, message=None):
@@ -190,7 +173,6 @@ class EquipamentoAccessDuplicatedError(EquipamentoError):
 
 
 class EquipamentoAccessNotFoundError(EquipamentoError):
-
     """Retorna exceção para pesquisa de modelo de equipamento por chave primária."""
 
     def __init__(self, cause, message=None):
@@ -204,7 +186,6 @@ class EquipmentDontRemoveError(EquipamentoError):
 
 
 class MarcaUsedByModeloError(EquipamentoError):
-
     """Retorna exceção se houver tentativa de exclusão de marca utilizada por algum modelo."""
 
     def __init__(self, cause, message=None):
@@ -212,7 +193,6 @@ class MarcaUsedByModeloError(EquipamentoError):
 
 
 class MarcaModeloNameDuplicatedError(EquipamentoError):
-
     """Retorna exceção se houver um Modelo e Marca com mesmo nome já cadastrado.."""
 
     def __init__(self, cause, message=None):
@@ -220,7 +200,6 @@ class MarcaModeloNameDuplicatedError(EquipamentoError):
 
 
 class ModeloUsedByEquipamentoError(EquipamentoError):
-
     """Retorna exceção se houver tentativa de exclusão de um modelo utilizado por algum equipamento."""
 
     def __init__(self, cause, message=None):
@@ -228,7 +207,6 @@ class ModeloUsedByEquipamentoError(EquipamentoError):
 
 
 class MarcaNameDuplicatedError(EquipamentoError):
-
     """Retorna exceção porque já existe uma marca cadastrado com o mesmo nome."""
 
     def __init__(self, cause, message=None):
@@ -236,7 +214,6 @@ class MarcaNameDuplicatedError(EquipamentoError):
 
 
 class TipoEquipamentoDuplicateNameError(EquipamentoError):
-
     """Retorna exceção porque já existe um tipo de equipamento cadastrado com o mesmo nome."""
 
     def __init__(self, cause, message=None):
@@ -293,7 +270,7 @@ class Marca(BaseModel):
 class Modelo(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_modelo')
     nome = models.CharField(max_length=100)
-    marca = models.ForeignKey(Marca, db_column='id_marca')
+    marca = models.ForeignKey(Marca, db_column='id_marca', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('Modelo')
 
@@ -496,8 +473,8 @@ class TipoEquipamento(BaseModel):
 class Equipamento(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_equip')
     tipo_equipamento = models.ForeignKey(
-        TipoEquipamento, db_column='id_tipo_equipamento')
-    modelo = models.ForeignKey(Modelo, db_column='id_modelo')
+        TipoEquipamento, db_column='id_tipo_equipamento', on_delete=models.DO_NOTHING)
+    modelo = models.ForeignKey(Modelo, db_column='id_modelo', on_delete=models.DO_NOTHING)
     nome = models.CharField(unique=True, max_length=50)
     maintenance = models.BooleanField(db_column='maintenance')
     grupos = models.ManyToManyField(EGrupo, through='EquipamentoGrupo')
@@ -632,7 +609,8 @@ class Equipamento(BaseModel):
 
         if group_id == EGrupo.GRUPO_EQUIPAMENTO_ORQUESTRACAO and self.tipo_equipamento.id != TipoEquipamento.TIPO_EQUIPAMENTO_SERVIDOR_VIRTUAL:
             raise InvalidGroupToEquipmentTypeError(
-                None, u'Equipamento do grupo “Equipamentos Orquestração” somente poderá ser criado com tipo igual a “Servidor Virtual”.')
+                None,
+                u'Equipamento do grupo “Equipamentos Orquestração” somente poderá ser criado com tipo igual a “Servidor Virtual”.')
 
         self.tipo_equipamento = TipoEquipamento().get_by_pk(
             self.tipo_equipamento.id)
@@ -847,7 +825,7 @@ class Equipamento(BaseModel):
 
         try:
             self.nome = equipment.get('name').upper()
-            self.tipo_equipamento = TipoEquipamento()\
+            self.tipo_equipamento = TipoEquipamento() \
                 .get_by_pk(equipment.get('equipment_type'))
             self.modelo = Modelo.get_by_pk(equipment.get('model'))
             self.maintenance = equipment.get('maintenance', False)
@@ -879,7 +857,7 @@ class Equipamento(BaseModel):
                 eqpt_env.create()
 
             # ipv4s
-            ipeqpt_model = get_model('ip', 'IpEquipamento')
+            ipeqpt_model = apps.get_model('ip', 'IpEquipamento')
             for ipv4 in equipment.get('ipv4', []):
                 ipeqpt_model().create_v3({
                     'equipment': self.id,
@@ -887,7 +865,7 @@ class Equipamento(BaseModel):
                 })
 
             # ipv6s
-            ipeqpt_model = get_model('ip', 'Ipv6Equipament')
+            ipeqpt_model = apps.get_model('ip', 'Ipv6Equipament')
             for ipv6 in equipment.get('ipv6', []):
                 ipeqpt_model().create_v3({
                     'equipment': self.id,
@@ -972,7 +950,7 @@ class Equipamento(BaseModel):
 
             # ipv4s
             if equipment.get('ipv4'):
-                ipeqpt_model = get_model('ip', 'IpEquipamento')
+                ipeqpt_model = apps.get_model('ip', 'IpEquipamento')
                 ips_db = ipeqpt_model.list_by_equip(self.id)
                 ips_db_ids = ips_db.values_list('ip', flat=True)
                 ipv4_ids = equipment.get('ipv4')
@@ -991,7 +969,7 @@ class Equipamento(BaseModel):
 
             # ipv6s
             if equipment.get('ipv6'):
-                ipeqpt_model = get_model('ip', 'Ipv6Equipament')
+                ipeqpt_model = apps.get_model('ip', 'Ipv6Equipament')
                 ipv6s_db = ipeqpt_model.list_by_equip(self.id)
                 ipv6s_db_ids = ipv6s_db.values_list('ip', flat=True)
                 ipv6_ids = equipment.get('ipv6')
@@ -1053,7 +1031,7 @@ class Equipamento(BaseModel):
 
         try:
             self.nome = equipment.get('name').upper()
-            self.tipo_equipamento = TipoEquipamento()\
+            self.tipo_equipamento = TipoEquipamento() \
                 .get_by_pk(equipment.get('equipment_type'))
             self.modelo = Modelo.get_by_pk(equipment.get('model'))
             self.maintenance = equipment.get('maintenance', False)
@@ -1085,7 +1063,7 @@ class Equipamento(BaseModel):
                 eqpt_env.create()
 
             # ipv4s
-            ipeqpt_model = get_model('ip', 'IpEquipamento')
+            ipeqpt_model = apps.get_model('ip', 'IpEquipamento')
             for ipv4 in equipment.get('ipsv4', []):
                 ipeqpt_model().create_v3({
                     'equipment': self.id,
@@ -1093,7 +1071,7 @@ class Equipamento(BaseModel):
                 })
 
             # ipv6s
-            ipeqpt_model = get_model('ip', 'Ipv6Equipament')
+            ipeqpt_model = apps.get_model('ip', 'Ipv6Equipament')
             for ipv6 in equipment.get('ipsv6', []):
                 ipeqpt_model().create_v3({
                     'equipment': self.id,
@@ -1101,7 +1079,7 @@ class Equipamento(BaseModel):
                 })
 
             # as
-            asneqpt_model = get_model('api_asn', 'AsnEquipment')
+            asneqpt_model = apps.get_model('api_asn', 'AsnEquipment')
             if equipment.get('asn'):
                 asneqpt_model().create_v4({
                     'equipment': self.id,
@@ -1198,7 +1176,7 @@ class Equipamento(BaseModel):
 
             # ipv4s
             if equipment.get('ipsv4') is not None:
-                ipeqpt_model = get_model('ip', 'IpEquipamento')
+                ipeqpt_model = apps.get_model('ip', 'IpEquipamento')
                 ips_db = ipeqpt_model.list_by_equip(self.id)
                 ips_db_ids = ips_db.values_list('ip', flat=True)
                 ipv4_ids = equipment.get('ipsv4')
@@ -1217,7 +1195,7 @@ class Equipamento(BaseModel):
 
             # ipv6s
             if equipment.get('ipsv6') is not None:
-                ipeqpt_model = get_model('ip', 'Ipv6Equipament')
+                ipeqpt_model = apps.get_model('ip', 'Ipv6Equipament')
                 ipv6s_db = ipeqpt_model.list_by_equip(self.id)
                 ipv6s_db_ids = ipv6s_db.values_list('ip', flat=True)
                 ipv6_ids = equipment.get('ipsv6')
@@ -1236,7 +1214,7 @@ class Equipamento(BaseModel):
 
             # asn
             if equipment.get('asn') is not None:
-                asneqpt_model = get_model('api_asn', 'AsnEquipment')
+                asneqpt_model = apps.get_model('api_asn', 'AsnEquipment')
 
                 # delete old AsnEquipment association
                 for asneqpt in self.asnequipment_set.all():
@@ -1317,8 +1295,8 @@ class Equipamento(BaseModel):
 
 class EquipamentoAmbiente(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_equip_do_ambiente')
-    ambiente = models.ForeignKey(Ambiente, db_column='id_ambiente')
-    equipamento = models.ForeignKey(Equipamento, db_column='id_equip')
+    ambiente = models.ForeignKey(Ambiente, db_column='id_ambiente', on_delete=models.DO_NOTHING)
+    equipamento = models.ForeignKey(Equipamento, db_column='id_equip', on_delete=models.DO_NOTHING)
     is_router = models.BooleanField(db_column='is_router')
 
     log = logging.getLogger('EquipamentoAmbiente')
@@ -1357,14 +1335,16 @@ class EquipamentoAmbiente(BaseModel):
             self.log.error(u'Falha ao inserir a associação equipamento/ambiente: %s/%s.' %
                            (self.equipamento.id, self.ambiente.id))
             raise EquipamentoError(
-                e, u'Falha ao inserir a associação equipamento/ambiente: %s/%s.' % (self.equipamento.id, self.ambiente.id))
+                e,
+                u'Falha ao inserir a associação equipamento/ambiente: %s/%s.' % (self.equipamento.id, self.ambiente.id))
 
     def get_by_equipment_environment(self, equipment_id, environment_id):
         try:
             return EquipamentoAmbiente.objects.get(ambiente__id=environment_id, equipamento__id=equipment_id)
         except ObjectDoesNotExist as e:
             raise EquipamentoAmbienteNotFoundError(
-                e, u'Não existe um equipamento_ambiente com o equipamento = %s e o ambiente = %s.' % (equipment_id, environment_id))
+                e, u'Não existe um equipamento_ambiente com o equipamento = %s e o ambiente = %s.' % (
+                equipment_id, environment_id))
         except Exception as e:
             self.log.error(u'Falha ao pesquisar o equipamento-ambiente.')
             raise EquipamentoError(
@@ -1376,7 +1356,7 @@ class EquipamentoAmbiente(BaseModel):
         except ObjectDoesNotExist as e:
             raise EquipamentoAmbienteNotFoundError(
                 e, u'Não existe um equipamento_ambiente com o ambiente = %s.' %
-                (environment_id))
+                   (environment_id))
         except Exception as e:
             self.log.error(u'Falha ao pesquisar o equipamento-ambiente.')
             raise EquipamentoError(
@@ -1410,11 +1390,12 @@ class EquipamentoAmbiente(BaseModel):
                 equipamento__id=equip_id, ambiente__id=environ_id)
             equipenvironment.delete()
 
-        except ObjectDoesNotExist, n:
+        except ObjectDoesNotExist as n:
             cls.log.error(u'Não existe um equipamento_ambiente com o equipamento = %s e o ambiente = %s.' % (
                 equip_id, environ_id))
             raise EquipamentoAmbienteNotFoundError(
-                n, u'Não existe um equipamento_ambiente com o equipamento = %s e o ambiente = %s.' % (equip_id, environ_id))
+                n, u'Não existe um equipamento_ambiente com o equipamento = %s e o ambiente = %s.' % (
+                equip_id, environ_id))
         except Exception as e:
             cls.log.error(
                 u'Falha ao remover uma associação entre um Equipamento e um Ambiente.')
@@ -1423,7 +1404,7 @@ class EquipamentoAmbiente(BaseModel):
 
     @classmethod
     def get_routers_by_environment(cls, environment_id):
-        return EquipamentoAmbiente.objects.select_related('equipamento')\
+        return EquipamentoAmbiente.objects.select_related('equipamento') \
             .filter(ambiente=environment_id, is_router=True)
 
     def create_v3(self, eqpt_env_map):
@@ -1440,9 +1421,9 @@ class EquipamentoAmbiente(BaseModel):
                                  between equipment and environment.
         """
 
-        self.ambiente = Ambiente()\
+        self.ambiente = Ambiente() \
             .get_by_pk(eqpt_env_map.get('environment'))
-        self.equipamento = Equipamento()\
+        self.equipamento = Equipamento() \
             .get_by_pk(eqpt_env_map.get('equipment'))
 
         try:
@@ -1457,8 +1438,8 @@ class EquipamentoAmbiente(BaseModel):
             self.save()
         except Exception as e:
             msg = u'Failure to insert the relashionship between ' \
-                'equipment and environment. %s/%s.' % \
-                (self.equipamento.id, self.ambiente.id)
+                  'equipment and environment. %s/%s.' % \
+                  (self.equipamento.id, self.ambiente.id)
 
             self.log.error(msg)
 
@@ -1469,11 +1450,13 @@ class EquipmentControllerEnvironment(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id')
     environment = models.ForeignKey(
         Ambiente,
-        db_column='id_environment'
+        db_column='id_environment',
+        on_delete=models.DO_NOTHING
     )
     equipment = models.ForeignKey(
         Equipamento,
-        db_column='id_equipment'
+        db_column='id_equipment',
+        on_delete=models.DO_NOTHING
     )
 
     log = logging.getLogger('EquipmentControllerEnvironment')
@@ -1492,7 +1475,8 @@ class EquipmentControllerEnvironment(BaseModel):
             return eqpt
         except ObjectDoesNotExist as e:
             raise EquipmentControllerEnvironmentNotFoundError(
-                e, u'Não existe um equipment_environment com o equipment = %s e o environment = %s.' % (equipment_id, environment_id))
+                e, u'Não existe um equipment_environment com o equipment = %s e o environment = %s.' % (
+                equipment_id, environment_id))
         except Exception as e:
             self.log.error(u'Falha ao pesquisar o equipment-environment.')
             raise EquipamentoError(
@@ -1504,7 +1488,7 @@ class EquipmentControllerEnvironment(BaseModel):
         except ObjectDoesNotExist as e:
             raise EquipmentControllerEnvironmentNotFoundError(
                 e, u'Não existe um environment com o environment = %s.' %
-                (environment_id))
+                   (environment_id))
         except Exception as e:
             self.log.error(u'Falha ao pesquisar o equipment-environment.')
             raise EquipamentoError(
@@ -1536,9 +1520,9 @@ class EquipmentControllerEnvironment(BaseModel):
                                  between equipment and environment.
         """
 
-        self.environment = Ambiente()\
+        self.environment = Ambiente() \
             .get_by_pk(eqpt_env_map.get('environment'))
-        self.equipment = Equipamento()\
+        self.equipment = Equipamento() \
             .get_by_pk(eqpt_env_map.get('equipment'))
 
         try:
@@ -1553,8 +1537,8 @@ class EquipmentControllerEnvironment(BaseModel):
             self.save()
         except Exception as e:
             msg = u'Failure to insert the relashionship between ' \
-                'equipment and environment. %s/%s.' % \
-                (self.equipment.id, self.environment.id)
+                  'equipment and environment. %s/%s.' % \
+                  (self.equipment.id, self.environment.id)
 
             self.log.error(msg)
 
@@ -1563,8 +1547,8 @@ class EquipmentControllerEnvironment(BaseModel):
 
 class EquipamentoGrupo(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_equip_do_grupo')
-    egrupo = models.ForeignKey(EGrupo, db_column='id_egrupo')
-    equipamento = models.ForeignKey(Equipamento, db_column='id_equip')
+    egrupo = models.ForeignKey(EGrupo, db_column='id_egrupo', on_delete=models.DO_NOTHING)
+    equipamento = models.ForeignKey(Equipamento, db_column='id_equip', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('EquipamentoGrupo')
 
@@ -1622,7 +1606,8 @@ class EquipamentoGrupo(BaseModel):
             return EquipamentoGrupo.objects.get(egrupo__id=egroup_id, equipamento__id=equipment_id)
         except ObjectDoesNotExist as e:
             raise EquipamentoGrupoNotFoundError(
-                e, u'Não existe um equipamento_grupo com o equipamento = %s e o grupo = %s.' % (equipment_id, egroup_id))
+                e,
+                u'Não existe um equipamento_grupo com o equipamento = %s e o grupo = %s.' % (equipment_id, egroup_id))
         except Exception as e:
             self.log.error(u'Falha ao pesquisar o equipamento-grupo.')
             raise EquipamentoError(
@@ -1658,15 +1643,20 @@ class EquipamentoGrupo(BaseModel):
 
 class EquipamentoAcesso(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_equiptos_access')
-    equipamento = models.ForeignKey(Equipamento, db_column='id_equip')
+    equipamento = models.ForeignKey(Equipamento, db_column='id_equip', on_delete=models.DO_NOTHING)
     fqdn = models.CharField(max_length=100)
     user = models.CharField(max_length=20)
     # Field renamed because it was a Python reserved word. Field name made
     # lowercase.
     password = models.CharField(max_length=20, db_column='pass')
-    tipo_acesso = models.ForeignKey(TipoAcesso, db_column='id_tipo_acesso')
+    tipo_acesso = models.ForeignKey(TipoAcesso, db_column='id_tipo_acesso', on_delete=models.DO_NOTHING)
     enable_pass = models.CharField(max_length=20, blank=True)
-    vrf = models.ForeignKey(Vrf, blank=True, null=True, db_column='id_vrf')
+    # TODO
+    # Erro de dependência circular
+    # django.db.migrations.exceptions.CircularDependencyError: equipamento.0001_initial, api_vrf.0001_initial
+    # Alinhar com o time Globo
+    # https://django.readthedocs.io/en/stable/topics/migrations.html
+    # vrf = models.ForeignKey(Vrf, blank=True, null=True, db_column='id_vrf', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('EquipamentoAcesso')
 
@@ -1709,7 +1699,8 @@ class EquipamentoAcesso(BaseModel):
             results = EquipamentoAcesso.objects.all()
             if ugroups is not None:
                 results = results.filter(
-                    equipamento__grupos__direitosgrupoequipamento__ugrupo__in=ugroups, equipamento__grupos__direitosgrupoequipamento__escrita='1')
+                    equipamento__grupos__direitosgrupoequipamento__ugrupo__in=ugroups,
+                    equipamento__grupos__direitosgrupoequipamento__escrita='1')
 
             if equipamento is not None:
                 results = results.filter(equipamento=equipamento)
@@ -1735,10 +1726,10 @@ class EquipamentoAcesso(BaseModel):
         # Valida a existência do equipamento
         self.equipamento = Equipamento.get_by_pk(self.equipamento.id)
         try:
-            #Validades tipo_acesso existence
+            # Validades tipo_acesso existence
             self.tipo_acesso = TipoAcesso.get_by_pk(self.tipo_acesso.id)
 
-            #Validates vrf existence
+            # Validates vrf existence
             if self.vrf:
                 self.vrf = Vrf.get_by_pk(self.vrf.id)
 
@@ -1819,8 +1810,8 @@ class EquipamentoAcesso(BaseModel):
 
 class EquipamentoRoteiro(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_equiptos_roteiros')
-    equipamento = models.ForeignKey(Equipamento, db_column='id_equip')
-    roteiro = models.ForeignKey(Roteiro, db_column='id_roteiros')
+    equipamento = models.ForeignKey(Equipamento, db_column='id_equip', on_delete=models.DO_NOTHING)
+    roteiro = models.ForeignKey(Roteiro, db_column='id_roteiros', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('EquipamentoRoteiro')
 
@@ -1884,7 +1875,8 @@ class EquipamentoRoteiro(BaseModel):
             self.log.error(u'Falha ao inserir a associação equipamento/roteiro: %s/%s.' %
                            (self.equipamento.id, self.roteiro.id))
             raise EquipamentoError(
-                e, u'Falha ao inserir a associação equipamento/roteiro: %s/%s.' % (self.equipamento.id, self.roteiro.id))
+                e,
+                u'Falha ao inserir a associação equipamento/roteiro: %s/%s.' % (self.equipamento.id, self.roteiro.id))
 
     @classmethod
     def remove(cls, authenticated_user, equip_id, script_id):
@@ -1901,11 +1893,12 @@ class EquipamentoRoteiro(BaseModel):
                 equipamento__id=equip_id, roteiro__id=script_id)
             equip_script.delete()
 
-        except EquipamentoRoteiro.DoesNotExist, n:
+        except EquipamentoRoteiro.DoesNotExist as n:
             cls.log.debug(u'Não existe um equipamento_roteiro com o equipamento = %s e o roteiro = %s.' % (
                 equip_id, script_id))
             raise EquipamentoRoteiroNotFoundError(
-                n, u'Não existe um equipamento_roteiro com o equipamento = %s e o roteiro = %s.' % (equip_id, script_id))
+                n,
+                u'Não existe um equipamento_roteiro com o equipamento = %s e o roteiro = %s.' % (equip_id, script_id))
         except Exception as e:
             cls.log.error(
                 u'Falha ao remover uma associação entre um Equipamento e um Roteiro.')
@@ -1915,8 +1908,8 @@ class EquipamentoRoteiro(BaseModel):
 
 class ModeloRoteiro(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_modelo_roteiro')
-    modelo = models.ForeignKey(Modelo, db_column='id_modelo')
-    roteiro = models.ForeignKey(Roteiro, db_column='id_roteiro')
+    modelo = models.ForeignKey(Modelo, db_column='id_modelo', on_delete=models.DO_NOTHING)
+    roteiro = models.ForeignKey(Roteiro, db_column='id_roteiro', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('ModeloRoteiro')
 
@@ -1972,7 +1965,7 @@ class ModeloRoteiro(BaseModel):
                 modelo__id=model_id, roteiro__id=script_id)
             model_script.delete()
 
-        except ObjectDoesNotExist, n:
+        except ObjectDoesNotExist as n:
             cls.log.debug(u'Não existe um modelo_roteiro com o modelo = %s e o roteiro = %s.' % (
                 model_id, script_id))
             raise ObjectDoesNotExist(

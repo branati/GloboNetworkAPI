@@ -79,23 +79,23 @@ class FilterAlterRemoveResource(RestResource):
             try:
                 # Save filter
                 fil.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to edit the filter.')
                 raise e
 
             return self.response(dumps_networkapi({}))
 
-        except FilterDuplicateError, e:
+        except FilterDuplicateError as e:
             return self.response_error(344, e.message)
-        except CantDissociateError, e:
+        except CantDissociateError as e:
             return self.response_error(348, e.cause['equiptype'], e.cause['filter_name'])
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except FilterNotFoundError, e:
+        except FilterNotFoundError as e:
             return self.response_error(339)
-        except FilterError, e:
+        except FilterError as e:
             return self.response_error(340)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)
 
     def handle_delete(self, request, user, *args, **kwargs):
@@ -126,19 +126,19 @@ class FilterAlterRemoveResource(RestResource):
             try:
                 # Remove filter and its relationships
                 fil.delete()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to remove the filter.')
                 raise e
 
             return self.response(dumps_networkapi({}))
 
-        except CantDissociateError, e:
+        except CantDissociateError as e:
             return self.response_error(348, e.cause['equiptype'], e.cause['filter_name'])
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except FilterNotFoundError, e:
+        except FilterNotFoundError as e:
             return self.response_error(339)
-        except FilterError, e:
+        except FilterError as e:
             return self.response_error(341)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

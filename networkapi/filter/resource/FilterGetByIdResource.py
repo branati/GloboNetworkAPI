@@ -69,11 +69,11 @@ class FilterGetByIdResource(RestResource):
 
             return self.response(dumps_networkapi({'filter': filter_dict}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except FilterNotFoundError, e:
+        except FilterNotFoundError as e:
             return self.response_error(339)
-        except FilterError, e:
+        except FilterError as e:
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

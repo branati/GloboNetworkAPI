@@ -17,8 +17,7 @@
 
 from logging import getLogger
 
-from django.db.transaction import commit_on_success
-
+from django.db.transaction import atomic
 from rest_framework.views import APIView
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -79,7 +78,7 @@ class ChannelV3View(APIView):
     @logs_method_apiview
     @permission_classes((IsAuthenticated, ChannelWrite))
     @raise_json_validate('channel_post_v3')
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """ Http handler to route v3/channel for POST method """
 
@@ -99,17 +98,17 @@ class ChannelV3View(APIView):
 
                 response.append({'id': data.get('channels')})
 
-        except api_exceptions.ObjectDoesNotExistException, e:
+        except api_exceptions.ObjectDoesNotExistException as e:
             raise api_exceptions.ObjectDoesNotExistException(e.detail)
-        except api_exceptions.ValidationAPIException, e:
+        except api_exceptions.ValidationAPIException as e:
             raise api_exceptions.NetworkAPIException(e.detail)
-        except Exception, e:
+        except Exception as e:
             raise api_exceptions.NetworkAPIException(str(e))
 
         return Response(response, status=status.HTTP_201_CREATED)
 
     @logs_method_apiview
-    @commit_on_success
+    @atomic
     @raise_json_validate('channel_put_v3')
     @permission_classes((IsAuthenticated, ChannelWrite))
     def put(self, request, *args, **kwargs):

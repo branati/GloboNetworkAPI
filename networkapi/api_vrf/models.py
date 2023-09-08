@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
+from django.db.utils import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
@@ -147,17 +148,20 @@ class VrfVlanEquipment(BaseModel):
     vrf = models.ForeignKey(
         Vrf,
         db_column='id_vrf',
-        null=False
+        null=False,
+        on_delete=models.DO_NOTHING
     )
     vlan = models.ForeignKey(
         'vlan.Vlan',
         db_column='id_vlan',
-        null=False
+        null=False,
+        on_delete=models.DO_NOTHING
     )
     equipment = models.ForeignKey(
         'equipamento.Equipamento',
         db_column='id_equipment',
-        null=False
+        null=False,
+        on_delete=models.DO_NOTHING
     )
 
     log = logging.getLogger('VrfVlanEquipment')
@@ -177,12 +181,14 @@ class VrfEquipment(BaseModel):
     vrf = models.ForeignKey(
         'api_vrf.Vrf',
         db_column='id_vrf',
-        null=False
+        null=False,
+        on_delete=models.DO_NOTHING
     )
     equipment = models.ForeignKey(
         'equipamento.Equipamento',
         db_column='id_equipment',
-        null=False
+        null=False,
+        on_delete=models.DO_NOTHING
     )
     internal_name = models.TextField(
         max_length=45,

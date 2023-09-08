@@ -117,13 +117,13 @@ class ModelAlterRemoveResource(RestResource):
                 try:
                     # update Model
                     model.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the Model.')
                     raise EquipamentoError(e, u'Failed to update the Model.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -178,15 +178,15 @@ class ModelAlterRemoveResource(RestResource):
                     # remove Model
                     model.delete()
 
-                except ModeloUsedByEquipamentoError, e:
+                except ModeloUsedByEquipamentoError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the Model.')
                     raise EquipamentoError(e, u'Failed to remove the Model.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

@@ -72,7 +72,7 @@ class FilterAddResource(RestResource):
             try:
                 # Save filter
                 filter_.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the filter.')
                 raise FilterError(e, u'Failed to save the filter')
 
@@ -81,11 +81,11 @@ class FilterAddResource(RestResource):
 
             return self.response(dumps_networkapi({'filter': filter_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except FilterDuplicateError, e:
+        except FilterDuplicateError as e:
             return self.response_error(344, e.message)
-        except FilterError, e:
+        except FilterError as e:
             return self.response_error(338)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

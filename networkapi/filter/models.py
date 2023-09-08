@@ -89,10 +89,10 @@ class Filter(BaseModel):
         """
         try:
             return Filter.objects.get(pk=id_)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise FilterNotFoundError(
                 e, u'There is no Filter with pk = %s.' % id_)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the filter.')
             raise FilterError(e, u'Failure to search the filter.')
 

@@ -120,17 +120,17 @@ class VlanCreateScriptAclResource(RestResource):
 
             return self.response(dumps_networkapi({'vlan': vlan_formated}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(self.CODE_MESSAGE_INVALID_PARAM, e.param, e.value)
 
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             self.log.error(e.message)
             return self.response_error(self.CODE_MESSAGE_VLAN_NOT_FOUND)
 
-        except AclNotFoundError, e:
+        except AclNotFoundError as e:
             return self.response_error(self.CODE_MESSAGE_ACL_NOT_CREATED)
 
-        except XMLError, e:
+        except XMLError as e:
             return self.response_error(self.CODE_MESSAGE_FAIL_READ_XML)
 
     def validate_networkapi_map(self, networkapi_map):

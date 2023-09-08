@@ -81,22 +81,22 @@ class FilterDissociateOneResource(RestResource):
                 ## Only delete if there's no conflicts ##
                 association.delete()
 
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 # Association doesn't exist, ok
                 self.log.error(e)
                 pass
 
             return self.response(dumps_networkapi({}))
 
-        except CantDissociateError, e:
+        except CantDissociateError as e:
             return self.response_error(348, e.cause['equiptype'], e.cause['filter_name'])
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except TipoEquipamentoNotFoundError, e:
+        except TipoEquipamentoNotFoundError as e:
             return self.response_error(100)
-        except FilterNotFoundError, e:
+        except FilterNotFoundError as e:
             return self.response_error(339)
-        except FilterError, e:
+        except FilterError as e:
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

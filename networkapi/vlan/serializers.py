@@ -11,7 +11,8 @@ class VlanSerializer(serializers.ModelSerializer):
     id_vlan = serializers.Field(source='id')
 
     id_environment = serializers.RelatedField(
-        source='ambiente.id'
+        source='ambiente.id',
+        read_only=True
     )
 
     networks_ipv4 = NetworkIPv4Serializer(

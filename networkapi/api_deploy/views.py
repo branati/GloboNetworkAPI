@@ -77,7 +77,7 @@ def deploy_sync_copy_script_to_equipment(request, equipment_id):
             queue_manager.send()
         return Response(data)
 
-    except KeyError, key:
+    except KeyError as key:
         log.error(key)
         raise exceptions.InvalidKeyException(key)
 
@@ -114,16 +114,16 @@ def deploy_sync_copy_script_to_multiple_equipments(request):
                 output_data[equipment_id]['output'] = facade.deploy_config_in_equipment_synchronous(
                     script_file, equipment_id, lockvar)
                 output_data[equipment_id]['status'] = 'OK'
-            except Exception, e:
+            except Exception as e:
                 log.error('Error applying script file to equipment_id %s: %s' % (
                     equipment_id, e))
                 output_data[equipment_id]['output'] = str(e)
                 output_data[equipment_id]['status'] = 'ERROR'
 
         return Response(output_data)
-    except KeyError, key:
+    except KeyError as key:
         log.error(key)
         raise exceptions.InvalidKeyException(key)
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()

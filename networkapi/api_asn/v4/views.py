@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
 import logging
-from django.db.transaction import commit_on_success
+# from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -18,7 +18,7 @@ from networkapi.util.decorators import prepare_search
 from networkapi.util.geral import render_to_json
 from networkapi.util.json_validate import json_validate
 from networkapi.util.json_validate import raise_json_validate
-
+from django.db.transaction import atomic
 
 log = logging.getLogger(__name__)
 
@@ -66,7 +66,7 @@ class AsDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('as_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new AS."""
 
@@ -83,7 +83,7 @@ class AsDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('as_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update AS."""
 
@@ -102,7 +102,7 @@ class AsDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete AS."""
 
@@ -162,7 +162,7 @@ class AsEquipmentDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('asn_equipment_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new ASNEquipment."""
 
@@ -176,7 +176,7 @@ class AsEquipmentDBView(CustomAPIView):
 
     @logs_method_apiview
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete AS."""
 
@@ -195,7 +195,7 @@ class AsEquipmentDBView(CustomAPIView):
     @logs_method_apiview
     # @raise_json_validate('as_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update AS."""
 

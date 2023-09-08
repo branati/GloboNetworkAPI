@@ -270,24 +270,24 @@ class VlanEditResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except VlanACLDuplicatedError, e:
+        except VlanACLDuplicatedError as e:
             return self.response_error(311, acl_file)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             return self.response_error(112)
-        except VlanNameDuplicatedError, e:
+        except VlanNameDuplicatedError as e:
             return self.response_error(108)
-        except VlanNumberNotAvailableError, e:
+        except VlanNumberNotAvailableError as e:
             return self.response_error(306, vlan.num_vlan)
-        except VlanNumberEnvironmentNotAvailableError, e:
+        except VlanNumberEnvironmentNotAvailableError as e:
             return self.response_error(315, e.message)
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             return self.response_error(150, e.message)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
-        except (VlanError, AmbienteError), e:
+        except (VlanError, AmbienteError) as e:
             return self.response_error(1)
 
     def handle_put(self, request, user, *args, **kwargs):

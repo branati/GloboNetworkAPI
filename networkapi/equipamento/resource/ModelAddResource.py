@@ -101,7 +101,7 @@ class ModelAddResource(RestResource):
             try:
                 # save Model
                 model.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the Model.')
                 raise EquipamentoError(e, u'Failed to save the Model.')
 
@@ -111,7 +111,7 @@ class ModelAddResource(RestResource):
 
             return self.response(dumps_networkapi(model_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except MarcaNotFoundError:

@@ -86,18 +86,18 @@ class EquipmentTypeAddResource(RestResource):
 
             return self.response(dumps_networkapi({'equipment_type': etype_dict}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except TipoEquipamentoDuplicateNameError, e:
+        except TipoEquipamentoDuplicateNameError as e:
             return self.response_error(312, name)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except EquipamentoError, e:
+        except EquipamentoError as e:
             return self.response_error(1)
 
-        except XMLError, e:
+        except XMLError as e:
             self.log.exception(e)
             return self.response_error(1)

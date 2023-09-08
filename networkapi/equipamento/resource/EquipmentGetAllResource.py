@@ -59,6 +59,6 @@ class EquipmentGetAllResource(RestResource):
 
         except (EquipamentoError, GrupoError):
             return self.response_error(1)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)

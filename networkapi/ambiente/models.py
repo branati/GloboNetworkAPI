@@ -18,6 +18,8 @@ import ipaddr
 import logging
 
 #from _mysql_exceptions import OperationalError
+from django.db.utils import OperationalError
+
 
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.exceptions import ObjectDoesNotExist
@@ -31,6 +33,7 @@ from django.forms.models import model_to_dict
 from networkapi.api_pools import exceptions
 from networkapi.api_rest.exceptions import ObjectDoesNotExistException
 from networkapi.api_vrf.models import Vrf
+from networkapi.api_aws.models import VPC
 from networkapi.distributedlock import LOCK_ENVIRONMENT
 from networkapi.distributedlock import LOCK_ENVIRONMENT_ALLOCATES
 from networkapi.exception import EnvironmentEnvironmentVipDuplicatedError
@@ -968,19 +971,44 @@ class Ambiente(BaseModel):
         db_column='id_father_environment',
         on_delete=models.DO_NOTHING
     )
-    default_vrf = models.ForeignKey(
-        Vrf,
-        db_column='id_vrf',
-        on_delete=models.DO_NOTHING
-    )
-    dcroom = models.ForeignKey(
-        DatacenterRooms,
+
+    # TODO
+    # Resolução do caso 2
+    # Esse campo não existe no banco de dados
+    # default_vrf = models.ForeignKey(
+    #     Vrf,
+    #     db_column='id_vrf',
+    #     on_delete=models.DO_NOTHING
+    # )
+
+    # TODO
+    # Erro de dependência circular
+    # django.db.migrations.exceptions.CircularDependencyError: ambiente.0001_initial, rack.0001_initial
+    # Alinhar com o time Globo
+    # Alinhado para mudar para IntegerField
+    # dcroom = models.ForeignKey(
+    #    'rack.DatacenterRooms',
+    #    # DatacenterRooms,
+    #     null=True,
+    #     db_column='id_dcroom',
+    #     on_delete=models.DO_NOTHING
+    # )
+    dcroom = models.IntegerField(
+        blank=True,
         null=True,
-        db_column='id_dcroom',
-        on_delete=models.DO_NOTHING
+        db_column='id_dcroom'
     )
+        #    'rack.DatacenterRooms',
+        #    # DatacenterRooms,
+        #     null=True,
+        #     db_column='id_dcroom',
+        #     on_delete=models.DO_NOTHING
+        # )
+
+
+
     aws_vpc = models.ForeignKey(
-        'api_aws.VPC',
+        VPC,
         null=True,
         db_column='id_aws_vpc',
         on_delete=models.DO_NOTHING
@@ -1883,7 +1911,7 @@ class IPConfig(BaseModel):
 
 class EnvCIDR(BaseModel):
 
-    from networkapi.vlan.models import TipoRede
+    # from networkapi.vlan.models import TipoRede
 
     id = models.AutoField(
         primary_key=True
@@ -1909,7 +1937,14 @@ class EnvCIDR(BaseModel):
         blank=False,
         choices=IP_VERSION.List
     )
+
+    # TODO
+    # Caso 3
+    # Dependencia cíclica entre vlan e ambiente.
+    # Resolvido lá no vlan
+
     id_network_type = models.ForeignKey(
+        #'ambiente.EnvCIDR',
         TipoRede,
         db_column='id_network_type',
         null=True,

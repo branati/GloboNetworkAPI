@@ -104,7 +104,7 @@ class LogicalEnvironmentAlterRemoveResource(RestResource):
                 try:
                     # update Logical Environment
                     loc_env.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(
                         u'Failed to update the Logical Environment.')
                     raise AmbienteError(
@@ -112,7 +112,7 @@ class LogicalEnvironmentAlterRemoveResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -165,9 +165,9 @@ class LogicalEnvironmentAlterRemoveResource(RestResource):
                     # remove Logical Environment
                     loc_env.delete()
 
-                except AmbienteLogicoUsedByEnvironmentError, e:
+                except AmbienteLogicoUsedByEnvironmentError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(
                         u'Failed to remove the Logical Environment.')
                     raise AmbienteError(
@@ -175,7 +175,7 @@ class LogicalEnvironmentAlterRemoveResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

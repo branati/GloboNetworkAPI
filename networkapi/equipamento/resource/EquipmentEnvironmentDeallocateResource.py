@@ -119,20 +119,20 @@ class EquipmentEnvironmentDeallocateResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(117, id_equipment)
 
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             return self.response_error(112)
 
-        except EquipamentoAmbienteNotFoundError, e:
+        except EquipamentoAmbienteNotFoundError as e:
             return self.response_error(320)
 
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(119)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except (EquipamentoError, AmbienteError, IpError), e:
+        except (EquipamentoError, AmbienteError, IpError) as e:
             return self.response_error(1)

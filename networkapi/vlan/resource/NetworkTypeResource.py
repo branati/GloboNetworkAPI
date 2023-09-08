@@ -128,7 +128,7 @@ class NetworkTypeResource(RestResource):
 
             try:
                 net_type.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to insert network type.')
                 raise VlanError(e, u'Failed to insert network type.')
 
@@ -137,11 +137,11 @@ class NetworkTypeResource(RestResource):
 
             return self.response(dumps_networkapi({'net_type': net_type_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except NetworkTypeNameDuplicatedError:
             return self.response_error(253, name)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading request XML.')
             return self.response_error(3, x)
         except (GrupoError, VlanError):
@@ -204,16 +204,16 @@ class NetworkTypeResource(RestResource):
                 net_type.tipo_rede = name
                 try:
                     net_type.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to edit network type.')
                     raise VlanError(e, u'Failed to edit network type.')
 
             # Return empty response
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except NetworkTypeNotFoundError:
@@ -257,14 +257,14 @@ class NetworkTypeResource(RestResource):
 
                 try:
                     net_type.delete()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove network type.')
                     raise VlanError(e, u'Failed to remove network type.')
 
             # Return empty response
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except NetworkTypeNotFoundError:
             return self.response_error(111)

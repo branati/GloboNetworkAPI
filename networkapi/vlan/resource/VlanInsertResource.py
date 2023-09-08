@@ -335,32 +335,32 @@ class VlanInsertResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(map))
 
-        except VlanACLDuplicatedError, e:
+        except VlanACLDuplicatedError as e:
             return self.response_error(311, acl_file)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             return self.response_error(112)
-        except VlanNameDuplicatedError, e:
+        except VlanNameDuplicatedError as e:
             return self.response_error(108)
-        except VlanNumberNotAvailableError, e:
+        except VlanNumberNotAvailableError as e:
             return self.response_error(306, vlan.num_vlan)
-        except VlanNumberEnvironmentNotAvailableError, e:
+        except VlanNumberEnvironmentNotAvailableError as e:
             return self.response_error(315, e.message)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
-        except (VlanError, AmbienteError), e:
+        except (VlanError, AmbienteError) as e:
             return self.response_error(1)
-        except ConfigEnvironmentInvalidError, e:
+        except ConfigEnvironmentInvalidError as e:
             return self.response_error(294)
-        except NetworkIPv4AddressNotAvailableError, e:
+        except NetworkIPv4AddressNotAvailableError as e:
             return self.response_error(150, e)
 
-        except NetworkIPv6AddressNotAvailableError, e:
+        except NetworkIPv6AddressNotAvailableError as e:
             return self.response_error(150, e)
 
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             return self.response_error(111, e)

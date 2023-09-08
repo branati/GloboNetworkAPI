@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import get_model
+
+from django.apps import apps
+
+# from django.apps import apps
 
 from networkapi.api_asn.v4 import exceptions
 from networkapi.models.BaseModel import BaseModel
@@ -128,10 +131,10 @@ class Asn(BaseModel):
 
             super(Asn, self).delete()
 
-        except exceptions.AsnAssociatedToEquipmentError, e:
+        except exceptions.AsnAssociatedToEquipmentError as e:
             self.log.error(e)
             raise exceptions.AsnAssociatedToEquipmentError(e.detail)
-        except Exception, e:
+        except Exception as e:
             self.log.error(e)
             raise exceptions.AsnErrorV4(e)
 
@@ -143,14 +146,16 @@ class AsnEquipment(BaseModel):
         'api_asn.Asn',
         db_column='id_asn',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     equipment = models.ForeignKey(
         'equipamento.Equipamento',
         db_column='id_equipment',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     log = logging.getLogger('AsnEquipment')
@@ -194,7 +199,7 @@ class AsnEquipment(BaseModel):
     def create_v4(self, as_equipment):
         """Create AsnEquipment relationship."""
 
-        equipment = get_model('equipamento', 'Equipamento')
+        equipment = apps.get_model('equipamento', 'Equipamento')
 
         self.equipment = equipment().get_by_pk(
             as_equipment.get('equipment'))
@@ -212,7 +217,7 @@ class AsnEquipment(BaseModel):
     def update_v4(self, asn_equipment):
         """Update ASNEquipment """
 
-        equipment = get_model('equipamento', 'Equipamento')
+        equipment = apps.get_model('equipamento', 'Equipamento')
 
         self.equipment = equipment().get_by_pk(
             asn_equipment.get('equipment')[0])

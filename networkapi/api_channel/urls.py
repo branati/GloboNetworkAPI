@@ -16,21 +16,22 @@
 # limitations under the License.
 
 
-from django.conf.urls import patterns
-from django.conf.urls import url
+# from django.conf.urls import patterns
+# from django.conf.urls import url
+from django.urls import re_path
 
 from networkapi.api_channel.views import ChannelV3View
 from networkapi.api_channel.views import DeployChannelConfV3View
 
 
-urlpatterns = patterns(
-    'networkapi.api_channel.views',
+urlpatterns = [
+    # 'networkapi.api_channel.views',
 
     # Basic CRUD routes
-    url(r'^v3/channel/(?P<channel_id>\w+|)/?$',
+    re_path(r'^v3/channel/(?P<channel_id>\w+|)/?$',
         ChannelV3View.as_view()),
 
     # Channel deploy operation
-    url(r'^v3/channel/(?P<channel_id>\d+)/deploy/?$',
+    re_path(r'^v3/channel/(?P<channel_id>\d+)/deploy/?$',
         DeployChannelConfV3View.as_view()),
-)
+]

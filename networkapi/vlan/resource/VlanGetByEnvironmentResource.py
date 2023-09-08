@@ -97,7 +97,7 @@ class VlanGetByEnvironmentResource(RestResource):
 
             return self.response(dumps_networkapi({'vlan': map_list}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

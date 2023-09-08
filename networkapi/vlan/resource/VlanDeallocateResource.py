@@ -150,23 +150,23 @@ class VlanDeallocateResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except IpCantRemoveFromServerPool, e:
+        except IpCantRemoveFromServerPool as e:
             return self.response_error(387, e.cause.get('vlan_name'), e.cause.get('network_ip'), e.cause.get('ip'), e.cause.get('server_pool_identifiers'))
-        except EquipamentoAmbienteNotFoundError, e:
+        except EquipamentoAmbienteNotFoundError as e:
             return self.response_error(320)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except VlanCantDeallocate, e:
+        except VlanCantDeallocate as e:
             return self.response_error(293)
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(319, 'vlan', 'vlan', id_vlan)
         except VlanNotFoundError:
             return self.response_error(116)
         except (VlanError):
             return self.response_error(1)
-        except Exception, e:
+        except Exception as e:
             self.log.exception(u'Failed to deallocate vlan.')
             if isinstance(e, IntegrityError):
                 return self.response_error(356, id_vlan)

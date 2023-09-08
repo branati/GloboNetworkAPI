@@ -82,7 +82,7 @@ class EquipAccessListResource(RestResource):
                 # Find equipment by name to check if it exist
                 equip = Equipamento.get_by_name(name)
 
-            except EquipamentoNotFoundError, e:
+            except EquipamentoNotFoundError as e:
                 return self.response_error(117, name)
 
             # Business Rules
@@ -105,10 +105,10 @@ class EquipAccessListResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(equip_access_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except (EquipamentoError, GrupoError):
             return self.response_error(1)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)

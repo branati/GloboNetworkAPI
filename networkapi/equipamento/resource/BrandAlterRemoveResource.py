@@ -103,13 +103,13 @@ class BrandAlterRemoveResource(RestResource):
                 try:
                     # update Brand
                     brand.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the Brand.')
                     raise EquipamentoError(e, u'Failed to update the Brand.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -161,15 +161,15 @@ class BrandAlterRemoveResource(RestResource):
                     # remove Brand
                     brand.delete()
 
-                except MarcaUsedByModeloError, e:
+                except MarcaUsedByModeloError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the Brand.')
                     raise EquipamentoError(e, u'Failed to remove the Brand.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

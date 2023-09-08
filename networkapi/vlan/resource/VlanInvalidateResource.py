@@ -85,14 +85,14 @@ class VlanInvalidateResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             return self.response_error(116)
 
-        except VlanError, e:
+        except VlanError as e:
             return self.response_error(1)

@@ -83,7 +83,7 @@ class LogicalEnvironmentAddResource(RestResource):
             try:
                 # save Logical Environment
                 log_env.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the Logical Environment.')
                 raise AmbienteError(
                     e, u'Failed to save the Logical Environment.')
@@ -94,7 +94,7 @@ class LogicalEnvironmentAddResource(RestResource):
 
             return self.response(dumps_networkapi(log_env_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except AmbienteLogicoNameDuplicatedError:

@@ -124,17 +124,17 @@ class VlanCreateAclResource(RestResource):
 
             return self.response(dumps_networkapi({'vlan': model_to_dict(vlan)}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(self.CODE_MESSAGE_INVALID_PARAM, e.param, e.value)
 
-        except VlanACLDuplicatedError, e:
+        except VlanACLDuplicatedError as e:
             return self.response_error(self.CODE_MESSAGE_DUPLICATE_ACL, acl_name)
 
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             self.log.error(e.message)
             return self.response_error(self.CODE_MESSAGE_VLAN_NOT_FOUND)
 
-        except XMLError, e:
+        except XMLError as e:
             return self.response_error(self.CODE_MESSAGE_FAIL_READ_XML)
 
     def __create_suggest_acl_name(self, vlan_object):

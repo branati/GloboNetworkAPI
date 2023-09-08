@@ -65,5 +65,5 @@ class FilterListAllResource(RestResource):
 
             return self.response(dumps_networkapi({'filter': filter_list}))
 
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

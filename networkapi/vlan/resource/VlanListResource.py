@@ -70,9 +70,9 @@ class VlanListResource(RestResource):
 
             return self.response(dumps_networkapi({'vlan': vlan_list}))
 
-        except (VlanError, GrupoError), e:
+        except (VlanError, GrupoError) as e:
             self.log.error(e)
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             self.log.error(e)
             return self.response_error(1)

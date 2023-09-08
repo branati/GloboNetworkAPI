@@ -16,7 +16,7 @@
 """
 """
 import logging
-from string import split
+# from string import split
 
 from django.db.models import Q
 from django.forms.models import model_to_dict
@@ -413,7 +413,7 @@ class VlanFindResource(RestResource):
                     blocks, network, version = break_network(network)
                     try:
                         network_ip = IPNetwork(network)
-                    except ValueError, e:
+                    except ValueError as e:
                         raise InvalidValueError(None, 'rede', network)
 
                 # If subnet is valid, add to filter
@@ -551,11 +551,11 @@ class VlanFindResource(RestResource):
 
             return self.response(dumps_networkapi(vlan_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
         except (VlanError, GrupoError):
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

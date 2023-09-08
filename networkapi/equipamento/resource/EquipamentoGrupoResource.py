@@ -54,7 +54,7 @@ class EquipamentoGrupoResource(RestResource):
         # verifica parametros
         try:
             xml_map, attrs_map = loads(request.raw_post_data)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
 
@@ -116,7 +116,7 @@ class EquipamentoGrupoResource(RestResource):
                             equip_id,
                             AdminPermission.EQUIP_WRITE_OPERATION):
                 return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EquipamentoNotFoundError:
             return self.response_error(117, equip_id)
@@ -184,7 +184,7 @@ class EquipamentoGrupoResource(RestResource):
 
                 EquipamentoGrupo.remove(user, equip_id, egroup_id)
                 return self.response(dumps_networkapi({}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EGrupoNotFoundError:
             return self.response_error(102)

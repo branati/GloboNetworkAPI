@@ -13,7 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import commands
+# import commands
+import subprocess
 import logging
 import re
 
@@ -129,7 +130,7 @@ class VlanApplyAcl(RestResource):
                             name_equipaments += ',%s' % equip
 
             # Script
-            (erro, result) = commands.getstatusoutput(
+            (erro, result) = subprocess.getstatusoutput(
                 '/usr/bin/backuper -T acl -b %s/%s -e -i %s -w 300' % (path, acl, name_equipaments))
 
             if erro:
@@ -149,12 +150,12 @@ class VlanApplyAcl(RestResource):
 
         except EquipmentGroupsNotAuthorizedError:
             return self.response_error(271)
-        except Exception, e:
+        except Exception as e:
             logger.error('Erro quando o usuário %s tentou aplicar ACL %s no equipamentos: %s' % (
                 user.nome, acl, equipments))
             logger.error(e)
             raise Exception(e)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)
 
     def check_name_file(self, acl_file_name, extention=True):

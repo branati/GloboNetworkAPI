@@ -76,14 +76,14 @@ class EquipmentGetByGroupEquipmentResource(RestResource):
 
             return self.response(dumps_networkapi(equipament_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except EGrupoNotFoundError, e:
+        except EGrupoNotFoundError as e:
             return self.response_error(102)
 
-        except GrupoError, e:
+        except GrupoError as e:
             return self.response_error(1)

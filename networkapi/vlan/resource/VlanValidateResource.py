@@ -16,7 +16,7 @@
 from __future__ import with_statement
 
 import logging
-from string import split
+# from string import split
 
 from networkapi.admin_permission import AdminPermission
 from networkapi.ambiente.models import Ambiente
@@ -88,16 +88,16 @@ class VlanValidateResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             return self.response_error(116)
 
-        except VlanError, e:
+        except VlanError as e:
             return self.response_error(1)
 
     def handle_get(self, request, user, *args, **kwargs):
@@ -244,11 +244,11 @@ class VlanValidateResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except AmbienteNotFoundError:
             return self.response_error(112)
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)
 
 

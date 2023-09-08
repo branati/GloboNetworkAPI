@@ -132,11 +132,11 @@ class EquipmentGetIpsByAmbiente(RestResource):
 
             return self.response(dumps_networkapi({'list_ipv4': lista_ip_entregue, 'list_ipv6': lista_ip6_entregue}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
         except (EquipamentoError, GrupoError):
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

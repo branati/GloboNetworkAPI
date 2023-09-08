@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -66,7 +66,7 @@ class VrfDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('vrf_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """
         Create new vrfs
@@ -83,7 +83,7 @@ class VrfDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('vrf_put')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """
         Update vrfs
@@ -102,7 +102,7 @@ class VrfDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """
         Delete vrfs

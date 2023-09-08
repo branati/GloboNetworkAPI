@@ -15,7 +15,7 @@
 # limitations under the License.
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from django.forms.models import model_to_dict
 
 from networkapi.admin_permission import AdminPermission
@@ -35,8 +35,8 @@ class EquipmentTypeGetAllResource(RestResource):
         URL: equipmenttype/all
         """
         try:
-            TipoEquipamento = get_model('equipamento', 'TipoEquipamento')
-            EquipamentoError = get_model('equipamento', 'EquipamentoError')
+            TipoEquipamento = apps.get_model('equipamento', 'TipoEquipamento')
+            EquipamentoError = apps.get_model('equipamento', 'EquipamentoError')
 
             self.log.info('GET to list all Equipment Type')
 

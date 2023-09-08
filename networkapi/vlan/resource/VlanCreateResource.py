@@ -179,18 +179,18 @@ class VlanCreateResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except NetworkIPv4NotFoundError, e:
+        except NetworkIPv4NotFoundError as e:
             return self.response_error(281)
-        except NetworkIPv6NotFoundError, e:
+        except NetworkIPv6NotFoundError as e:
             return self.response_error(286)
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             return self.response_error(116)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
-        except (GrupoError, VlanError, AmbienteError, NetworkIPv6Error, NetworkIPv4Error), e:
+        except (GrupoError, VlanError, AmbienteError, NetworkIPv6Error, NetworkIPv4Error) as e:
             return self.response_error(1)

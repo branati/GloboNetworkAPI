@@ -107,9 +107,9 @@ class VlanCheckNumberAvailable(RestResource):
 
             return self.response(dumps_networkapi({'has_numbers_availables': has_numbers_availables}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             return self.response_error(116)
         except UserNotAuthorizedError:
             return self.not_authorized()

@@ -204,16 +204,16 @@ class VlanResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(vlan_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
         except GrupoError:
             return self.response_error(1)
         except NetworkTypeNotFoundError:
             return self.response_error(111)
-        except EnvironmentVipNotFoundError, e:
+        except EnvironmentVipNotFoundError as e:
             return self.response_error(283)
         except AmbienteNotFoundError:
             return self.response_error(112)
@@ -311,13 +311,13 @@ class VlanResource(RestResource):
                 try:
                     network_ipv4 = vlan.networkipv4_set.order_by('id')[0]
                     vlan_map = self.get_vlan_map(vlan, network_ipv4)
-                except IndexError, e:
+                except IndexError as e:
                     self.log.error(
                         u'Error finding the first network_ipv4 from vlan, trying network_ipv6.')
                     try:
                         network_ipv6 = vlan.networkipv6_set.order_by('id')[0]
                         vlan_map = self.get_vlan_map_ipv6(vlan, network_ipv6)
-                    except IndexError, e:
+                    except IndexError as e:
                         self.log.error(
                             u'Error findind the first network_ipv6, raising exception.')
                         raise NetworkIPvXNotFoundError(
@@ -330,7 +330,7 @@ class VlanResource(RestResource):
             else:
                 return super(VlanResource, self).handle_get(request, user, *args, **kwargs)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except VlanNotFoundError:
             return self.response_error(116)
@@ -382,7 +382,7 @@ class VlanResource(RestResource):
                                                                  kwargs.get(
                                                                      'id_vlan'),
                                                                  operation)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except VlanNotFoundError:
             return self.response_error(116)
@@ -390,9 +390,9 @@ class VlanResource(RestResource):
             return self.response_error(281)
         except (VlanError, GrupoError, EquipamentoError, InterfaceError):
             return self.response_error(1)
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
@@ -530,7 +530,7 @@ class VlanResource(RestResource):
 
         except EquipamentoNotFoundError:
             return self.response_error(117, name)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except InterfaceNotFoundError:
             return self.response_error(141)

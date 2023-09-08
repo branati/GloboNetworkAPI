@@ -105,13 +105,13 @@ class GroupL3AlterRemoveResource(RestResource):
                 try:
                     # update Group l3
                     groupl3.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the Group l3.')
                     raise AmbienteError(e, u'Failed to update the Group l3.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -163,15 +163,15 @@ class GroupL3AlterRemoveResource(RestResource):
                     # remove Group l3
                     groupl3.delete()
 
-                except GrupoL3UsedByEnvironmentError, e:
+                except GrupoL3UsedByEnvironmentError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the Group l3.')
                     raise GrupoError(e, u'Failed to remove the Group l3.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

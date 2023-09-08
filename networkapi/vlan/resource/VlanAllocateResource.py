@@ -123,7 +123,7 @@ class VlanAllocateResource(RestResource):
                 # Find environment by ID to check if it exist
                 env = Ambiente.get_by_pk(environment)
 
-            except AmbienteNotFoundError, e:
+            except AmbienteNotFoundError as e:
                 self.log.error(u'The environment parameter does not exist.')
                 return self.response_error(112)
 
@@ -184,7 +184,7 @@ class VlanAllocateResource(RestResource):
                                 min_num_02,
                                 max_num_02
                                 )
-            except Exception, e:
+            except Exception as e:
                 # release all the locks if failed
                 for lock in locks_list:
                     lock.__exit__('', '', '')
@@ -199,9 +199,9 @@ class VlanAllocateResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(vlan_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
         except GrupoError:

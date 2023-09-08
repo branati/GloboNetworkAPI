@@ -100,7 +100,7 @@ class VlanSearchResource(RestResource):
                     vlan=vlan).order_by('id')
                 network_ipv6 = NetworkIPv6.objects.filter(
                     vlan=vlan).order_by('id')
-            except Exception, e:
+            except Exception as e:
                 self.log.error(
                     u'Error finding the first network_ipv4 from vlan.')
                 raise NetworkIPv4NotFoundError(
@@ -113,7 +113,7 @@ class VlanSearchResource(RestResource):
 
             return self.response(dumps_networkapi(map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except VlanNotFoundError:
@@ -125,5 +125,5 @@ class VlanSearchResource(RestResource):
         except (VlanError, GrupoError):
             return self.response_error(1)
 
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)

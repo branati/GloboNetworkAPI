@@ -175,10 +175,10 @@ class VlanAllocateIPv6Resorce(RestResource):
             # Return XML
             return self.response(dumps_networkapi(vlan_map))
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except ConfigEnvironmentInvalidError:
             return self.response_error(294)
