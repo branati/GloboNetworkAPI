@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-from django.db.models import get_model
+# from django.apps import apps
+from django.apps import apps
 from rest_framework import serializers
+
 
 from networkapi.util.geral import get_app
 from networkapi.util.serializers import DynamicFieldsModelSerializer
@@ -23,7 +25,7 @@ class EnvironmentVipV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'environments')
 
     class Meta:
-        EnvironmentVip = get_model('ambiente', 'EnvironmentVip')
+        EnvironmentVip = apps.get_model('ambiente', 'EnvironmentVip')
         model = EnvironmentVip
         fields = (
             'id',
@@ -106,7 +108,7 @@ class OptionVipV3Serializer(DynamicFieldsModelSerializer):
     id = serializers.Field()
 
     class Meta:
-        OptionVip = get_model('requisicaovips', 'OptionVip')
+        OptionVip = apps.get_model('requisicaovips', 'OptionVip')
         model = OptionVip
         fields = (
             'id',
@@ -141,7 +143,7 @@ class OptionVipEnvironmentVipV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'environment')
 
     class Meta:
-        OptionVipEnvironmentVip = get_model('requisicaovips',
+        OptionVipEnvironmentVip = apps.get_model('requisicaovips',
                                             'OptionVipEnvironmentVip')
         model = OptionVipEnvironmentVip
         fields = (
@@ -192,7 +194,7 @@ class EnvironmentEnvironmentVipV3Serializer(DynamicFieldsModelSerializer):
 
     class Meta:
         EnvironmentEnvironmentVip = \
-            get_model('ambiente', 'EnvironmentEnvironmentVip')
+            apps.get_model('ambiente', 'EnvironmentEnvironmentVip')
         model = EnvironmentEnvironmentVip
 
         fields = (

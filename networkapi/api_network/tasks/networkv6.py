@@ -27,7 +27,7 @@ def create_networkv6(self, net_dict, user_id):
     try:
         net = facade.create_networkipv6(net_dict, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV6 was not allocated.'
         msg['reason'] = str(exception)
 
@@ -60,7 +60,7 @@ def update_networkv6(self, net_dict, user_id):
     try:
         net = facade.update_networkipv6(net_dict, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV6 {} was not updated.'.format(net_obj)
         msg['reason'] = str(exception)
 
@@ -93,7 +93,7 @@ def delete_networkv6(self, net_id, user_id):
     try:
         facade.delete_networkipv6(net_id)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV6 {} was not deallocated.'.format(net_obj)
         msg['reason'] = str(exception)
 
@@ -128,7 +128,7 @@ def deploy_networkv6(self, net_id, user_id):
         networkv6 = net_obj.networkv6
         status_deploy = facade.deploy_networkipv6(net_id, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV6 {} was not deployed.'.format(net_obj)
         msg['reason'] = str(exception)
 
@@ -163,7 +163,7 @@ def undeploy_networkv6(self, net_id, user_id):
         networkv6 = net_obj.networkv6
         status_deploy = facade.undeploy_networkipv6(net_id, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV6 {} was not deployed.'.format(net_obj)
         msg['reason'] = str(exception)
 

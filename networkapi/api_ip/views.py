@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -70,7 +70,7 @@ class IPv4View(CustomAPIView):
     @raise_json_validate('ipv4_post')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create Ipv4."""
 
@@ -90,7 +90,7 @@ class IPv4View(CustomAPIView):
     @raise_json_validate('ipv4_put')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv4."""
 
@@ -107,7 +107,7 @@ class IPv4View(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Ipv4."""
 
@@ -125,7 +125,7 @@ class IPv4AsyncView(CustomAPIView):
     @raise_json_validate('ipv4_post')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create Ipv4."""
 
@@ -151,7 +151,7 @@ class IPv4AsyncView(CustomAPIView):
     @raise_json_validate('ipv4_put')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv4."""
 
@@ -177,7 +177,7 @@ class IPv4AsyncView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Ipv4."""
 
@@ -241,7 +241,7 @@ class IPv6View(CustomAPIView):
     @raise_json_validate('ipv6_post')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Save Ipv6."""
 
@@ -258,7 +258,7 @@ class IPv6View(CustomAPIView):
     @raise_json_validate('ipv6_put')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv6."""
 
@@ -275,7 +275,7 @@ class IPv6View(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Edit Ipv6"""
 
@@ -293,7 +293,7 @@ class IPv6AsyncView(CustomAPIView):
     @raise_json_validate('ipv6_post')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create Ipv6."""
 
@@ -319,7 +319,7 @@ class IPv6AsyncView(CustomAPIView):
     @raise_json_validate('ipv6_put')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv6."""
 
@@ -345,7 +345,7 @@ class IPv6AsyncView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Ipv6."""
 

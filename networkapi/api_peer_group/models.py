@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
@@ -37,14 +37,16 @@ class PeerGroup(BaseModel):
         'api_route_map.RouteMap',
         db_column='id_route_map_in',
         related_name='peergroup_route_map_in',
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     route_map_out = models.ForeignKey(
         'api_route_map.RouteMap',
         db_column='id_route_map_out',
         related_name='peergroup_route_map_out',
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     def _get_environments(self):
@@ -102,7 +104,7 @@ class PeerGroup(BaseModel):
     def create_v4(self, peer_group, user):
         """Create PeerGroup."""
 
-        routemap_model = get_model('api_route_map', 'RouteMap')
+        routemap_model = apps.get_model('api_route_map', 'RouteMap')
 
         route_map_in_id = peer_group.get('route_map_in')
         route_map_out_id = peer_group.get('route_map_out')
@@ -119,7 +121,7 @@ class PeerGroup(BaseModel):
         self.save()
 
         # Save relationships with environments
-        environment_peergroup_model = get_model('api_peer_group',
+        environment_peergroup_model = apps.get_model('api_peer_group',
                                                 'EnvironmentPeerGroup')
         for id_environment in peer_group.get('environments'):
             environment_peergroup_model().create_v4({
@@ -128,7 +130,7 @@ class PeerGroup(BaseModel):
             })
 
         # Permissions
-        object_group_perm_model = get_model('api_ogp', 'ObjectGroupPermission')
+        object_group_perm_model = apps.get_model('api_ogp', 'ObjectGroupPermission')
         object_group_perm_model().create_perms(peer_group,
                                                self.id,
                                                AdminPermission.OBJ_TYPE_PEER_GROUP,
@@ -164,7 +166,7 @@ class PeerGroup(BaseModel):
             environment_peer_group.delete_v4()
 
         # Permissions
-        object_group_perm_model = get_model('api_ogp',
+        object_group_perm_model = apps.get_model('api_ogp',
                                             'ObjectGroupPermission')
         object_group_perm_model().update_perms(
             peer_group, self.id, AdminPermission.OBJ_TYPE_PEER_GROUP, user)
@@ -175,7 +177,7 @@ class PeerGroup(BaseModel):
         self.check_peer_group_associated_to_neighbors()
 
         # Deletes Permissions
-        object_group_perm_model = get_model('api_ogp',
+        object_group_perm_model = apps.get_model('api_ogp',
                                             'ObjectGroupPermission')
         object_group_perm_model.objects.filter(
             object_type__name=AdminPermission.OBJ_TYPE_PEER_GROUP,
@@ -230,12 +232,14 @@ class EnvironmentPeerGroup(BaseModel):
 
     environment = models.ForeignKey(
         'ambiente.Ambiente',
-        db_column='id_environment'
+        db_column='id_environment',
+        on_delete=models.DO_NOTHING
     )
 
     peer_group = models.ForeignKey(
         'api_peer_group.PeerGroup',
-        db_column='id_peer_group'
+        db_column='id_peer_group',
+        on_delete=models.DO_NOTHING
     )
 
     log = logging.getLogger('EnvironmentPeerGroup')
@@ -270,7 +274,7 @@ class EnvironmentPeerGroup(BaseModel):
     def create_v4(self, environment_peergroup):
         """Create EnvironmentPeerGroup."""
 
-        environment_model = get_model('ambiente', 'Ambiente')
+        environment_model = apps.get_model('ambiente', 'Ambiente')
 
         environment_id = environment_peergroup.get('environment')
         peer_group_id = environment_peergroup.get('peer_group')

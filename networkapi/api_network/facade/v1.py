@@ -303,7 +303,7 @@ def _generate_config_file(dict_ips, equipment, template_type):
         network_template_file = _load_template_file(equipment, template_type)
         key_dict = _generate_template_dict(dict_ips, equipment)
         config_to_be_saved += network_template_file.render(Context(key_dict))
-    except KeyError, exception:
+    except KeyError as exception:
         log.error('Erro: %s ' % exception)
         raise exceptions_interface.InvalidKeyException(exception)
 
@@ -312,7 +312,7 @@ def _generate_config_file(dict_ips, equipment, template_type):
         file_handle = open(filename_to_save, 'w')
         file_handle.write(config_to_be_saved)
         file_handle.close()
-    except IOError, e:
+    except IOError as e:
         log.error('Error writing to config file: %s' % filename_to_save)
         raise e
 
@@ -604,10 +604,10 @@ def _load_template_file(equipment, template_type):
         file_handle = open(filename_in, 'r')
         template_file = Template(file_handle.read())
         file_handle.close()
-    except IOError, e:
+    except IOError as e:
         log.error('Error opening template file for read: %s' % filename_in)
         raise e
-    except Exception, e:
+    except Exception as e:
         log.error('Syntax error when parsing template: %s ' % e)
         raise e
         # TemplateSyntaxError

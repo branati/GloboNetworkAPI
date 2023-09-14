@@ -27,7 +27,7 @@ def create_ipv4(self, ip_dict, user_id):
     try:
         ip = facade_v3.create_ipv4(ip_dict, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'IPv4 {} was not allocated.'.format(ip)
         msg['reason'] = str(exception)
 
@@ -60,7 +60,7 @@ def update_ipv4(self, ip_dict, user_id):
     try:
         facade_v3.update_ipv4(ip_dict, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'IPv4 {} was not updated.'.format(ip_obj)
         msg['reason'] = str(exception)
 
@@ -90,7 +90,7 @@ def delete_ipv4(self, ip_id, user_id):
     try:
         facade_v3.delete_ipv4(ip_id)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'IPv4 {} was not deallocated.'.format(ip_obj)
         msg['reason'] = str(exception)
 

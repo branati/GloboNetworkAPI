@@ -15,7 +15,7 @@
 # limitations under the License.
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -112,7 +112,7 @@ class EquipmentV4View(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('equipment_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Creates list of equipments."""
 
@@ -125,7 +125,7 @@ class EquipmentV4View(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('equipment_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Updates list of equipments."""
 
@@ -138,7 +138,7 @@ class EquipmentV4View(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Deletes list of equipments."""
 

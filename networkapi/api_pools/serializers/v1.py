@@ -34,7 +34,7 @@ class ServerPoolDatatableSerializer(serializers.ModelSerializer):
 
     healthcheck = HealthcheckSerializer()
 
-    environment = serializers.RelatedField(source='environment.name')
+    environment = serializers.RelatedField(source='environment.name', read_only=True)
     maxcom = serializers.CharField(source='default_limit')
     vip_port = serializers.SerializerMethodField('get_vip_port')
 
@@ -197,11 +197,13 @@ class OptionPoolEnvironmentSerializer(serializers.ModelSerializer):
 class VipPortToPoolSerializer(serializers.ModelSerializer):
 
     environment_vip_ipv4 = serializers.RelatedField(
-        source='requisicao_vip.ip.networkipv4.ambient_vip.name'
+        source='requisicao_vip.ip.networkipv4.ambient_vip.name',
+        read_only=True
     )
 
     environment_vip_ipv6 = serializers.RelatedField(
-        source='requisicao_vip.ipv6.networkipv6.ambient_vip.name'
+        source='requisicao_vip.ipv6.networkipv6.ambient_vip.name',
+        read_only=True
     )
 
     class Meta:

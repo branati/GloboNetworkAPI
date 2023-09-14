@@ -31,15 +31,15 @@ def update_equipment(equipments, user):
             equipment_obj = get_equipment_by_id(equipment.get('id'))
             equipment_obj.update_v4(equipment)
             response.append({'id': equipment_obj.id})
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except EquipamentoError, e:
+    except EquipamentoError as e:
         raise ValidationAPIException(e.message)
-    except EquipmentInvalidValueException, e:
+    except EquipmentInvalidValueException as e:
         raise ValidationAPIException(str(e))
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
     finally:
         destroy_lock(locks_list)
@@ -57,13 +57,13 @@ def create_equipment(equipments, user):
             equipment_obj = Equipamento()
             equipment_obj.create_v4(equipment)
             response.append({'id': equipment_obj.id})
-    except EquipamentoError, e:
+    except EquipamentoError as e:
         raise ValidationAPIException(e.message)
-    except EquipmentInvalidValueException, e:
+    except EquipmentInvalidValueException as e:
         raise ValidationAPIException(e.detail)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return response
@@ -78,15 +78,15 @@ def delete_equipment(equipments):
         for equipment in equipments:
             equipment_obj = get_equipment_by_id(equipment)
             equipment_obj.delete_v4()
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except EquipamentoError, e:
+    except EquipamentoError as e:
         raise ValidationAPIException(e.message)
-    except EquipmentInvalidValueException, e:
+    except EquipmentInvalidValueException as e:
         raise ValidationAPIException(e.detail)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
     finally:
         destroy_lock(locks_list)

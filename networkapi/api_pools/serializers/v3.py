@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -9,7 +9,7 @@ from networkapi.util.serializers import DynamicFieldsModelSerializer
 class OptionPoolV3Serializer(DynamicFieldsModelSerializer):
 
     class Meta:
-        OptionPool = get_model('api_pools', 'OptionPool')
+        OptionPool = apps.get_model('api_pools', 'OptionPool')
         model = OptionPool
         depth = 1
         fields = (
@@ -26,7 +26,7 @@ class OptionPoolV3Serializer(DynamicFieldsModelSerializer):
 class HealthcheckV3Serializer(DynamicFieldsModelSerializer):
 
     class Meta:
-        Healthcheck = get_model('healthcheckexpect', 'Healthcheck')
+        Healthcheck = apps.get_model('healthcheckexpect', 'Healthcheck')
         model = Healthcheck
         fields = (
             'identifier',
@@ -64,7 +64,7 @@ class PoolMemberV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'equipment')
 
     class Meta:
-        ServerPoolMember = get_model('requisicaovips', 'ServerPoolMember')
+        ServerPoolMember = apps.get_model('requisicaovips', 'ServerPoolMember')
         model = ServerPoolMember
         depth = 2
         fields = (
@@ -230,7 +230,7 @@ class PoolV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'environment')
 
     class Meta:
-        ServerPool = get_model('requisicaovips', 'ServerPool')
+        ServerPool = apps.get_model('requisicaovips', 'ServerPool')
         model = ServerPool
         fields = (
             'id',

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -17,7 +17,7 @@ class NetworkTypeV3Serializer(DynamicFieldsModelSerializer):
     network_type = serializers.Field(source='tipo_rede')
 
     class Meta:
-        TipoRede = get_model('vlan', 'TipoRede')
+        TipoRede = apps.get_model('vlan', 'TipoRede')
         model = TipoRede
         fields = (
             'id',
@@ -124,7 +124,7 @@ class NetworkIPv4V3Serializer(DynamicFieldsModelSerializer):
         return queryset
 
     class Meta:
-        NetworkIPv4 = get_model('ip', 'NetworkIPv4')
+        NetworkIPv4 = apps.get_model('ip', 'NetworkIPv4')
         model = NetworkIPv4
         default_fields = (
             'id',
@@ -279,7 +279,7 @@ class NetworkIPv6V3Serializer(DynamicFieldsModelSerializer):
         return queryset
 
     class Meta:
-        NetworkIPv6 = get_model('ip', 'NetworkIPv6')
+        NetworkIPv6 = apps.get_model('ip', 'NetworkIPv6')
         model = NetworkIPv6
         default_fields = (
             'id',

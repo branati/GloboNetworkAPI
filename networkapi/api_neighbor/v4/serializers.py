@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -19,7 +19,7 @@ class NeighborV4V4Serializer(DynamicFieldsModelSerializer):
     peer_group = serializers.SerializerMethodField('get_peer_group')
 
     class Meta:
-        NeighborV4 = get_model('api_neighbor', 'NeighborV4')
+        NeighborV4 = apps.get_model('api_neighbor', 'NeighborV4')
         model = NeighborV4
 
         fields = (
@@ -158,7 +158,7 @@ class NeighborV6V4Serializer(DynamicFieldsModelSerializer):
     peer_group = serializers.SerializerMethodField('get_peer_group')
 
     class Meta:
-        NeighborV6 = get_model('api_neighbor', 'NeighborV6')
+        NeighborV6 = apps.get_model('api_neighbor', 'NeighborV6')
         model = NeighborV6
 
         fields = (

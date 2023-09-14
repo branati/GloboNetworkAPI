@@ -16,7 +16,8 @@
 
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
+# from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -29,10 +30,10 @@ class InterfaceTypeSerializer(DynamicFieldsModelSerializer):
 
     log.info("InterfaceTypeV3Serializer")
 
-    type = serializers.RelatedField(source='tipo')
+    type = serializers.RelatedField(source='tipo', read_only=True)
 
     class Meta:
-        model = get_model('interface', 'TipoInterface')
+        model = apps.get_model('interface', 'TipoInterface')
 
         fields = (
             'id',
@@ -50,10 +51,10 @@ class PortChannelSerializer(DynamicFieldsModelSerializer):
 
     log.info("PortChannelV3Serializer")
 
-    name = serializers.RelatedField(source='nome')
+    name = serializers.RelatedField(source='nome', read_only=True)
 
     class Meta:
-        model = get_model('interface', 'PortChannel')
+        model = apps.get_model('interface', 'PortChannel')
 
         fields = (
             'id',
@@ -76,7 +77,7 @@ class InterfaceEnvironmentV3Serializer(DynamicFieldsModelSerializer):
 
     log.info("InterfaceEnvironmentV3Serializer")
 
-    range_vlans = serializers.RelatedField(source='vlans')
+    range_vlans = serializers.RelatedField(source='vlans', read_only=True)
 
     environment = serializers.SerializerMethodField('get_environment')
     interface = serializers.SerializerMethodField('get_interface')
@@ -88,7 +89,7 @@ class InterfaceEnvironmentV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'environment')
 
     class Meta:
-        model = get_model('interface', 'EnvironmentInterface')
+        model = apps.get_model('interface', 'EnvironmentInterface')
 
 
         fields = (

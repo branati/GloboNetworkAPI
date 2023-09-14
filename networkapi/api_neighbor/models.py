@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
+from django.db.utils import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
@@ -23,7 +24,7 @@ from networkapi.api_neighbor.v4.exceptions import \
     RemoteIpAndRemoteAsnAtDifferentEquipmentsException
 from networkapi.models.BaseModel import BaseModel
 from networkapi.util.geral import get_model
-
+from django.apps import apps
 
 class BgpType:
     ibgp = ('I', 'IBGP')
@@ -41,34 +42,39 @@ class NeighborV4(BaseModel):
     local_asn = models.ForeignKey(
         'api_asn.Asn',
         db_column='id_local_asn',
-        related_name='neighborv4_local_asn'
+        related_name='neighborv4_local_asn',
+        on_delete=models.DO_NOTHING
 
     )
 
     remote_asn = models.ForeignKey(
         'api_asn.Asn',
         db_column='id_remote_asn',
-        related_name='neighborv4_remote_asn'
+        related_name='neighborv4_remote_asn',
+        on_delete=models.DO_NOTHING
 
     )
 
     local_ip = models.ForeignKey(
         'ip.Ip',
         db_column='id_local_ip',
-        related_name='neighborv4_local_ip'
+        related_name='neighborv4_local_ip',
+        on_delete=models.DO_NOTHING
 
     )
 
     remote_ip = models.ForeignKey(
         'ip.Ip',
         db_column='id_remote_ip',
-        related_name='neighborv4_remote_ip'
+        related_name='neighborv4_remote_ip',
+        on_delete=models.DO_NOTHING
 
     )
 
     peer_group = models.ForeignKey(
         'api_peer_group.PeerGroup',
-        db_column='id_peer_group'
+        db_column='id_peer_group',
+        on_delete=models.DO_NOTHING
     )
 
     virtual_interface = models.CharField(
@@ -171,9 +177,9 @@ class NeighborV4(BaseModel):
     def create_v4(self, neighbor, user):
         """Create NeighborV4."""
 
-        asn_model = get_model('api_asn', 'Asn')
-        ipv4_model = get_model('ip', 'Ip')
-        peergroup_model = get_model('api_peer_group', 'PeerGroup')
+        asn_model = apps.get_model('api_asn', 'Asn')
+        ipv4_model = apps.get_model('ip', 'Ip')
+        peergroup_model = apps.get_model('api_peer_group', 'PeerGroup')
 
         self.local_asn = asn_model.get_by_pk(neighbor.get('local_asn'))
         self.remote_asn = asn_model.get_by_pk(neighbor.get('remote_asn'))
@@ -199,9 +205,9 @@ class NeighborV4(BaseModel):
     def update_v4(self, neighbor, user):
         """Update NeighborV4."""
 
-        asn_model = get_model('api_asn', 'Asn')
-        ipv4_model = get_model('ip', 'Ip')
-        peergroup_model = get_model('api_peer_group', 'PeerGroup')
+        asn_model = apps.get_model('api_asn', 'Asn')
+        ipv4_model = apps.get_model('ip', 'Ip')
+        peergroup_model = apps.get_model('api_peer_group', 'PeerGroup')
 
         self.local_asn = asn_model.get_by_pk(neighbor.get('local_asn'))
         self.remote_asn = asn_model.get_by_pk(neighbor.get('remote_asn'))
@@ -236,8 +242,8 @@ class NeighborV4(BaseModel):
 
         self.created = True
         self.save()
-        EquipmentRouteMap = get_model('api_route_map', 'EquipmentRouteMap')
-        EquipmentListConfig = get_model(
+        EquipmentRouteMap = apps.get_model('api_route_map', 'EquipmentRouteMap')
+        EquipmentListConfig = apps.get_model(
             'api_list_config_bgp', 'EquipmentListConfig')
 
         equipment = self.local_ip.equipments[0]
@@ -281,8 +287,8 @@ class NeighborV4(BaseModel):
         self.created = False
         self.save()
 
-        EquipmentRouteMap = get_model('api_route_map', 'EquipmentRouteMap')
-        EquipmentListConfig = get_model(
+        EquipmentRouteMap = apps.get_model('api_route_map', 'EquipmentRouteMap')
+        EquipmentListConfig = apps.get_model(
             'api_list_config_bgp', 'EquipmentListConfig')
 
         route_map_out = self.peer_group.route_map_out
@@ -391,30 +397,35 @@ class NeighborV6(BaseModel):
     local_asn = models.ForeignKey(
         'api_asn.Asn',
         db_column='id_local_asn',
-        related_name='neighborv6_local_asn'
+        related_name='neighborv6_local_asn',
+        on_delete=models.DO_NOTHING
     )
 
     remote_asn = models.ForeignKey(
         'api_asn.Asn',
         db_column='id_remote_asn',
-        related_name='neighborv6_remote_asn'
+        related_name='neighborv6_remote_asn',
+        on_delete=models.DO_NOTHING
     )
 
     local_ip = models.ForeignKey(
         'ip.Ipv6',
         db_column='id_local_ip',
-        related_name='neighborv6_local_ip'
+        related_name='neighborv6_local_ip',
+        on_delete=models.DO_NOTHING
     )
 
     remote_ip = models.ForeignKey(
         'ip.Ipv6',
         db_column='id_remote_ip',
-        related_name='neighborv6_remote_ip'
+        related_name='neighborv6_remote_ip',
+        on_delete=models.DO_NOTHING
     )
 
     peer_group = models.ForeignKey(
         'api_peer_group.PeerGroup',
-        db_column='id_peer_group'
+        db_column='id_peer_group',
+        on_delete=models.DO_NOTHING
     )
 
     virtual_interface = models.CharField(
@@ -517,9 +528,9 @@ class NeighborV6(BaseModel):
     def create_v6(self, neighbor, user):
         """Create NeighborV6."""
 
-        asn_model = get_model('api_asn', 'Asn')
-        ipv6_model = get_model('ip', 'Ipv6')
-        peergroup_model = get_model('api_peer_group', 'PeerGroup')
+        asn_model = apps.get_model('api_asn', 'Asn')
+        ipv6_model = apps.get_model('ip', 'Ipv6')
+        peergroup_model = apps.get_model('api_peer_group', 'PeerGroup')
 
         self.local_asn = asn_model.get_by_pk(neighbor.get('local_asn'))
         self.remote_asn = asn_model.get_by_pk(neighbor.get('remote_asn'))
@@ -545,9 +556,9 @@ class NeighborV6(BaseModel):
     def update_v4(self, neighbor, user):
         """Update NeighborV6."""
 
-        asn_model = get_model('api_asn', 'Asn')
-        ipv6_model = get_model('ip', 'Ipv6')
-        peergroup_model = get_model('api_peer_group', 'PeerGroup')
+        asn_model = apps.get_model('api_asn', 'Asn')
+        ipv6_model = apps.get_model('ip', 'Ipv6')
+        peergroup_model = apps.get_model('api_peer_group', 'PeerGroup')
 
         self.local_asn = asn_model.get_by_pk(neighbor.get('local_asn'))
         self.remote_asn = asn_model.get_by_pk(neighbor.get('remote_asn'))
@@ -583,8 +594,8 @@ class NeighborV6(BaseModel):
         self.created = True
         self.save()
 
-        EquipmentRouteMap = get_model('api_route_map', 'EquipmentRouteMap')
-        EquipmentListConfig = get_model(
+        EquipmentRouteMap = apps.get_model('api_route_map', 'EquipmentRouteMap')
+        EquipmentListConfig = apps.get_model(
             'api_list_config_bgp', 'EquipmentListConfig')
 
         equipment = self.local_ip.equipments[0]
@@ -629,8 +640,8 @@ class NeighborV6(BaseModel):
         self.created = False
         self.save()
 
-        EquipmentRouteMap = get_model('api_route_map', 'EquipmentRouteMap')
-        EquipmentListConfig = get_model(
+        EquipmentRouteMap = apps.get_model('api_route_map', 'EquipmentRouteMap')
+        EquipmentListConfig = apps.get_model(
             'api_list_config_bgp', 'EquipmentListConfig')
 
         route_map_out = self.peer_group.route_map_out
@@ -731,9 +742,9 @@ class NeighborV6(BaseModel):
 
 def check_permissions_in_peer_group(neighbor, user):
 
-    obj_group_perm_general = get_model('api_ogp',
+    obj_group_perm_general = apps.get_model('api_ogp',
                                        'ObjectGroupPermissionGeneral')
-    obj_group_perm = get_model('api_ogp',
+    obj_group_perm = apps.get_model('api_ogp',
                                'ObjectGroupPermission')
 
     # Peer Group General

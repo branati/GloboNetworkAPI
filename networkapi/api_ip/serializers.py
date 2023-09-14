@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+# from django.apps import apps
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -12,13 +13,13 @@ log = logging.getLogger(__name__)
 
 class Ipv4V3Serializer(DynamicFieldsModelSerializer):
 
-    ip_formated = serializers.Field(source='ip_formated')
+    ip_formated = serializers.Field()
     description = serializers.Field(source='descricao')
 
-    equipments = serializers.RelatedField(source='equipments')
-    vips = serializers.RelatedField(source='vips')
+    equipments = serializers.RelatedField(source='equipments', read_only=True)
+    vips = serializers.RelatedField(source='vips', read_only=True)
     server_pool_members = serializers.RelatedField(
-        source='server_pool_members')
+        source='server_pool_members', read_only=True)
 
     server_pool_members = serializers.\
         SerializerMethodField('get_server_pool_members')
@@ -27,7 +28,7 @@ class Ipv4V3Serializer(DynamicFieldsModelSerializer):
     networkipv4 = serializers.SerializerMethodField('get_networkipv4')
 
     class Meta:
-        Ip = get_model('ip', 'Ip')
+        Ip = apps.get_model('ip', 'Ip')
         model = Ip
         fields = (
             'id',
@@ -182,12 +183,12 @@ class Ipv4V3Serializer(DynamicFieldsModelSerializer):
 class Ipv6V3Serializer(DynamicFieldsModelSerializer):
 
     id = serializers.Field()
-    ip_formated = serializers.Field(source='ip_formated')
+    ip_formated = serializers.Field()
 
     server_pool_members = serializers.RelatedField(
-        source='server_pool_members')
-    vips = serializers.RelatedField(source='vips')
-    equipments = serializers.RelatedField(source='equipments')
+        source='server_pool_members', read_only=True)
+    vips = serializers.RelatedField(source='vips', read_only=True)
+    equipments = serializers.RelatedField(source='equipments', read_only=True)
 
     networkipv6 = serializers.SerializerMethodField('get_networkipv6')
     server_pool_members = serializers.SerializerMethodField(
@@ -196,7 +197,7 @@ class Ipv6V3Serializer(DynamicFieldsModelSerializer):
     equipments = serializers.SerializerMethodField('get_equipments')
 
     class Meta:
-        Ipv6 = get_model('ip', 'Ipv6')
+        Ipv6 = apps.get_model('ip', 'Ipv6')
         model = Ipv6
         fields = (
             'id',

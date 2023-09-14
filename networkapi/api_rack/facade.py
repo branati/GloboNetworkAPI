@@ -230,7 +230,7 @@ def update_rack(rack_id, rack):
             exceptions.InvalidInputException) as e:
         log.exception(e)
         raise Exception(e)
-    except Exception, e:
+    except Exception as e:
         log.exception(e)
         raise Exception(e)
 
@@ -255,7 +255,7 @@ def get_rack(fabric_id=None, rack_id=None):
 
         return rack_list
 
-    except (ObjectDoesNotExist, Exception), e:
+    except (ObjectDoesNotExist, Exception) as e:
         raise Exception(e)
 
 
@@ -286,14 +286,14 @@ def delete_rack(rack_id):
                 ValidationAPIException,
                 ObjectDoesNotExistException,
                 Exception,
-                NetworkAPIException), e:
+                NetworkAPIException) as e:
             error_vlans.append({'vlan_id': idt, 'error': e})
 
     try:
         facade_env.delete_environment(envs_ids)
     except (models_env.AmbienteUsedByEquipmentVlanError,
             models_env.AmbienteError,
-            Exception), e:
+            Exception) as e:
         error_envs.append({'env_error': e})
 
     if error_vlans:
@@ -1134,7 +1134,7 @@ def get_by_pk(idt):
         return Rack.objects.filter(id=idt).uniqueResult()
     except ObjectDoesNotExist:
         raise exceptions.RackNumberNotFoundError("Rack id %s nao foi encontrado" % idt)
-    except Exception, e:
+    except Exception as e:
         log.error(u'Failure to search the Rack.')
         raise exceptions.RackError("Failure to search the Rack. %s" % e)
 

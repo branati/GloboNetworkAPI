@@ -26,21 +26,21 @@ def create_pool(pool, user):
     try:
         sp = ServerPool()
         sp.create_v3(pool, user)
-    except exceptions.InvalidIdentifierAlreadyPoolException, e:
+    except exceptions.InvalidIdentifierAlreadyPoolException as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.CreatedPoolValuesException, e:
+    except exceptions.CreatedPoolValuesException as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.PoolNameChange, e:
+    except exceptions.PoolNameChange as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.PoolEnvironmentChange, e:
+    except exceptions.PoolEnvironmentChange as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.IpNotFoundByEnvironment, e:
+    except exceptions.IpNotFoundByEnvironment as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.PoolError, e:
+    except exceptions.PoolError as e:
         raise ValidationAPIException(e.detail)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
     else:
         return sp
@@ -52,25 +52,25 @@ def update_pool(pool, user):
     try:
         sp = get_pool_by_id(pool['id'])
         sp.update_v3(pool, user)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e)
-    except exceptions.PoolNotExist, e:
+    except exceptions.PoolNotExist as e:
         raise ObjectDoesNotExistException(e.detail)
-    except exceptions.InvalidIdentifierAlreadyPoolException, e:
+    except exceptions.InvalidIdentifierAlreadyPoolException as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.CreatedPoolValuesException, e:
+    except exceptions.CreatedPoolValuesException as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.PoolNameChange, e:
+    except exceptions.PoolNameChange as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.PoolEnvironmentChange, e:
+    except exceptions.PoolEnvironmentChange as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.IpNotFoundByEnvironment, e:
+    except exceptions.IpNotFoundByEnvironment as e:
         raise ValidationAPIException(e.detail)
-    except exceptions.PoolError, e:
+    except exceptions.PoolError as e:
         raise ValidationAPIException(e.detail)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
     else:
         return sp
@@ -83,17 +83,17 @@ def delete_pool(pools_ids):
         try:
             sp = get_pool_by_id(pool_id)
             sp.delete_v3()
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e)
-        except exceptions.PoolNotExist, e:
+        except exceptions.PoolNotExist as e:
             raise ObjectDoesNotExistException(e.detail)
-        except exceptions.PoolConstraintCreatedException, e:
+        except exceptions.PoolConstraintCreatedException as e:
             raise ValidationAPIException(e.detail)
-        except exceptions.PoolError, e:
+        except exceptions.PoolError as e:
             raise ValidationAPIException(e.detail)
-        except ValidationAPIException, e:
+        except ValidationAPIException as e:
             raise ValidationAPIException(e)
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
 
@@ -109,11 +109,11 @@ def get_pool_by_ids(pools_ids):
         try:
             sp = get_pool_by_id(pool_id).id
             pls_ids.append(sp)
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e)
-        except exceptions.PoolNotExist, e:
+        except exceptions.PoolNotExist as e:
             raise ObjectDoesNotExistException(e.detail)
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
     server_pools = ServerPool.objects.filter(id__in=pls_ids)

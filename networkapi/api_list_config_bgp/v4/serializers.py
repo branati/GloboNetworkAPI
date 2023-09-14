@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -16,7 +16,7 @@ class ListConfigBGPV4Serializer(DynamicFieldsModelSerializer):
         SerializerMethodField('get_route_map_entries')
 
     class Meta:
-        ListConfigBGP = get_model('api_list_config_bgp', 'ListConfigBGP')
+        ListConfigBGP = apps.get_model('api_list_config_bgp', 'ListConfigBGP')
         model = ListConfigBGP
 
         fields = (

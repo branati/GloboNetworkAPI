@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -65,7 +65,7 @@ class ListConfigBGPDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('list_config_bgp_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new ListConfigBGP."""
 
@@ -82,7 +82,7 @@ class ListConfigBGPDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('list_config_bgp_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update ListConfigBGP."""
 
@@ -101,7 +101,7 @@ class ListConfigBGPDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete ListConfigBGP."""
 

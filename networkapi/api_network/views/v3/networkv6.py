@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -68,7 +68,7 @@ class NetworkIPv6View(CustomAPIView):
     @raise_json_validate('networkv6_post')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Creates list of networkv6."""
 
@@ -87,7 +87,7 @@ class NetworkIPv6View(CustomAPIView):
     @raise_json_validate('networkv6_put')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_objv6_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Updates list of networkv6."""
 
@@ -106,7 +106,7 @@ class NetworkIPv6View(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Deletes list of networkv6."""
 
@@ -123,7 +123,7 @@ class Networkv6AsyncView(CustomAPIView):
     @raise_json_validate('ipv6_post')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create NetworkV6."""
 
@@ -149,7 +149,7 @@ class Networkv6AsyncView(CustomAPIView):
     @raise_json_validate('ipv6_put')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_objv6_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit NetworkV6."""
 
@@ -175,7 +175,7 @@ class Networkv6AsyncView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete NetworkV6."""
 
@@ -204,7 +204,7 @@ class NetworkIPv6DeployView(CustomAPIView):
     @permission_classes_apiview((IsAuthenticated, permissions.Write,
                                  perm_eqpt.Write))
     @permission_obj_apiview([permissions.deploy_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Deploy NetworkV6."""
 
@@ -225,7 +225,7 @@ class NetworkIPv6DeployView(CustomAPIView):
     @permission_classes_apiview((IsAuthenticated, permissions.Write,
                                  perm_eqpt.Write))
     @permission_obj_apiview([permissions.deploy_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Undeploy NetworkV6."""
 
@@ -249,7 +249,7 @@ class Networkv6DeployAsyncView(CustomAPIView):
     @permission_classes_apiview((IsAuthenticated, permissions.Write,
                                  perm_eqpt.Write))
     @permission_obj_apiview([permissions.deploy_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Deploy NetworkV6."""
 
@@ -275,7 +275,7 @@ class Networkv6DeployAsyncView(CustomAPIView):
     @permission_classes_apiview((IsAuthenticated, permissions.Write,
                                  perm_eqpt.Write))
     @permission_obj_apiview([permissions.deploy_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Undeploy NetworkV6."""
 
@@ -302,7 +302,7 @@ class NetworkIPv6ForceView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('networkv6_post')
     @permission_classes_apiview((IsAuthenticated, permissions.WriteForce))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Creates list of networkv6."""
 
@@ -321,7 +321,7 @@ class NetworkIPv6ForceView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('networkv6_put')
     @permission_classes_apiview((IsAuthenticated, permissions.WriteForce))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Updates list of networkv6."""
 
@@ -340,7 +340,7 @@ class NetworkIPv6ForceView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.WriteForce))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Deletes list of networkv6."""
 

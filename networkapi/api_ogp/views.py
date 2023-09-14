@@ -15,7 +15,7 @@
 # limitations under the License.
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -83,7 +83,7 @@ class ObjectGroupPermView(APIView):
     @logs_method_apiview
     @raise_json_validate('ogp_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Creates list of Object Group Permissions."""
 
@@ -101,7 +101,7 @@ class ObjectGroupPermView(APIView):
     @logs_method_apiview
     @raise_json_validate('ogp_put')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update Object Group Permissions."""
 
@@ -119,7 +119,7 @@ class ObjectGroupPermView(APIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Object Group Permissions."""
 
@@ -177,7 +177,7 @@ class ObjectGroupPermGeneralView(APIView):
     @logs_method_apiview
     @raise_json_validate('ogpg_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Creates list of Object Group Permissions General"""
 
@@ -195,7 +195,7 @@ class ObjectGroupPermGeneralView(APIView):
     @logs_method_apiview
     @raise_json_validate('ogpg_put')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update list of Object Group Permissions General."""
 
@@ -213,7 +213,7 @@ class ObjectGroupPermGeneralView(APIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Object Group Permissions General."""
 

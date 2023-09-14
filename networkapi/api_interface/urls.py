@@ -14,8 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import patterns
-from django.conf.urls import url
+# from django.conf.urls import patterns
+# from django.conf.urls import url
+from django.urls import re_path
 
 from networkapi.api_interface.views import DeployInterfaceConfV3View
 from networkapi.api_interface.views import DisconnectView
@@ -25,23 +26,23 @@ from networkapi.api_interface.views import InterfaceV3ConnectionsView
 from networkapi.api_interface.views import InterfaceV3View
 
 
-urlpatterns = patterns(
-    'networkapi.api_interface.views',
+urlpatterns = [
+    # 'networkapi.api_interface.views',
 
-    url(r'^interface/disconnect/(?P<id_interface_1>\d+)/(?P<id_interface_2>\d+)/$',
+    re_path(r'^interface/disconnect/(?P<id_interface_1>\d+)/(?P<id_interface_2>\d+)/$',
         DisconnectView.as_view()),
-    url(r'^interface/(?P<interface_id>\d+)/deploy_config_sync/$',
+    re_path(r'^interface/(?P<interface_id>\d+)/deploy_config_sync/$',
         DeployInterfaceConfV3View.as_view()),
 
-    url(r'^v3/connections/(?P<interface_a>[;\w]+)/((?P<interface_b>[;\w]+)[/])$',
+    re_path(r'^v3/connections/(?P<interface_a>[;\w]+)/((?P<interface_b>[;\w]+)[/])$',
         InterfaceV3ConnectionsView.as_view()),
-    url(r'^v3/interface/environments/((?P<obj_ids>[;\w]+)[/])?$',
+    re_path(r'^v3/interface/environments/((?P<obj_ids>[;\w]+)[/])?$',
         InterfaceEnvironmentsV3View.as_view()),
-    url(r'^v3/interface/environments[/]?$',
+    re_path(r'^v3/interface/environments[/]?$',
         InterfaceEnvironmentsV3View.as_view()),
-    url(r'^v3/interface/((?P<obj_ids>[;\w]+)[/])?$',
+    re_path(r'^v3/interface/((?P<obj_ids>[;\w]+)[/])?$',
        InterfaceV3View.as_view()),
 
-    url(r'^v3/interfacetype/((?P<obj_ids>[;\w]+)[/])?$',
+    re_path(r'^v3/interfacetype/((?P<obj_ids>[;\w]+)[/])?$',
        InterfaceTypeV3View.as_view()),
-)
+]

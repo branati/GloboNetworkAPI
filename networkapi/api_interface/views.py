@@ -15,7 +15,8 @@
 # limitations under the License.
 import logging
 
-from django.db.transaction import commit_on_success
+# from django.db.transaction import atomic
+from django.db.transaction import atomic
 
 from rest_framework import status
 from rest_framework.decorators import permission_classes
@@ -73,15 +74,15 @@ class DeployInterfaceConfV3View(APIView):
 
             return Response(data, status=status.HTTP_201_CREATED)
 
-        except exceptions.InvalidIdInterfaceException, exception:
+        except exceptions.InvalidIdInterfaceException as exception:
             raise exception
-        except exceptions.UnsupportedEquipmentException, exception:
+        except exceptions.UnsupportedEquipmentException as exception:
             raise exception
-        except exceptions.InterfaceTemplateException, exception:
+        except exceptions.InterfaceTemplateException as exception:
             raise exception
         except InterfaceNotFoundError:
             raise exceptions.InvalidIdInterfaceException
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise exception
 
@@ -89,7 +90,7 @@ class DeployInterfaceConfV3View(APIView):
 class DisconnectView(APIView):
 
     @permission_classes((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """URL: api/interface/disconnect/(?P<id_interface_1>\d+)/(?P<id_interface_2>\d+)/"""
 
@@ -131,13 +132,13 @@ class DisconnectView(APIView):
 
             return Response(data, status=status.HTTP_200_OK)
 
-        except exceptions.InterfaceException, exception:
+        except exceptions.InterfaceException as exception:
             raise exception
-        except InterfaceNotFoundError, exception:
+        except InterfaceNotFoundError as exception:
             log.error(exception)
             raise api_exceptions.ObjectDoesNotExistException(
                 'Interface Does Not Exist. %s' % exception)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException(exception)
 
@@ -221,7 +222,7 @@ class InterfaceEnvironmentsV3View(CustomAPIView):
 
     @logs_method_apiview
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """
         Remove the relationship between an interface and environments.
@@ -244,7 +245,7 @@ class InterfaceEnvironmentsV3View(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """
         Associates an interface to an environment.
@@ -260,10 +261,10 @@ class InterfaceEnvironmentsV3View(CustomAPIView):
             try:
                 int_envs = facade.create_interface_environments(i)
                 response.append({'id': int_envs.id})
-            except api_exceptions.NetworkAPIException, e:
+            except api_exceptions.NetworkAPIException as e:
                 log.error(e)
                 raise api_exceptions.NetworkAPIException(e)
-            except api_exceptions.ValidationAPIException, e:
+            except api_exceptions.ValidationAPIException as e:
                 log.error(e)
                 raise api_exceptions.NetworkAPIException(e)
 
@@ -277,7 +278,7 @@ class InterfaceV3ConnectionsView(CustomAPIView):
 
     @logs_method_apiview
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """
         Create Interface
@@ -289,10 +290,10 @@ class InterfaceV3ConnectionsView(CustomAPIView):
 
         try:
             facade.link_interface(interfaces.get('interfaces'))
-        except api_exceptions.NetworkAPIException, e:
+        except api_exceptions.NetworkAPIException as e:
             log.error(e)
             raise api_exceptions.NetworkAPIException(e)
-        except api_exceptions.ValidationAPIException, e:
+        except api_exceptions.ValidationAPIException as e:
             log.error(e)
             raise api_exceptions.NetworkAPIException(e)
 
@@ -302,7 +303,7 @@ class InterfaceV3ConnectionsView(CustomAPIView):
 
     @logs_method_apiview
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Remove link between interfaces."""
 
@@ -359,7 +360,7 @@ class InterfaceV3View(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('interface_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """
         Create Interface
@@ -375,10 +376,10 @@ class InterfaceV3View(CustomAPIView):
             try:
                 interface = facade.create_interface(i)
                 response.append({'id': interface.id})
-            except api_exceptions.NetworkAPIException, e:
+            except api_exceptions.NetworkAPIException as e:
                 log.error(e)
                 raise api_exceptions.NetworkAPIException(e)
-            except api_exceptions.ValidationAPIException, e:
+            except api_exceptions.ValidationAPIException as e:
                 log.error(e)
                 raise api_exceptions.NetworkAPIException(e)
 
@@ -389,7 +390,7 @@ class InterfaceV3View(CustomAPIView):
 
     @logs_method_apiview
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Deletes list of interfaces."""
 
@@ -407,7 +408,7 @@ class InterfaceV3View(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('interface_put')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Updates list of interfaces."""
 

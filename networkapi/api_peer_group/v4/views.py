@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -68,7 +68,7 @@ class PeerGroupDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('peer_group_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new PeerGroup."""
 
@@ -86,7 +86,7 @@ class PeerGroupDBView(CustomAPIView):
     @raise_json_validate('peer_group_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([permissions.write_obj_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update PeerGroup."""
 
@@ -106,7 +106,7 @@ class PeerGroupDBView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([permissions.delete_obj_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete PeerGroup."""
 

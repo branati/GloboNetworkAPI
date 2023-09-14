@@ -15,7 +15,7 @@
 # limitations under the License.
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.exceptions import PermissionDenied
@@ -80,7 +80,7 @@ class DHCPRelayIPv4View(APIView):
 
             return Response(serializer_options.data)
 
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException()
 
@@ -96,7 +96,7 @@ class DHCPRelayIPv4View(APIView):
         try:
             networkipv4_id = int(data['networkipv4'])
             ipv4_id = int(data['ipv4']['id'])
-        except Exception, exception:
+        except Exception as exception:
             raise exceptions.InvalidInputException()
 
         try:
@@ -110,9 +110,9 @@ class DHCPRelayIPv4View(APIView):
 
             return Response(serializer_options.data)
 
-        except exceptions.DHCPRelayAlreadyExistsError, exception:
+        except exceptions.DHCPRelayAlreadyExistsError as exception:
             raise exception
-        except Exception, exception:
+        except Exception as exception:
             log.error('Error: %s' % str(exception))
             raise api_exceptions.NetworkAPIException()
 
@@ -174,7 +174,7 @@ class DHCPRelayIPv6View(APIView):
 
             return Response(serializer_options.data)
 
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException()
 
@@ -191,7 +191,7 @@ class DHCPRelayIPv6View(APIView):
             networkipv6_id = int(data['networkipv6'])
             ipv6_id = int(data['ipv6']['id'])
             log.info('DADOS %s %s' % (networkipv6_id, ipv6_id))
-        except Exception, exception:
+        except Exception as exception:
             raise exceptions.InvalidInputException()
 
         try:
@@ -205,9 +205,9 @@ class DHCPRelayIPv6View(APIView):
 
             return Response(serializer_options.data)
 
-        except exceptions.DHCPRelayAlreadyExistsError, exception:
+        except exceptions.DHCPRelayAlreadyExistsError as exception:
             raise exception
-        except Exception, exception:
+        except Exception as exception:
             log.error('Error: %s' % str(exception))
             raise api_exceptions.NetworkAPIException()
 
@@ -272,7 +272,7 @@ def networksIPv4(request):
 
         return Response(serializer_options.data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -293,16 +293,16 @@ def networksIPv4_by_pk(request, network_id):
 
         return Response(serializer_options.data)
 
-    except NetworkIPv4NotFoundError, exception:
+    except NetworkIPv4NotFoundError as exception:
         raise exceptions.InvalidNetworkIDException()
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST', 'DELETE'])
 @permission_classes((IsAuthenticated, Write, DeployConfig))
-@commit_on_success
+@atomic
 def networkIPv4_deploy(request, network_id):
     """Deploy network L3 configuration in the environment routers for network ipv4
 
@@ -369,7 +369,7 @@ def networkIPv4_deploy(request, network_id):
 
         return Response(returned_data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -409,7 +409,7 @@ def networksIPv6(request):
 
         return Response(serializer_options.data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -430,16 +430,16 @@ def networksIPv6_by_pk(request, network_id):
         )
 
         return Response(serializer_options.data)
-    except NetworkIPv6NotFoundError, exception:
+    except NetworkIPv6NotFoundError as exception:
         raise exceptions.InvalidNetworkIDException()
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST', 'DELETE'])
 @permission_classes((IsAuthenticated, Write, DeployConfig))
-@commit_on_success
+@atomic
 def networkIPv6_deploy(request, network_id):
     """Deploy network L3 configuration in the environment routers for network ipv6
 
@@ -506,6 +506,6 @@ def networkIPv6_deploy(request, network_id):
 
         return Response(returned_data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()

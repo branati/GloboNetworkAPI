@@ -4,7 +4,7 @@ import logging
 
 import json_delta
 from django.db.models import Q
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 
 from networkapi.api_equipment import exceptions as exceptions_eqpt
 from networkapi.api_equipment import facade as facade_eqpt
@@ -100,7 +100,7 @@ def _prepare_apply(pools, created=False, user=None):
     return load_balance
 
 
-@commit_on_success
+@atomic
 def create_real_pool(pools, user):
     """Create real pool in eqpt."""
 
@@ -115,7 +115,7 @@ def create_real_pool(pools, user):
     return {}
 
 
-@commit_on_success
+@atomic
 def delete_real_pool(pools, user, cleanup='0'):
     """Delete real pool in eqpt."""
 
@@ -150,7 +150,7 @@ def delete_real_pool(pools, user, cleanup='0'):
     return {}
 
 
-@commit_on_success
+@atomic
 def update_real_pool(pools, user):
     """Update real pool in Load Balancer and DB."""
 

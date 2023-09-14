@@ -26,7 +26,7 @@ def create_networkv4(self, net_dict, user_id):
     try:
         net = facade.create_networkipv4(net_dict, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV4 was not allocated.'
         msg['reason'] = str(exception)
 
@@ -91,7 +91,7 @@ def delete_networkv4(self, net_id, user_id):
     try:
         facade.delete_networkipv4(net_id)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV4 {} was not deallocated.'.format(net_obj)
         msg['reason'] = str(exception)
 
@@ -126,7 +126,7 @@ def deploy_networkv4(self, net_id, user_id):
         networkv4 = net_obj.networkv4
         status_deploy = facade.deploy_networkipv4(net_id, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV4 {} was not deployed.'.format(net_obj)
         msg['reason'] = str(exception)
 
@@ -161,7 +161,7 @@ def undeploy_networkv4(self, net_id, user_id):
         networkv4 = net_obj.networkv4
         status_deploy = facade.undeploy_networkipv4(net_id, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'NetworkV4 {} was not deployed.'.format(net_obj)
         msg['reason'] = str(exception)
 

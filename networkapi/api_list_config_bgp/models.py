@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
@@ -152,11 +152,13 @@ class EquipmentListConfig(BaseModel):
 
     equipment = models.ForeignKey(
         'equipamento.Equipamento',
-        db_column='id_equipment'
+        db_column='id_equipment',
+        on_delete=models.DO_NOTHING
     )
     list_config_bgp = models.ForeignKey(
         'api_list_config_bgp.ListConfigBGP',
-        db_column='id_list_config_bgp'
+        db_column='id_list_config_bgp',
+        on_delete=models.DO_NOTHING
     )
 
     class Meta(BaseModel.Meta):
@@ -165,7 +167,7 @@ class EquipmentListConfig(BaseModel):
 
     def create_v4(self, list_config_bgp):
 
-        eqpt_model = get_model('equipamento', 'Equipamento')
+        eqpt_model = apps.get_model('equipamento', 'Equipamento')
 
         self.equipment = eqpt_model.get_by_pk(
             list_config_bgp.get('equipment'))

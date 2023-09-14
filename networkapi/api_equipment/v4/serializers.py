@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -16,7 +16,7 @@ class EquipmentControllerEnvironmentV4Serializer(DynamicFieldsModelSerializer):
     equipment = serializers.SerializerMethodField('get_equipment')
 
     class Meta:
-        EquipmentControllerEnvironment = get_model(
+        EquipmentControllerEnvironment = apps.get_model(
             'equipamento', 'EquipmentControllerEnvironment')
         model = EquipmentControllerEnvironment
 
@@ -81,7 +81,7 @@ class EquipmentV4Serializer(DynamicFieldsModelSerializer):
     asn = serializers.SerializerMethodField('get_asn')
 
     class Meta:
-        Equipment = get_model('equipamento', 'Equipamento')
+        Equipment = apps.get_model('equipamento', 'Equipamento')
         model = Equipment
         fields = (
             'id',

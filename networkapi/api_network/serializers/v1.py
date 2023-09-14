@@ -7,29 +7,34 @@ from networkapi.ip.models import Ip
 from networkapi.ip.models import Ipv6
 from networkapi.ip.models import NetworkIPv4
 from networkapi.ip.models import NetworkIPv6
+from networkapi.vlan.models import Vlan
+from networkapi.vlan.models import TipoRede
+from networkapi.ambiente.models import EnvironmentVip
 from networkapi.util.serializers import DynamicFieldsModelSerializer
 
 
 class Ipv4Serializer(DynamicFieldsModelSerializer):
 
-    ip_formated = serializers.Field(source='ip_formated')
+    ip_formated = serializers.ReadOnlyField()
 
     class Meta:
         model = Ip
+        fields = '__all__'
 
 
 class Ipv6Serializer(DynamicFieldsModelSerializer):
 
-    ip_formated = serializers.Field(source='ip_formated')
+    ip_formated = serializers.Field()
 
     class Meta:
         model = Ipv6
+        fields = '__all__'
 
 
 class DHCPRelayIPv4Serializer(serializers.ModelSerializer):
     id = serializers.Field()
     ipv4 = Ipv4Serializer()
-    networkipv4 = serializers.PrimaryKeyRelatedField()
+    networkipv4 = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = DHCPRelayIPv4
@@ -43,7 +48,7 @@ class DHCPRelayIPv4Serializer(serializers.ModelSerializer):
 class DHCPRelayIPv6Serializer(serializers.ModelSerializer):
     id = serializers.Field()
     ipv6 = Ipv6Serializer()
-    networkipv6 = serializers.PrimaryKeyRelatedField()
+    networkipv6 = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = DHCPRelayIPv6
@@ -69,16 +74,22 @@ class NetworkIPv4Serializer(serializers.ModelSerializer):
     broadcast = serializers.Field()
     networkv4 = serializers.Field()
     vlan = serializers.PrimaryKeyRelatedField(
-        many=False,
-        required=True
+        # queryset=Vlan.objects.all(),
+        # required=True
+        read_only=True,
+        many=False
     )
     network_type = serializers.PrimaryKeyRelatedField(
+        # queryset=TipoRede.objects.all(),
         many=False,
-        required=True
+        # required=True
+        read_only=True
     )
     ambient_vip = serializers.PrimaryKeyRelatedField(
+        # queryset=EnvironmentVip.objects.all(),
         many=False,
-        required=True
+        read_only=True
+        # required=True
     )
     active = serializers.Field()
 
@@ -112,15 +123,18 @@ class NetworkIPv6Serializer(serializers.ModelSerializer):
     id = serializers.Field()
     vlan = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=True
+        #required=True
+        read_only=True
     )
     network_type = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=True
+        # required=True
+        read_only=True
     )
     ambient_vip = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=True
+        # required=True
+        read_only=True
     )
     block1 = serializers.Field()
     block2 = serializers.Field()

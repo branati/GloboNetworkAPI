@@ -17,7 +17,7 @@
 import ast
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 from networkapi.util.serializers import DynamicFieldsModelSerializer
 from networkapi.rack.models import Rack
@@ -28,9 +28,9 @@ log = logging.getLogger(__name__)
 class RackSerializer(serializers.ModelSerializer):
 
 
-    id_sw1 = serializers.RelatedField(source='id_sw1.nome')
-    id_sw2 = serializers.RelatedField(source='id_sw2.nome')
-    id_ilo = serializers.RelatedField(source='id_ilo.nome')
+    id_sw1 = serializers.RelatedField(source='id_sw1.nome', read_only=True)
+    id_sw2 = serializers.RelatedField(source='id_sw2.nome', read_only=True)
+    id_ilo = serializers.RelatedField(source='id_ilo.nome', read_only=True)
 
     class Meta:
         model = Rack
@@ -53,7 +53,7 @@ class DCSerializer(DynamicFieldsModelSerializer):
 
     class Meta:
 
-        Datacenter = get_model('rack', 'Datacenter')
+        Datacenter = apps.get_model('rack', 'Datacenter')
         model = Datacenter
 
         fields = ('id',
@@ -89,7 +89,7 @@ class DCRoomSerializer(DynamicFieldsModelSerializer):
 
     class Meta:
 
-        DatacenterRooms = get_model('rack', 'DatacenterRooms')
+        DatacenterRooms = apps.get_model('rack', 'DatacenterRooms')
         model = DatacenterRooms
 
         default_fields = ('id',

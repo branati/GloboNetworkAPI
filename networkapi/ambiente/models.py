@@ -32,7 +32,7 @@ from django.forms.models import model_to_dict
 
 from networkapi.api_pools import exceptions
 from networkapi.api_rest.exceptions import ObjectDoesNotExistException
-from networkapi.api_vrf.models import Vrf
+# from networkapi.api_vrf.models import Vrf
 from networkapi.api_aws.models import VPC
 from networkapi.distributedlock import LOCK_ENVIRONMENT
 from networkapi.distributedlock import LOCK_ENVIRONMENT_ALLOCATES
@@ -1424,6 +1424,7 @@ class Ambiente(BaseModel):
         return envvip_model
 
     def create_v3(self, env_map):
+        from networkapi.api_vrf.models import Vrf
         try:
             self.grupo_l3 = GrupoL3.get_by_pk(env_map.get('grupo_l3'))
             self.ambiente_logico = AmbienteLogico\
@@ -1486,6 +1487,7 @@ class Ambiente(BaseModel):
         return self
 
     def update_v3(self, env_map):
+        from networkapi.api_vrf.models import Vrf
 
         try:
             self.grupo_l3 = GrupoL3.get_by_pk(env_map.get('grupo_l3'))

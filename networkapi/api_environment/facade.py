@@ -60,11 +60,11 @@ def create_l3_environment(env):
     try:
         env_obj = GrupoL3()
         env_obj.create_v3(env)
-    except EnvironmentErrorV3, e:
+    except EnvironmentErrorV3 as e:
         raise ValidationAPIException(str(e))
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return env_obj
@@ -90,11 +90,11 @@ def create_logic_environment(env):
     try:
         env_obj = AmbienteLogico()
         env_obj.create_v3(env)
-    except EnvironmentErrorV3, e:
+    except EnvironmentErrorV3 as e:
         raise ValidationAPIException(str(e))
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return env_obj
@@ -120,11 +120,11 @@ def create_dc_environment(env):
     try:
         env_obj = DivisaoDc()
         env_obj.create_v3(env)
-    except EnvironmentErrorV3, e:
+    except EnvironmentErrorV3 as e:
         raise ValidationAPIException(str(e))
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return env_obj
@@ -153,7 +153,7 @@ def get_environment_by_id(environment_id):
 
     try:
         environment = Ambiente.get_by_pk(id=environment_id)
-    except AmbienteNotFoundError, e:
+    except AmbienteNotFoundError as e:
         raise exceptions.EnvironmentDoesNotExistException(str(e))
 
     return environment
@@ -171,9 +171,9 @@ def get_environment_by_ids(environment_ids):
         try:
             env = get_environment_by_id(environment_id).id
             env_ids.append(env)
-        except exceptions.EnvironmentDoesNotExistException, e:
+        except exceptions.EnvironmentDoesNotExistException as e:
             raise ObjectDoesNotExistException(str(e))
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
     environments = Ambiente.objects.filter(id__in=env_ids)
@@ -207,9 +207,9 @@ def list_environment_environment_vip_related(env_id=None):
             'grupo_l3', 'ambiente_logico', 'divisao_dc', 'filter'
         ).distinct()
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return env_list_net_related
@@ -221,13 +221,13 @@ def update_environment(env):
     try:
         env_obj = get_environment_by_id(env.get('id'))
         env_obj.update_v3(env)
-    except EnvironmentErrorV3, e:
+    except EnvironmentErrorV3 as e:
         raise ValidationAPIException(str(e))
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(str(e))
-    except exceptions.EnvironmentDoesNotExistException, e:
+    except exceptions.EnvironmentDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return env_obj
@@ -256,13 +256,13 @@ def delete_environment(env_ids):
         try:
             env_obj = get_environment_by_id(env_id)
             env_obj.delete_v3()
-        except AmbienteUsedByEquipmentVlanError, e:
+        except AmbienteUsedByEquipmentVlanError as e:
             raise ValidationAPIException(str(e))
-        except exceptions.EnvironmentDoesNotExistException, e:
+        except exceptions.EnvironmentDoesNotExistException as e:
             raise ObjectDoesNotExistException(str(e))
-        except AmbienteError, e:
+        except AmbienteError as e:
             raise NetworkAPIException(str(e))
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
 

@@ -17,7 +17,7 @@ from __future__ import with_statement
 
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
@@ -47,8 +47,8 @@ class OpcaoPool(BaseModel):
 class OpcaoPoolAmbiente(BaseModel):
     id = models.AutoField(
         primary_key=True, db_column='id_opcaopool_ambiente_xref')
-    opcao_pool = models.ForeignKey(OpcaoPool, db_column='id_opcaopool')
-    ambiente = models.ForeignKey(Ambiente, db_column='id_ambiente')
+    opcao_pool = models.ForeignKey(OpcaoPool, db_column='id_opcaopool', on_delete=models.DO_NOTHING)
+    ambiente = models.ForeignKey(Ambiente, db_column='id_ambiente', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('OpcaoPoolAmbiente')
 
@@ -110,14 +110,14 @@ class OptionPool (BaseModel):
         """
         try:
             return OptionPool.objects.filter(id=id).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise OptionPoolNotFoundError(
                 e, u'There is no option pool with pk = %s.' % id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option pool.')
             raise OptionPoolError(e, u'Failure to search the option pool.')
 
@@ -131,7 +131,7 @@ class OptionPool (BaseModel):
         """
         try:
             return OptionPool.objects.all()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Pool.')
             raise OptionPoolError(e, u'Failure to list all Option Pool.')
 
@@ -151,7 +151,7 @@ class OptionPool (BaseModel):
                 optionpoolenvironment__environment__id=int(id_environment))
 
             return opools
-        except Exception, e:
+        except Exception as e:
             # , %(optiontype, id_environment) )
             cls.log.error(u'Failure to list all Option Pool in environment')
             raise OptionPoolError(
@@ -180,8 +180,8 @@ class OptionPoolEnvironment(BaseModel):
 
     id = models.AutoField(
         primary_key=True, db_column='id_optionspool_environment_xref')
-    option = models.ForeignKey(OptionPool, db_column='id_optionspool')
-    environment = models.ForeignKey(Ambiente, db_column='id_environment')
+    option = models.ForeignKey(OptionPool, db_column='id_optionspool', on_delete=models.DO_NOTHING)
+    environment = models.ForeignKey(Ambiente, db_column='id_environment', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('OptionPoolEnvironment')
 
@@ -202,15 +202,15 @@ class OptionPoolEnvironment(BaseModel):
         try:
             return OptionPoolEnvironment.objects.filter(option__id=option_id,
                                                         environment__id=environment_id).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise OptionPoolEnvironmentNotFoundError(
                 e, u'Dont there is a OptionPoolEnvironment by option_id = %s and environment_id = %s' % (
                     option_id, environment_id))
-        except OperationalError, e:
+        except OperationalError as e:
             self.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Failure to search the OptionPoolEnvironment.')
             raise OptionPoolEnvironmentError(
                 e, u'Failure to search the OptionPoolEnvironment.')

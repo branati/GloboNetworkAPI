@@ -2,7 +2,9 @@
 import logging
 import urllib
 
-from django.db.transaction import commit_on_success
+# from django.db.transaction import atomic
+from django.db.transaction import atomic
+
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -151,7 +153,7 @@ class EnvironmentVipView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('environment_vip_put')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
 
         envs = request.DATA
@@ -170,7 +172,7 @@ class EnvironmentVipView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('environment_vip_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
 
         envs = request.DATA
@@ -188,7 +190,7 @@ class EnvironmentVipView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
 
         response = {}

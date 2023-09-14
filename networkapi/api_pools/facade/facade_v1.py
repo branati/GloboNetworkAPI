@@ -441,7 +441,7 @@ def manager_pools(request):
         if code != 0:
             raise exceptions.ScriptManagementPoolException()
 
-    except (exceptions.ScriptManagementPoolException, ScriptError), exception:
+    except (exceptions.ScriptManagementPoolException, ScriptError) as exception:
 
         # Rollback
         for old_member in related_pool_members:

@@ -17,7 +17,7 @@
 import glob
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import status
@@ -43,7 +43,7 @@ log = logging.getLogger(__name__)
 @permission_classes((IsAuthenticated, Write))
 class RackView(APIView):
 
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         try:
             log.info("New Rack")
@@ -67,7 +67,7 @@ class RackView(APIView):
             log.exception(e)
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
 
         try:
@@ -89,7 +89,7 @@ class RackView(APIView):
             log.exception(e)
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def get(self, user, *args, **kwargs):
         """Handles GET requests to list all Racks"""
 
@@ -114,7 +114,7 @@ class RackView(APIView):
             log.exception(e)
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def delete(self, user, *args, **kwargs):
         """Handles DELETE requests to list all Racks
         URLs: /api/rack/<rack_id>
@@ -139,7 +139,7 @@ class RackView(APIView):
 class RackDeployView(APIView):
 
     @permission_classes((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, *args, **kwargs):
         try:
             log.info('RACK deploy.')
@@ -227,7 +227,7 @@ class RackForeman (APIView):
 
 class RackConfigView(APIView):
 
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         try:
             log.info("Gerando o arquivo de configuracao dos equipamentos do rack")
@@ -244,7 +244,7 @@ class RackConfigView(APIView):
 class RackEnvironmentView(APIView):
 
     @permission_classes((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         try:
             logging.getLogger('Alocando ambientes e vlans do rack')
@@ -259,7 +259,7 @@ class RackEnvironmentView(APIView):
             raise api_exceptions.NetworkAPIException(e)
 
     @permission_classes((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         try:
             logging.getLogger('Remove environments and vlans.')
@@ -275,7 +275,7 @@ class RackEnvironmentView(APIView):
 
 class DataCenterView(APIView):
 
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         try:
             log.info("POST Datacenter")
@@ -294,7 +294,7 @@ class DataCenterView(APIView):
         except Exception as e:
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def get(self, request, *args, **kwargs):
         try:
             log.info("GET Datacenter")
@@ -308,7 +308,7 @@ class DataCenterView(APIView):
         except Exception as e:
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
 
         try:
@@ -329,7 +329,7 @@ class DataCenterView(APIView):
 
 class FabricView(APIView):
 
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         try:
             log.info("Post - Fabric")
@@ -347,7 +347,7 @@ class FabricView(APIView):
         except Exception as e:
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         try:
             log.info("Put - Fabric")
@@ -372,7 +372,7 @@ class FabricView(APIView):
         except Exception as e:
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def get(self, request, *args, **kwargs):
         try:
             log.info("GET Fabric")
@@ -389,7 +389,7 @@ class FabricView(APIView):
         except Exception as e:
             raise api_exceptions.NetworkAPIException(e)
 
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
 
         try:

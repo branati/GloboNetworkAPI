@@ -33,10 +33,10 @@ def get_networkipv6_by_id(network_id):
     try:
         network = ip_models.NetworkIPv6.get_by_pk(network_id)
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return network
@@ -50,10 +50,10 @@ def get_networkipv6_by_ids(network_ids):
         try:
             net = get_networkipv6_by_id(network_id)
 
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e.detail)
 
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
         else:
@@ -88,16 +88,16 @@ def create_networkipv6(networkv6, user=None, force=False):
         netv6_obj = ip_models.NetworkIPv6()
         netv6_obj.create_v3(networkv6, force=force)
 
-    except ip_models.NetworkIPv6ErrorV3, e:
+    except ip_models.NetworkIPv6ErrorV3 as e:
         raise ValidationAPIException(e.message)
 
-    except exceptions.InvalidInputException, e:
+    except exceptions.InvalidInputException as e:
         raise ValidationAPIException(e.detail)
 
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -111,19 +111,19 @@ def update_networkipv6(networkv6, user, force=False):
         netv6_obj = get_networkipv6_by_id(networkv6.get('id'))
         netv6_obj.update_v3(networkv6, force=force)
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except ip_models.NetworkIPv6ErrorV3, e:
+    except ip_models.NetworkIPv6ErrorV3 as e:
         raise ValidationAPIException(e.message)
 
-    except exceptions.InvalidInputException, e:
+    except exceptions.InvalidInputException as e:
         raise ValidationAPIException(e.detail)
 
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -138,16 +138,16 @@ def delete_networkipv6(network_ids, user, force=False):
             netv6_obj = get_networkipv6_by_id(network_id)
             netv6_obj.delete_v3(force=force)
 
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e.detail)
 
-        except ip_models.NetworkIPv6ErrorV3, e:
+        except ip_models.NetworkIPv6ErrorV3 as e:
             raise ValidationAPIException(e.message)
 
-        except ValidationAPIException, e:
+        except ValidationAPIException as e:
             raise ValidationAPIException(e.detail)
 
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
 
@@ -179,22 +179,22 @@ def undeploy_networkipv6(network_id, user):
                     'Verify the permissions of user group with equipment group'
                     '. Network:{}'.format(netv6_obj.id))
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except exceptions.NoEnvironmentRoutersFoundException, e:
+    except exceptions.NoEnvironmentRoutersFoundException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException, e:
+    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException, e:
+    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.NetworkAlreadyActive, e:
+    except exceptions.NetworkAlreadyActive as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -248,25 +248,25 @@ def undeploy_networkipv6(network_id, user):
 
         return status_deploy
 
-    except ip_models.NetworkIPv6ErrorV3, e:
+    except ip_models.NetworkIPv6ErrorV3 as e:
         raise ValidationAPIException(e.message)
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException, e:
+    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.IncorrectRedundantGatewayRegistryException, e:
+    except exceptions.IncorrectRedundantGatewayRegistryException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.NetworkAlreadyActive, e:
+    except exceptions.NetworkAlreadyActive as e:
         raise ValidationAPIException(e.detail)
 
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     finally:
@@ -302,22 +302,22 @@ def deploy_networkipv6(network_id, user):
                     'Verify the permissions of user group with equipment group'
                     '. Network:{}'.format(netv6_obj.id))
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except exceptions.NoEnvironmentRoutersFoundException, e:
+    except exceptions.NoEnvironmentRoutersFoundException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException, e:
+    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException, e:
+    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.NetworkAlreadyActive, e:
+    except exceptions.NetworkAlreadyActive as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -362,25 +362,25 @@ def deploy_networkipv6(network_id, user):
 
         return status_deploy
 
-    except ip_models.NetworkIPv6ErrorV3, e:
+    except ip_models.NetworkIPv6ErrorV3 as e:
         raise ValidationAPIException(e.message)
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException, e:
+    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.IncorrectRedundantGatewayRegistryException, e:
+    except exceptions.IncorrectRedundantGatewayRegistryException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.NetworkAlreadyActive, e:
+    except exceptions.NetworkAlreadyActive as e:
         raise ValidationAPIException(e.detail)
 
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     finally:

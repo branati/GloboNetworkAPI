@@ -103,9 +103,9 @@ def get_environmentvip_by_ids(environment_vip_ids):
         try:
             envvip = get_environmentvip_by_id(environment_vip_id).id
             envvips.append(envvip)
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(str(e))
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
     environmentvips = EnvironmentVip.objects.filter(id__in=envvips)
@@ -117,7 +117,7 @@ def get_environmentvip_by_id(environment_vip_id):
 
     try:
         environmentvip = EnvironmentVip.get_by_pk(environment_vip_id)
-    except EnvironmentVipNotFoundError, e:
+    except EnvironmentVipNotFoundError as e:
         raise ObjectDoesNotExistException(str(e))
     else:
         return environmentvip
@@ -128,9 +128,9 @@ def update_environment_vip(environment_vip):
     try:
         env = get_environmentvip_by_id(environment_vip.get('id'))
         env.update_v3(environment_vip)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return env
@@ -141,7 +141,7 @@ def create_environment_vip(environment_vip):
     try:
         env = EnvironmentVip()
         env.create_v3(environment_vip)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return env
@@ -153,9 +153,9 @@ def delete_environment_vip(envvip_ids):
         try:
             envvip_obj = get_environmentvip_by_id(envvip_id)
             envvip_obj.delete_v3()
-        except EnvironmentVipAssociatedToSomeNetworkError, e:
+        except EnvironmentVipAssociatedToSomeNetworkError as e:
             raise ValidationAPIException(str(e))
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(str(e))
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))

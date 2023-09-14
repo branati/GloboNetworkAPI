@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -16,7 +16,7 @@ class EquipmentEnvironmentV3Serializer(DynamicFieldsModelSerializer):
     equipment = serializers.SerializerMethodField('get_equipment')
 
     class Meta:
-        EquipamentoAmbiente = get_model('equipamento', 'EquipamentoAmbiente')
+        EquipamentoAmbiente = apps.get_model('equipamento', 'EquipamentoAmbiente')
         model = EquipamentoAmbiente
         fields = (
             'is_router',
@@ -73,7 +73,7 @@ class BrandV3Serializer(DynamicFieldsModelSerializer):
     name = serializers.Field(source='nome')
 
     class Meta:
-        Marca = get_model('equipamento', 'Marca')
+        Marca = apps.get_model('equipamento', 'Marca')
         model = Marca
         fields = (
             'id',
@@ -108,7 +108,7 @@ class ModelV3Serializer(DynamicFieldsModelSerializer):
             }
 
     class Meta:
-        Modelo = get_model('equipamento', 'Modelo')
+        Modelo = apps.get_model('equipamento', 'Modelo')
         model = Modelo
         fields = (
             'id',
@@ -127,7 +127,7 @@ class EquipmentTypeV3Serializer(DynamicFieldsModelSerializer):
     equipment_type = serializers.Field(source='tipo_equipamento')
 
     class Meta:
-        TipoEquipamento = get_model('equipamento', 'TipoEquipamento')
+        TipoEquipamento = apps.get_model('equipamento', 'TipoEquipamento')
         model = TipoEquipamento
         fields = (
             'id',
@@ -146,7 +146,7 @@ class EquipmentV3Serializer(DynamicFieldsModelSerializer):
     groups = serializers.SerializerMethodField('get_groups')
 
     class Meta:
-        Equipamento = get_model('equipamento', 'Equipamento')
+        Equipamento = apps.get_model('equipamento', 'Equipamento')
         model = Equipamento
         fields = (
             'id',
@@ -175,7 +175,7 @@ class EquipmentV3Serializer(DynamicFieldsModelSerializer):
 
         details_fields = fields
 
-    def get_model(self, obj):
+    def apps.get_model(self, obj):
         return self.extends_serializer(obj, 'model')
 
     def get_equipment_type(self, obj):

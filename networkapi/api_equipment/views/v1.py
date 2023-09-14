@@ -23,7 +23,7 @@ from networkapi.api_equipment import facade
 from networkapi.api_rest import exceptions as api_exceptions
 from networkapi.equipamento.models import Equipamento
 from networkapi.util.geral import CustomResponse
-# from django.db.transaction import commit_on_success
+# from django.db.transaction import atomic
 
 
 log = logging.getLogger(__name__)
@@ -53,11 +53,11 @@ class EquipmentRoutersView(APIView):
 
             return CustomResponse(data, status=status.HTTP_200_OK, request=request)
 
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             log.error(exception)
             raise api_exceptions.ObjectDoesNotExistException(
                 'Equipment Does Not Exist')
 
-        except Exception, exception:
+        except Exception as exception:
             log.exception(exception)
             raise api_exceptions.NetworkAPIException()

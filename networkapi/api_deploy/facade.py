@@ -107,7 +107,7 @@ def create_file_from_script(script, prefix_name=''):
         file_handle = open(filename_to_save, 'w')
         file_handle.write(script)
         file_handle.close()
-    except IOError, e:
+    except IOError as e:
         log.error('Error writing to config file: %s' % filename_to_save)
         raise e
 

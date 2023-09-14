@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
@@ -82,9 +82,10 @@ class ObjectGroupPermission(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id')
     user_group = models.ForeignKey(
         'grupo.UGrupo',
-        db_column='id_user_group'
+        db_column='id_user_group',
+        on_delete=models.DO_NOTHING
     )
-    object_type = models.ForeignKey(ObjectType, db_column='id_object_type')
+    object_type = models.ForeignKey(ObjectType, db_column='id_object_type', on_delete=models.DO_NOTHING)
     object_value = models.IntegerField(db_column='id_object')
     read = models.BooleanField()
     write = models.BooleanField()
@@ -337,9 +338,10 @@ class ObjectGroupPermissionGeneral(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id')
     user_group = models.ForeignKey(
         'grupo.UGrupo',
-        db_column='id_user_group'
+        db_column='id_user_group',
+        on_delete=models.DO_NOTHING
     )
-    object_type = models.ForeignKey(ObjectType, db_column='id_object_type')
+    object_type = models.ForeignKey(ObjectType, db_column='id_object_type', on_delete=models.DO_NOTHING)
     read = models.BooleanField()
     write = models.BooleanField()
     change_config = models.BooleanField()

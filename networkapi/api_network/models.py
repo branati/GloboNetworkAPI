@@ -17,10 +17,11 @@ from __future__ import with_statement
 
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import get_model
+from django.apps import apps
+# from django.apps import apps
 
 from networkapi.api_network import exceptions
 from networkapi.api_rest import exceptions as api_exceptions
@@ -41,11 +42,13 @@ class DHCPRelayIPv4(BaseModel):
     )
     ipv4 = models.ForeignKey(
         'ip.Ip',
-        db_column='id_ip'
+        db_column='id_ip',
+        on_delete=models.DO_NOTHING
     )
     networkipv4 = models.ForeignKey(
         'ip.NetworkIPv4',
-        db_column='id_networkipv4'
+        db_column='id_networkipv4',
+        on_delete=models.DO_NOTHING
     )
 
     class Meta(BaseModel.Meta):
@@ -54,8 +57,8 @@ class DHCPRelayIPv4(BaseModel):
         unique_together = ('ipv4', 'networkipv4')
 
     def create(self, ipv4_id, networkipv4_id):
-        ipv4_model = get_model('ip', 'Ip')
-        networkipv4_model = get_model('ip', 'NetworkIPv4')
+        ipv4_model = apps.get_model('ip', 'Ip')
+        networkipv4_model = apps.get_model('ip', 'NetworkIPv4')
 
         ipv4 = ipv4_model.get_by_pk(ipv4_id)
         networkipv4 = networkipv4_model.get_by_pk(networkipv4_id)
@@ -80,14 +83,14 @@ class DHCPRelayIPv4(BaseModel):
 
         try:
             return DHCPRelayIPv4.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise exceptions.DHCPRelayNotFoundError('IPv4', id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(
                 u'Lock wait timeout exceeded searching DHCPRelayIPv4.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the DHCPRelayIPv4.')
             raise api_exceptions.NetworkAPIException()
 
@@ -102,11 +105,13 @@ class DHCPRelayIPv6(BaseModel):
     )
     ipv6 = models.ForeignKey(
         'ip.Ipv6',
-        db_column='id_ipv6'
+        db_column='id_ipv6',
+        on_delete=models.DO_NOTHING
     )
     networkipv6 = models.ForeignKey(
         'ip.NetworkIPv6',
-        db_column='id_networkipv6'
+        db_column='id_networkipv6',
+        on_delete=models.DO_NOTHING
     )
 
     class Meta(BaseModel.Meta):
@@ -115,8 +120,8 @@ class DHCPRelayIPv6(BaseModel):
         unique_together = ('ipv6', 'networkipv6')
 
     def create(self, ipv6_id, networkipv6_id):
-        ipv6_model = get_model('ip', 'Ipv6')
-        networkipv6_model = get_model('ip', 'NetworkIPv6')
+        ipv6_model = apps.get_model('ip', 'Ipv6')
+        networkipv6_model = apps.get_model('ip', 'NetworkIPv6')
         ipv6 = ipv6_model.get_by_pk(ipv6_id)
         networkipv6 = networkipv6_model.get_by_pk(networkipv6_id)
 
@@ -139,13 +144,13 @@ class DHCPRelayIPv6(BaseModel):
         """
         try:
             return DHCPRelayIPv6.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise exceptions.DHCPRelayNotFoundError('IPv6', id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(
                 u'Lock wait timeout exceeded searching DHCPRelayIPv6.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the DHCPRelayIPv6.')
             raise api_exceptions.NetworkAPIException()

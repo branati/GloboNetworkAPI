@@ -8,7 +8,8 @@ services:
         ports:
             - "3306:3306"
         environment:
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            MYSQL_ROOT_PASSWORD: SuperSecret
+#            MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
             - netapi_db_vol:/var/lib/mysql
         networks:
@@ -66,6 +67,7 @@ services:
         restart: always
         working_dir: /netapi
         command: sh /netapi/scripts/docker/docker-start-netapi.sh
+#        command: sh /netapi/scripts/docker/docker-start-debug.sh
         ports:
             - "8000:8000"
             - "8001:8001"

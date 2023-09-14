@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -9,7 +9,7 @@ from networkapi.util.serializers import DynamicFieldsModelSerializer
 class ObjectTypeV3Serializer(DynamicFieldsModelSerializer):
 
     class Meta:
-        ObjectType = get_model('api_ogp', 'ObjectType')
+        ObjectType = apps.get_model('api_ogp', 'ObjectType')
 
         model = ObjectType
         fields = (
@@ -34,7 +34,7 @@ class ObjectGroupPermissionV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'object_type')
 
     class Meta:
-        ObjectGroupPermission = get_model('api_ogp',
+        ObjectGroupPermission = apps.get_model('api_ogp',
                                           'ObjectGroupPermission')
         model = ObjectGroupPermission
         fields = (
@@ -96,7 +96,7 @@ class ObjectGroupPermissionGeneralV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'object_type')
 
     class Meta:
-        ObjectGroupPermissionGeneral = get_model(
+        ObjectGroupPermissionGeneral = apps.get_model(
             'api_ogp',
             'ObjectGroupPermissionGeneral')
 

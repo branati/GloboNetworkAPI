@@ -2,7 +2,7 @@
 import logging
 from datetime import datetime
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -38,7 +38,7 @@ class PoolMemberStateView(CustomAPIView):
     @permission_classes_apiview((IsAuthenticated, permissions.Write,
                                  permissions.ScriptAlterPermission))
     @permission_obj_apiview([permissions.deploy_obj_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Enable/Disable pool member by list of server pool."""
 
@@ -52,7 +52,7 @@ class PoolMemberStateView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.Read))
-    @commit_on_success
+    @atomic
     def get(self, request, *args, **kwargs):
         """
         Returns a list of pools with updated states of members
@@ -98,7 +98,7 @@ class PoolMemberStateView(CustomAPIView):
                 # get pools updated
                 server_pools = models_vips.ServerPool.objects.filter(
                     id__in=pool_ids)
-            except Exception, exception:
+            except Exception as exception:
                 log.error(exception)
                 raise rest_exceptions.NetworkAPIException(exception)
             finally:
@@ -132,7 +132,7 @@ class PoolDeployView(CustomAPIView):
         try:
             response = facade_pool_deploy.create_real_pool(
                 pool_serializer.data, request.user)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise rest_exceptions.NetworkAPIException(exception)
         finally:
@@ -157,7 +157,7 @@ class PoolDeployView(CustomAPIView):
         try:
             response = facade_pool_deploy.update_real_pool(
                 server_pools.get('server_pools'), request.user)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise rest_exceptions.NetworkAPIException(exception)
         finally:
@@ -186,7 +186,7 @@ class PoolDeployView(CustomAPIView):
         try:
             response = facade_pool_deploy.delete_real_pool(
                 pool_serializer.data, request.user, cleanup)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise rest_exceptions.NetworkAPIException(exception)
         finally:
@@ -356,7 +356,7 @@ class PoolDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('pool_post')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """
         Save server pool
@@ -376,7 +376,7 @@ class PoolDBView(CustomAPIView):
     @raise_json_validate('pool_put')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_obj_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """
         Updates server pool
@@ -398,7 +398,7 @@ class PoolDBView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.delete_obj_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """
         Delete server pool

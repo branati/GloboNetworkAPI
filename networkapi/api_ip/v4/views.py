@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -70,7 +71,7 @@ class IPv4V4View(CustomAPIView):
     @raise_json_validate('ipv4_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create Ipv4."""
 
@@ -90,7 +91,7 @@ class IPv4V4View(CustomAPIView):
     @raise_json_validate('ipv4_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv4."""
 
@@ -107,7 +108,7 @@ class IPv4V4View(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Ipv4."""
 
@@ -125,7 +126,7 @@ class IPv4V4AsyncView(CustomAPIView):
     @raise_json_validate('ipv4_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create Ipv4."""
 
@@ -151,7 +152,7 @@ class IPv4V4AsyncView(CustomAPIView):
     @raise_json_validate('ipv4_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv4."""
 
@@ -177,7 +178,7 @@ class IPv4V4AsyncView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv4_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Ipv4."""
 
@@ -241,7 +242,7 @@ class IPv6V4View(CustomAPIView):
     @raise_json_validate('ipv6_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Save Ipv6."""
 
@@ -258,7 +259,7 @@ class IPv6V4View(CustomAPIView):
     @raise_json_validate('ipv6_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv6."""
 
@@ -275,7 +276,7 @@ class IPv6V4View(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Edit Ipv6"""
 
@@ -293,7 +294,7 @@ class IPv6V4AsyncView(CustomAPIView):
     @raise_json_validate('ipv6_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create Ipv6."""
 
@@ -319,7 +320,7 @@ class IPv6V4AsyncView(CustomAPIView):
     @raise_json_validate('ipv6_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Edit Ipv6."""
 
@@ -345,7 +346,7 @@ class IPv6V4AsyncView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
     @permission_obj_apiview([write_objv6_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete Ipv6."""
 

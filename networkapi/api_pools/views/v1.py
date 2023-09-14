@@ -21,7 +21,7 @@ from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from django.forms.models import model_to_dict
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -90,7 +90,7 @@ log = logging.getLogger(__name__)
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def pool_list(request):
     """
     List all code snippets, or create a new snippet.
@@ -132,18 +132,18 @@ def pool_list(request):
 
         return Response(data)
 
-    except api_exceptions.ValidationException, exception:
+    except api_exceptions.ValidationException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def pool_list_by_reqvip(request):
     """
     List all code snippets, or create a new snippet.
@@ -184,18 +184,18 @@ def pool_list_by_reqvip(request):
 
         return Response(data)
 
-    except api_exceptions.ValidationException, exception:
+    except api_exceptions.ValidationException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['GET', 'POST'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def list_all_members_by_pool(request, id_server_pool):
     try:
 
@@ -252,15 +252,15 @@ def list_all_members_by_pool(request, id_server_pool):
 
         return Response(data)
 
-    except exceptions.InvalidIdPoolException, exception:
+    except exceptions.InvalidIdPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ServerPool.DoesNotExist, exception:
+    except ServerPool.DoesNotExist as exception:
         log.exception(exception)
         raise exceptions.PoolDoesNotExistException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -283,23 +283,23 @@ def get_equipamento_by_ip(request, id_ip):
             serializer_equipamento = EquipamentoSerializer(equip, many=False)
 
             data['equipamento'] = serializer_equipamento.data
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             pass
 
         return Response(data)
 
-    except exceptions.InvalidIdPoolException, exception:
+    except exceptions.InvalidIdPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def delete(request):
     """
     Delete Pools by list id.
@@ -331,30 +331,30 @@ def delete(request):
 
         return Response()
 
-    except exceptions.PoolConstraintVipException, exception:
+    except exceptions.PoolConstraintVipException as exception:
         log.exception(exception)
         raise exception
 
-    except exceptions.ScriptDeletePoolException, exception:
+    except exceptions.ScriptDeletePoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ScriptError, exception:
+    except ScriptError as exception:
         log.exception(exception)
         raise exceptions.ScriptDeletePoolException()
 
-    except ValueError, exception:
+    except ValueError as exception:
         log.exception(exception)
         raise exceptions.InvalidIdPoolException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ScriptRemovePermission))
-@commit_on_success
+@atomic
 def remove(request):
     """
     Remove Pools by list id running script and update to not created.
@@ -384,26 +384,26 @@ def remove(request):
 
         return Response()
 
-    except exceptions.ScriptRemovePoolException, exception:
+    except exceptions.ScriptRemovePoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ScriptError, exception:
+    except ScriptError as exception:
         log.exception(exception)
         raise exceptions.ScriptRemovePoolException()
 
-    except ValueError, exception:
+    except ValueError as exception:
         log.exception(exception)
         raise exceptions.InvalidIdPoolException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write, ScriptCreatePermission))
-@commit_on_success
+@atomic
 def create(request):
     """
     Create Pools by list id running script and update to created.
@@ -429,23 +429,23 @@ def create(request):
 
         return Response()
 
-    except ServerPool.DoesNotExist, exception:
+    except ServerPool.DoesNotExist as exception:
         log.exception(exception)
         raise exceptions.PoolDoesNotExistException()
 
-    except exceptions.ScriptCreatePoolException, exception:
+    except exceptions.ScriptCreatePoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ScriptError, exception:
+    except ScriptError as exception:
         log.exception(exception)
         raise exceptions.ScriptCreatePoolException()
 
-    except ValueError, exception:
+    except ValueError as exception:
         log.exception(exception)
         raise exceptions.InvalidIdPoolException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -467,7 +467,7 @@ def healthcheck_list(request):
 
         return Response(data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -500,22 +500,22 @@ def get_by_pk(request, id_server_pool):
 
         return Response(data)
 
-    except exceptions.InvalidIdPoolException, exception:
+    except exceptions.InvalidIdPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ServerPool.DoesNotExist, exception:
+    except ServerPool.DoesNotExist as exception:
         log.exception(exception)
         raise exceptions.PoolDoesNotExistException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def enable(request):
     """
     Create Pools by list id running script and update to created.
@@ -547,30 +547,30 @@ def enable(request):
 
         return Response()
 
-    except ServerPoolMember.DoesNotExist, exception:
+    except ServerPoolMember.DoesNotExist as exception:
         log.exception(exception)
         raise exceptions.PoolMemberDoesNotExistException()
 
-    except exceptions.ScriptEnablePoolException, exception:
+    except exceptions.ScriptEnablePoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ScriptError, exception:
+    except ScriptError as exception:
         log.exception(exception)
         raise exceptions.ScriptEnablePoolException()
 
-    except ValueError, exception:
+    except ValueError as exception:
         log.exception(exception)
         raise exceptions.InvalidIdPoolMemberException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def disable(request):
     """
     Create Pools by list id running script and update to created.
@@ -602,30 +602,30 @@ def disable(request):
 
         return Response()
 
-    except ServerPoolMember.DoesNotExist, exception:
+    except ServerPoolMember.DoesNotExist as exception:
         log.exception(exception)
         raise exceptions.PoolMemberDoesNotExistException()
 
-    except exceptions.ScriptDisablePoolException, exception:
+    except exceptions.ScriptDisablePoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ScriptError, exception:
+    except ScriptError as exception:
         log.exception(exception)
         raise exceptions.ScriptDisablePoolException()
 
-    except ValueError, exception:
+    except ValueError as exception:
         log.exception(exception)
         raise exceptions.InvalidIdPoolMemberException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['GET', 'POST'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def get_opcoes_pool_by_ambiente(request):
     try:
         log.info('get_opcoes_pool_by_ambiente')
@@ -644,7 +644,7 @@ def get_opcoes_pool_by_ambiente(request):
 
         return Response(data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -677,23 +677,23 @@ def list_by_environment(request, environment_id):
 
         return Response(data)
 
-    except Ambiente.DoesNotExist, exception:
+    except Ambiente.DoesNotExist as exception:
         log.exception(exception)
         raise api_exceptions.ObjectDoesNotExistException(
             'Environment Does Not Exist.')
 
-    except api_exceptions.ValidationException, exception:
+    except api_exceptions.ValidationException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['GET', 'POST'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def get_requisicoes_vip_by_pool(request, id_server_pool):
     try:
         data = dict()
@@ -727,7 +727,7 @@ def get_requisicoes_vip_by_pool(request, id_server_pool):
 
         return Response(data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -752,15 +752,15 @@ def list_pool_members(request, pool_id):
 
         return Response(data)
 
-    except exceptions.InvalidIdPoolException, exception:
+    except exceptions.InvalidIdPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except ServerPool.DoesNotExist, exception:
+    except ServerPool.DoesNotExist as exception:
         log.exception(exception)
         raise exceptions.PoolDoesNotExistException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -781,19 +781,19 @@ def list_by_environment_vip(request, environment_vip_id):
 
         return Response(serializer_pools.data)
 
-    except EnvironmentVip.DoesNotExist, exception:
+    except EnvironmentVip.DoesNotExist as exception:
         log.exception(exception)
         raise api_exceptions.ObjectDoesNotExistException(
             'Environment Vip Does Not Exist')
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def save_reals(request):
     try:
         id_server_pool = request.DATA.get('id_server_pool')
@@ -821,30 +821,30 @@ def save_reals(request):
         save_server_pool_member(request.user, sp, list_server_pool_member)
         return Response()
 
-    except api_exceptions.EnvironmentEnvironmentVipNotBoundedException, exception:
+    except api_exceptions.EnvironmentEnvironmentVipNotBoundedException as exception:
         log.exception(exception)
         raise exception
 
-    except exceptions.ScriptAddPoolException, exception:
+    except exceptions.ScriptAddPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except exceptions.IpNotFoundByEnvironment, exception:
+    except exceptions.IpNotFoundByEnvironment as exception:
         log.exception(exception)
         raise exception
 
-    except exceptions.InvalidRealPoolException, exception:
+    except exceptions.InvalidRealPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def save(request):
     try:
         id = request.DATA.get('id')
@@ -988,7 +988,7 @@ def save(request):
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1005,12 +1005,12 @@ def list_environments_with_pools(request):
 
         return Response(serializer_pools.data)
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise api_exceptions.ObjectDoesNotExistException(
             'Environment Vip Does Not Exist')
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1031,26 +1031,26 @@ def chk_status_poolmembers_by_pool(request, pool_id):
 
         return Response(data)
 
-    except ScriptError, exception:
+    except ScriptError as exception:
         log.exception(exception)
         raise exceptions.ScriptCheckStatusPoolMemberException()
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise exceptions.PoolDoesNotExistException()
 
-    except exceptions.InvalidIdPoolException, exception:
+    except exceptions.InvalidIdPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def chk_status_poolmembers_by_vip(request, vip_id):
     try:
         if not is_valid_int_greater_zero_param(vip_id):
@@ -1070,14 +1070,14 @@ def chk_status_poolmembers_by_vip(request, vip_id):
 
         return Response(list_result)
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def management_pools(request):
     try:
 
@@ -1085,31 +1085,31 @@ def management_pools(request):
 
         return Response()
 
-    except exceptions.InvalidStatusPoolMemberException, exception:
+    except exceptions.InvalidStatusPoolMemberException as exception:
         log.exception(exception)
         raise exception
 
-    except (exceptions.ScriptManagementPoolException, ScriptError), exception:
+    except (exceptions.ScriptManagementPoolException, ScriptError) as exception:
         log.exception(exception)
         raise exceptions.ScriptManagementPoolException()
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise exceptions.PoolDoesNotExistException()
 
-    except exceptions.InvalidIdPoolException, exception:
+    except exceptions.InvalidIdPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except exceptions.InvalidIdPoolMemberException, exception:
+    except exceptions.InvalidIdPoolMemberException as exception:
         log.exception(exception)
         raise exception
 
-    except ValueError, exception:
+    except ValueError as exception:
         log.exception(exception)
         raise exceptions.InvalidIdPoolMemberException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1136,7 +1136,7 @@ def list_all_options(request):
 
         return Response(serializer_options.data)
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.exception(exception)
         raise exceptions.OptionPoolDoesNotExistException()
 
@@ -1176,7 +1176,7 @@ def list_environment_environment_vip_related(request):
 
         return Response(environment_list_dict)
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1194,18 +1194,18 @@ def __list_option_by_pk_get(request, option_id):
 
         return Response(serializer_options.data)
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise exceptions.OptionPoolDoesNotExistException
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['DELETE'])
 @permission_classes((IsAuthenticated, Write, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def __delete_pool_option(request, option_id):
     """
     Delete options Pools by id.
@@ -1230,26 +1230,26 @@ def __delete_pool_option(request, option_id):
         except ObjectDoesNotExist:
             pass
 
-    except exceptions.OptionPoolConstraintPoolException, exception:
+    except exceptions.OptionPoolConstraintPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except exceptions.ScriptDeletePoolOptionException, exception:
+    except exceptions.ScriptDeletePoolOptionException as exception:
         log.exception(exception)
         raise exception
 
-    except ScriptError, exception:
+    except ScriptError as exception:
         log.exception(exception)
         raise exceptions.ScriptDeletePoolException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated, Write, ScriptAlterPermission))
-@commit_on_success
+@atomic
 def __modify_pool_option(request, option_id):
     """
     Delete options Pools by id.
@@ -1286,19 +1286,19 @@ def __modify_pool_option(request, option_id):
 
         return Response(serializer_options.data)
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise exceptions.OptionPoolDoesNotExistException
 
-    except exceptions.ScriptModifyPoolOptionException, exception:
+    except exceptions.ScriptModifyPoolOptionException as exception:
         log.exception(exception)
         raise exception
 
-    except exceptions.OptionPoolConstraintPoolException, exception:
+    except exceptions.OptionPoolConstraintPoolException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1316,7 +1316,7 @@ def list_option_by_pk(request, option_id):
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write))
-@commit_on_success
+@atomic
 def save_pool_option(request):
     try:
 
@@ -1345,11 +1345,11 @@ def save_pool_option(request):
 
         return Response(serializer_options.data)
 
-    except exceptions.ScriptAddPoolOptionException, exception:
+    except exceptions.ScriptAddPoolOptionException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1391,7 +1391,7 @@ def list_all_environment_options(request):
 
         return Response(serializer_options.data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1411,11 +1411,11 @@ def __list_environment_options_by_pk(request, environment_option_id):
 
         return Response(serializer_options.data)
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise exceptions.OptionPoolEnvironmentDoesNotExistException
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1558,7 +1558,7 @@ def reals_can_associate_server_pool(server_pool, list_server_pool_member):
                         server_pool.environment.name, ipv6.ip_formated, environment_vip_list_name)
                 )
 
-    except Exception, error:
+    except Exception as error:
         log.exception(error)
         raise error
 
@@ -1575,12 +1575,12 @@ def __update_environment_options_by_pk(request, environment_option_id):
 
             try:
                 OptionPool.objects.get(id=option_id)
-            except ObjectDoesNotExist, exception:
+            except ObjectDoesNotExist as exception:
                 log.error(exception)
                 raise exceptions.OptionPoolDoesNotExistException
             try:
                 Ambiente.objects.get(id=environment_id)
-            except ObjectDoesNotExist, exception:
+            except ObjectDoesNotExist as exception:
                 log.error(exception)
                 raise exceptions.EnvironmentDoesNotExistException
 
@@ -1597,15 +1597,15 @@ def __update_environment_options_by_pk(request, environment_option_id):
         except ObjectDoesNotExist:
             pass
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise exceptions.OptionPoolEnvironmentDoesNotExistException
 
-    except exceptions.ScriptModifyEnvironmentPoolOptionException, exception:
+    except exceptions.ScriptModifyEnvironmentPoolOptionException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1625,15 +1625,15 @@ def __delete_environment_options_by_pk(request, environment_option_id):
         except ObjectDoesNotExist:
             pass
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise exceptions.OptionPoolEnvironmentDoesNotExistException
 
-    except exceptions.ScriptDeleteEnvironmentPoolOptionException, exception:
+    except exceptions.ScriptDeleteEnvironmentPoolOptionException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()
 
@@ -1651,7 +1651,7 @@ def environment_options_by_pk(request, environment_option_id):
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write))
-@commit_on_success
+@atomic
 def save_environment_options(request):
     try:
 
@@ -1660,12 +1660,12 @@ def save_environment_options(request):
 
         try:
             OptionPool.objects.get(id=option_id)
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             log.error(exception)
             raise exceptions.OptionPoolDoesNotExistException
         try:
             Ambiente.objects.get(id=environment_id)
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             log.error(exception)
             raise exceptions.EnvironmentDoesNotExistException
 
@@ -1679,10 +1679,10 @@ def save_environment_options(request):
 
         return Response(serializer_options.data)
 
-    except exceptions.ScriptAddEnvironmentPoolOptionException, exception:
+    except exceptions.ScriptAddEnvironmentPoolOptionException as exception:
         log.exception(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()

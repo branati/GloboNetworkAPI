@@ -55,23 +55,23 @@ def remove_link(interfaces):
         try:
             interface_obj = Interface.objects.get(id=int(i))
             interface_list.append(interface_obj)
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e.detail)
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
     try:
         link = Interface()
         link.disconnecting_interfaces(interface_list)
-    except models.InterfaceError, e:
+    except models.InterfaceError as e:
         raise ValidationAPIException(e.message)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except InvalidValueError, e:
+    except InvalidValueError as e:
         raise ValidationAPIException(e)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
 
@@ -84,23 +84,23 @@ def link_interface(interfaces):
             interface_obj = Interface.objects.get(id=int(i.get('id')))
             interface_dict = dict(interface=interface_obj, link=i.get('link'))
             interface_list.append(interface_dict)
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e.detail)
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
     try:
         link = Interface()
         link.connecting_interfaces(interface_list)
-    except models.InterfaceError, e:
+    except models.InterfaceError as e:
         raise ValidationAPIException(e.message)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except InvalidValueError, e:
+    except InvalidValueError as e:
         raise ValidationAPIException(e)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
 
@@ -112,7 +112,7 @@ def get_interfaces_environments_by_ids(ids):
             interfaces_envs_obj.append(interfaces_envs)
     except FieldError as e:
         raise ValidationAPIException(str(e))
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(u'There is no interface with id = %s. %s' % (id, e))
     except Exception as e:
         raise NetworkAPIException(str(e))
@@ -126,7 +126,7 @@ def get_interfaces_environments_by_search(search=dict()):
     try:
         interfaces_envs = EnvironmentInterface.objects.filter()
         interfaces_envs_map = build_query_to_datatable_v3(interfaces_envs, search)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
     except FieldError as e:
         raise ValidationAPIException(str(e))
@@ -144,13 +144,13 @@ def delete_interface_environments(int_env_id):
     try:
         interfaces_envs = EnvironmentInterface.objects.get(id=int(int_env_id))
         interfaces_envs.remove_v3()
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise NetworkAPIException(e.detail)
-    except models.InterfaceUsedByOtherInterfaceError, e:
+    except models.InterfaceUsedByOtherInterfaceError as e:
         raise NetworkAPIException(e)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
 
@@ -159,15 +159,15 @@ def create_interface_environments(interface_environment):
     try:
         interface_envs_obj = EnvironmentInterface()
         interface_envs_obj.create_v3(interface_environment)
-    except models.InterfaceError, e:
+    except models.InterfaceError as e:
         raise ValidationAPIException(e.message)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except InvalidValueError, e:
+    except InvalidValueError as e:
         raise ValidationAPIException(e)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return interface_envs_obj
@@ -179,7 +179,7 @@ def get_interface_type_by_search(search=dict()):
     try:
         interfaces = TipoInterface.objects.filter()
         interface_map = build_query_to_datatable_v3(interfaces, search)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
     except FieldError as e:
         raise ValidationAPIException(str(e))
@@ -197,7 +197,7 @@ def get_interface_type_by_ids(types_ids):
             interfaces_obj.append(interface)
     except FieldError as e:
         raise ValidationAPIException(str(e))
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(u'There is no interface with id = %s. %s' % (id, e))
     except Exception as e:
         raise NetworkAPIException(str(e))
@@ -210,13 +210,13 @@ def create_interface(interface):
     try:
         interface_obj = Interface()
         interface_obj.create_v3(interface)
-    except models.InterfaceError, e:
+    except models.InterfaceError as e:
         raise ValidationAPIException(e.message)
-    except InvalidValueError, e:
+    except InvalidValueError as e:
         raise ValidationAPIException(e)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return interface_obj
@@ -227,15 +227,15 @@ def update_interface(interface):
     try:
         interface_obj = Interface.objects.get(id=interface.get('id'))
         interface_obj.update_v3(interface)
-    except models.InterfaceError, e:
+    except models.InterfaceError as e:
         raise ValidationAPIException(e.message)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
-    except InvalidValueError, e:
+    except InvalidValueError as e:
         raise ValidationAPIException(e)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return interface_obj
@@ -249,13 +249,13 @@ def delete_interface(interface):
     try:
         interface_obj = Interface.objects.get(id=int(interface))
         interface_obj.remove_v3()
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise NetworkAPIException(e.detail)
-    except models.InterfaceUsedByOtherInterfaceError, e:
+    except models.InterfaceUsedByOtherInterfaceError as e:
         raise NetworkAPIException(e)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
 
@@ -281,7 +281,7 @@ def get_interface_by_ids(interface_ids):
             interfaces_obj.append(interface)
     except FieldError as e:
         raise ValidationAPIException(str(e))
-    except ObjectDoesNotExist, e:
+    except ObjectDoesNotExist as e:
         raise Exception(u'There is no interface with id = %s. %s' % (id, e))
     except Exception as e:
         raise NetworkAPIException(str(e))
@@ -320,10 +320,10 @@ def generate_delete_file(user, equip_id, interface_list, channel):
                 int(equip_id), TEMPLATE_REMOVE_INTERFACE)
             config_to_be_saved += interface_template_file.render(
                 Context(key_dict))
-        except exceptions.InterfaceTemplateException, e:
+        except exceptions.InterfaceTemplateException as e:
             log.error(e)
             raise exceptions.InterfaceTemplateException()
-        except KeyError, exception:
+        except KeyError as exception:
             log.error('Erro: %s ' % exception)
             raise exceptions.InvalidKeyException(exception)
         log.info('facade ' + str(i.interface))
@@ -332,7 +332,7 @@ def generate_delete_file(user, equip_id, interface_list, channel):
         channel_template_file = _load_template_file(
             int(equip_id), TEMPLATE_REMOVE_CHANNEL)
         config_to_be_saved += channel_template_file.render(Context(key_dict))
-    except KeyError, exception:
+    except KeyError as exception:
         log.error('Erro: %s ' % exception)
         raise exceptions.InvalidKeyException(exception)
 
@@ -341,7 +341,7 @@ def generate_delete_file(user, equip_id, interface_list, channel):
         file_handle = open(filename_to_save, 'w')
         file_handle.write(config_to_be_saved)
         file_handle.close()
-    except IOError, e:
+    except IOError as e:
         log.error('Error writing to config file: %s' % filename_to_save)
         raise e
 
@@ -359,7 +359,7 @@ def delete_channel(user, equip_id, interface_list, channel):
         status_deploy = deploy_config_in_equipment_synchronous(
             file_to_deploy, int(equip_id), lockvar)
         log.info('Status: %s' % status_deploy)
-    except exceptions.InterfaceException, exception:
+    except exceptions.InterfaceException as exception:
         log.error(exception)
         raise exceptions.InterfaceException(exception)
 
@@ -473,7 +473,7 @@ def _generate_config_file(interfaces_list):
 
             # Render the template for interface
             config_to_be_saved += int_template_file.render(Context(key_dict))
-        except KeyError, exception:
+        except KeyError as exception:
             log.error('Erro: %s ' % exception)
             raise exceptions.InvalidKeyException(exception)
 
@@ -482,7 +482,7 @@ def _generate_config_file(interfaces_list):
         file_handle = open(filename_to_save, 'w')
         file_handle.write(config_to_be_saved)
         file_handle.close()
-    except IOError, e:
+    except IOError as e:
         log.error('Error writing to config file: %s' % filename_to_save)
         raise e
 
@@ -516,11 +516,11 @@ def _load_template_file(equipment_id, template_type):
         file_handle = open(filename_in, 'r')
         template_file = Template(file_handle.read())
         file_handle.close()
-    except IOError, e:
+    except IOError as e:
         log.error('Error opening template file for read: %s. Equip: %s' %
                   (filename_in, equipment_id))
         raise e
-    except Exception, e:
+    except Exception as e:
         log.error('Syntax error when parsing template: %s ' % e)
         raise e
         # TemplateSyntaxError
@@ -567,7 +567,7 @@ def _generate_dict(interface):
         try:
             key_dict['MCLAG_IDENTIFIER'] = int(
                 re.sub(r'[a-zA\-]', '', interface.channel.nome))
-        except ValueError, e:
+        except ValueError as e:
             log.error('Error: invalid channel name')
             raise e
         if interface.channel.lacp:

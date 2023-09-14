@@ -2,7 +2,7 @@
 # Create your views here.
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -67,7 +67,7 @@ class NeighborDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('neighbor_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new Neighbor."""
 
@@ -84,7 +84,7 @@ class NeighborDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('neighbor_v4_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request):
         """Update Neighbors."""
 
@@ -103,7 +103,7 @@ class NeighborDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, **kwargs):
         """Delete Neighbors."""
 
@@ -156,7 +156,7 @@ class NeighborV4DBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('neighbor_v4_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new NeighborV4."""
 
@@ -177,7 +177,7 @@ class NeighborV4DBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('neighbor_v4_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update NeighborV4."""
 
@@ -196,7 +196,7 @@ class NeighborV4DBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete NeighborV4."""
 
@@ -249,7 +249,7 @@ class NeighborV6DBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('neighbor_v6_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new NeighborV6."""
 
@@ -271,7 +271,7 @@ class NeighborV6DBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('neighbor_v6_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update NeighborV6."""
 
@@ -290,7 +290,7 @@ class NeighborV6DBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete NeighborV6."""
 

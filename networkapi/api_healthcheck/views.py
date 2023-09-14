@@ -16,7 +16,7 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -34,7 +34,7 @@ log = logging.getLogger(__name__)
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write))
-@commit_on_success
+@atomic
 def insert(request):
 
     try:
@@ -79,6 +79,6 @@ def insert(request):
 
         return Response(hc_serializer.data)
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+# from django.apps import apps
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -12,7 +13,7 @@ log = logging.getLogger(__name__)
 
 class IPv4V4Serializer(DynamicFieldsModelSerializer):
 
-    ip_formated = serializers.Field(source='ip_formated')
+    ip_formated = serializers.Field()
     description = serializers.Field(source='descricao')
 
     server_pool_members = serializers.\
@@ -22,7 +23,7 @@ class IPv4V4Serializer(DynamicFieldsModelSerializer):
     networkipv4 = serializers.SerializerMethodField('get_networkipv4')
 
     class Meta:
-        Ip = get_model('ip', 'Ip')
+        Ip = apps.get_model('ip', 'Ip')
         model = Ip
         fields = (
             'id',
@@ -193,7 +194,7 @@ class IPv4V4Serializer(DynamicFieldsModelSerializer):
 class Ipv6V4Serializer(DynamicFieldsModelSerializer):
 
     id = serializers.Field()
-    ip_formated = serializers.Field(source='ip_formated')
+    ip_formated = serializers.Field()
 
     networkipv6 = serializers.SerializerMethodField('get_networkipv6')
     server_pool_members = serializers.SerializerMethodField(
@@ -202,7 +203,7 @@ class Ipv6V4Serializer(DynamicFieldsModelSerializer):
     equipments = serializers.SerializerMethodField('get_equipments')
 
     class Meta:
-        Ipv6 = get_model('ip', 'Ipv6')
+        Ipv6 = apps.get_model('ip', 'Ipv6')
         model = Ipv6
         fields = (
             'id',
@@ -381,7 +382,7 @@ class IPv4EquipmentV4Serializer(DynamicFieldsModelSerializer):
     equipment = serializers.SerializerMethodField('get_equipment')
 
     class Meta:
-        model = get_model('ip', 'IpEquipamento')
+        model = apps.get_model('ip', 'IpEquipamento')
 
         fields = (
             'id',
@@ -460,7 +461,7 @@ class IPv6EquipmentV4Serializer(DynamicFieldsModelSerializer):
     equipment = serializers.SerializerMethodField('get_equipment')
 
     class Meta:
-        model = get_model('ip', 'Ipv6Equipament')
+        model = apps.get_model('ip', 'Ipv6Equipament')
 
         fields = (
             'id',

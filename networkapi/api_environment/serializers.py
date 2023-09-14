@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+# from django.apps import apps
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -12,17 +13,17 @@ log = logging.getLogger(__name__)
 
 class EnvCIDRSerializer(DynamicFieldsModelSerializer):
 
-    id = serializers.RelatedField(source='id')
-    network = serializers.RelatedField(source='network')
-    ip_version = serializers.RelatedField(source='ip_version')
-    subnet_mask = serializers.RelatedField(source='subnet_mask')
-    environment = serializers.RelatedField(source='id_env.id')
-    environment_name = serializers.RelatedField(source='id_env.name')
-    network_type = serializers.RelatedField(source='id_network_type.id')
-    network_type_name = serializers.RelatedField(source='id_network_type.tipo_rede')
+    id = serializers.RelatedField(read_only=True)
+    network = serializers.RelatedField(read_only=True)
+    ip_version = serializers.RelatedField(read_only=True)
+    subnet_mask = serializers.RelatedField(read_only=True)
+    environment = serializers.RelatedField(read_only=True)
+    environment_name = serializers.RelatedField(source='id_env.name', read_only=True)
+    network_type = serializers.RelatedField(source='id_network_type.id', read_only=True)
+    network_type_name = serializers.RelatedField(source='id_network_type.tipo_rede', read_only=True)
 
     class Meta:
-        EnvCIDR = get_model('ambiente', 'EnvCIDR')
+        EnvCIDR = apps.get_model('ambiente', 'EnvCIDR')
         model = EnvCIDR
         fields = (
             'id',
@@ -31,7 +32,8 @@ class EnvCIDRSerializer(DynamicFieldsModelSerializer):
             'network_type',
             'subnet_mask',
             'environment',
-            'network_type_name'
+            'network_type_name',
+            'environment_name'
         )
         basic_fields = (
             'id',
@@ -52,14 +54,14 @@ class EnvCIDRSerializer(DynamicFieldsModelSerializer):
 
 class IpConfigV3Serializer(DynamicFieldsModelSerializer):
 
-    id = serializers.RelatedField(source='ip_config.id')
-    subnet = serializers.RelatedField(source='ip_config.subnet')
-    new_prefix = serializers.RelatedField(source='ip_config.new_prefix')
-    type = serializers.RelatedField(source='ip_config.type')
-    network_type = serializers.RelatedField(source='ip_config.network_type.id')
+    id = serializers.RelatedField(source='ip_config.id', read_only=True)
+    subnet = serializers.RelatedField(source='ip_config.subnet', read_only=True)
+    new_prefix = serializers.RelatedField(source='ip_config.new_prefix', read_only=True)
+    type = serializers.RelatedField(source='ip_config.type', read_only=True)
+    network_type = serializers.RelatedField(source='ip_config.network_type.id', read_only=True)
 
     class Meta:
-        ConfigEnvironment = get_model('ambiente', 'ConfigEnvironment')
+        ConfigEnvironment = apps.get_model('ambiente', 'ConfigEnvironment')
         model = ConfigEnvironment
         fields = (
             'id',
@@ -71,10 +73,10 @@ class IpConfigV3Serializer(DynamicFieldsModelSerializer):
 
 
 class GrupoL3Serializer(DynamicFieldsModelSerializer):
-    name = serializers.RelatedField(source='nome')
+    name = serializers.RelatedField(source='nome', read_only=True)
 
     class Meta:
-        GrupoL3 = get_model('ambiente', 'GrupoL3')
+        GrupoL3 = apps.get_model('ambiente', 'GrupoL3')
         model = GrupoL3
         fields = (
             'id',
@@ -83,10 +85,10 @@ class GrupoL3Serializer(DynamicFieldsModelSerializer):
 
 
 class AmbienteLogicoV3Serializer(DynamicFieldsModelSerializer):
-    name = serializers.RelatedField(source='nome')
+    name = serializers.RelatedField(source='nome', read_only=True)
 
     class Meta:
-        AmbienteLogico = get_model('ambiente', 'AmbienteLogico')
+        AmbienteLogico = apps.get_model('ambiente', 'AmbienteLogico')
         model = AmbienteLogico
         fields = (
             'id',
@@ -95,10 +97,10 @@ class AmbienteLogicoV3Serializer(DynamicFieldsModelSerializer):
 
 
 class DivisaoDcV3Serializer(DynamicFieldsModelSerializer):
-    name = serializers.RelatedField(source='nome')
+    name = serializers.RelatedField(source='nome', read_only=True)
 
     class Meta:
-        DivisaoDc = get_model('ambiente', 'DivisaoDc')
+        DivisaoDc = apps.get_model('ambiente', 'DivisaoDc')
         model = DivisaoDc
         fields = (
             'id',
@@ -167,7 +169,7 @@ class EnvironmentV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'vxlan')
 
     class Meta:
-        Ambiente = get_model('ambiente', 'Ambiente')
+        Ambiente = apps.get_model('ambiente', 'Ambiente')
         depth = 1
         model = Ambiente
         fields = (

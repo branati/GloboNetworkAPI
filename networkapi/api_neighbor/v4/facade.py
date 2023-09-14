@@ -2,7 +2,7 @@
 import logging
 
 from django.core.exceptions import FieldError
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 
 from networkapi.api_neighbor.models import NeighborV4
 from networkapi.api_neighbor.models import NeighborV6
@@ -595,7 +595,7 @@ def delete_neighbor_v6(obj_ids):
             raise api_rest_exceptions.NetworkAPIException(str(e))
 
 
-@commit_on_success
+@atomic
 def deploy_neighbor_v4(neighbor_id):
     log.info("deploy_neighbor_v4")
 
@@ -623,7 +623,7 @@ def deploy_neighbor_v4(neighbor_id):
         destroy_lock(locks_list)
 
 
-@commit_on_success
+@atomic
 def undeploy_neighbor_v4(neighbor_id):
 
     neighbor = NeighborV4.objects.get(id=neighbor_id)
@@ -650,7 +650,7 @@ def undeploy_neighbor_v4(neighbor_id):
         destroy_lock(locks_list)
 
 
-@commit_on_success
+@atomic
 def deploy_neighbor_v6(neighbor_id):
 
     neighbor = NeighborV6.objects.get(id=neighbor_id)
@@ -678,7 +678,7 @@ def deploy_neighbor_v6(neighbor_id):
         destroy_lock(locks_list)
 
 
-@commit_on_success
+@atomic
 def undeploy_neighbor_v6(neighbor_id):
 
     neighbor = NeighborV6.objects.get(id=neighbor_id)

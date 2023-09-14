@@ -33,10 +33,10 @@ def get_networkipv4_by_id(network_id):
     try:
         network = ip_models.NetworkIPv4.get_by_pk(network_id)
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     return network
@@ -50,10 +50,10 @@ def get_networkipv4_by_ids(network_ids):
         try:
             net = get_networkipv4_by_id(network_id)
 
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e.detail)
 
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
         else:
@@ -88,16 +88,16 @@ def create_networkipv4(networkv4, user=None, force=False):
         netv4_obj = ip_models.NetworkIPv4()
         netv4_obj.create_v3(networkv4, force=force)
 
-    except ip_models.NetworkIPv4ErrorV3, e:
+    except ip_models.NetworkIPv4ErrorV3 as e:
         raise ValidationAPIException(e.message)
 
-    except exceptions.InvalidInputException, e:
+    except exceptions.InvalidInputException as e:
         raise ValidationAPIException(e.detail)
 
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -111,19 +111,19 @@ def update_networkipv4(networkv4, user, force=False):
         netv4_obj = get_networkipv4_by_id(networkv4.get('id'))
         netv4_obj.update_v3(networkv4, force=force)
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except ip_models.NetworkIPv4ErrorV3, e:
+    except ip_models.NetworkIPv4ErrorV3 as e:
         raise ValidationAPIException(e.message)
 
-    except exceptions.InvalidInputException, e:
+    except exceptions.InvalidInputException as e:
         raise ValidationAPIException(e.detail)
 
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -138,16 +138,16 @@ def delete_networkipv4(network_ids, user, force=False):
             netv4_obj = get_networkipv4_by_id(network_id)
             netv4_obj.delete_v3(force=force)
 
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e.detail)
 
-        except ip_models.NetworkIPv4ErrorV3, e:
+        except ip_models.NetworkIPv4ErrorV3 as e:
             raise ValidationAPIException(e.message)
 
-        except ValidationAPIException, e:
+        except ValidationAPIException as e:
             raise ValidationAPIException(e.detail)
 
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(str(e))
 
 
@@ -178,22 +178,22 @@ def undeploy_networkipv4(network_id, user, force=False):
                     'Verify the permissions of user group with equipment group'
                     '. Network:{}'.format(netv4_obj.id))
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except exceptions.NoEnvironmentRoutersFoundException, e:
+    except exceptions.NoEnvironmentRoutersFoundException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException, e:
+    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException, e:
+    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.NetworkAlreadyActive, e:
+    except exceptions.NetworkAlreadyActive as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -303,22 +303,22 @@ def deploy_networkipv4(network_id, user):
                     'Verify the permissions of user group with equipment group'
                     '.Network:{}'.format(netv4_obj.id))
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except exceptions.NoEnvironmentRoutersFoundException, e:
+    except exceptions.NoEnvironmentRoutersFoundException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException, e:
+    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException, e:
+    except exceptions_eqpt.UserDoesNotHavePermInAllEqptException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.NetworkAlreadyActive, e:
+    except exceptions.NetworkAlreadyActive as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     else:
@@ -363,25 +363,25 @@ def deploy_networkipv4(network_id, user):
 
         return status_deploy
 
-    except ip_models.NetworkIPv4ErrorV3, e:
+    except ip_models.NetworkIPv4ErrorV3 as e:
         raise ValidationAPIException(e.message)
 
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
 
-    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException, e:
+    except exceptions_eqpt.AllEquipmentsAreInMaintenanceException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.IncorrectRedundantGatewayRegistryException, e:
+    except exceptions.IncorrectRedundantGatewayRegistryException as e:
         raise ValidationAPIException(e.detail)
 
-    except exceptions.NetworkAlreadyActive, e:
+    except exceptions.NetworkAlreadyActive as e:
         raise ValidationAPIException(e.detail)
 
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e.detail)
 
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(str(e))
 
     finally:
