@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
+from django.db.utils import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
@@ -21,7 +22,7 @@ from networkapi.api_route_map.v4.exceptions import RouteMapIsDeployedException
 from networkapi.equipamento.models import Equipamento
 from networkapi.models.BaseModel import BaseModel
 from networkapi.util.geral import get_model
-
+from django.apps import apps
 
 class RouteMapEntryAction:
     p = ('P', 'P')
@@ -157,11 +158,13 @@ class EquipmentRouteMap(BaseModel):
 
     equipment = models.ForeignKey(
         'equipamento.Equipamento',
-        db_column='id_equipment'
+        db_column='id_equipment',
+        on_delete=models.DO_NOTHING
     )
     route_map = models.ForeignKey(
         'api_route_map.RouteMap',
-        db_column='id_route_map'
+        db_column='id_route_map',
+        on_delete=models.DO_NOTHING
     )
 
     class Meta(BaseModel.Meta):
@@ -200,12 +203,14 @@ class RouteMapEntry(BaseModel):
 
     list_config_bgp = models.ForeignKey(
         'api_list_config_bgp.ListConfigBGP',
-        db_column='id_list_config_bgp'
+        db_column='id_list_config_bgp',
+        on_delete=models.DO_NOTHING
     )
 
     route_map = models.ForeignKey(
         'api_route_map.RouteMap',
-        db_column='id_route_map'
+        db_column='id_route_map',
+        on_delete=models.DO_NOTHING
     )
 
     log = logging.getLogger('RouteMapEntry')
@@ -240,7 +245,7 @@ class RouteMapEntry(BaseModel):
     def create_v4(self, route_map_entry):
         """Create RouteMapEntry."""
 
-        listconfigbgp_model = get_model('api_list_config_bgp', 'ListConfigBGP')
+        listconfigbgp_model = apps.get_model('api_list_config_bgp', 'ListConfigBGP')
 
         self.action = route_map_entry.get('action')
         self.action_reconfig = route_map_entry.get('action_reconfig')

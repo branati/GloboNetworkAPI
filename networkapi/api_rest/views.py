@@ -22,6 +22,6 @@ class HelperApi(APIView):
                 data = json.load(data_file)
 
             return Response(data)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise Exception('Spec not exists')

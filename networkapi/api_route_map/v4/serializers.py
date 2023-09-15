@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -19,7 +19,7 @@ class RouteMapV4Serializer(DynamicFieldsModelSerializer):
         SerializerMethodField('get_peer_groups')
 
     class Meta:
-        RouteMap = get_model('api_route_map', 'RouteMap')
+        RouteMap = apps.get_model('api_route_map', 'RouteMap')
         model = RouteMap
 
         fields = (
@@ -99,7 +99,7 @@ class RouteMapEntryV4Serializer(DynamicFieldsModelSerializer):
     route_map = serializers.SerializerMethodField('get_route_map')
 
     class Meta:
-        RouteMapEntry = get_model('api_route_map', 'RouteMapEntry')
+        RouteMapEntry = apps.get_model('api_route_map', 'RouteMapEntry')
         model = RouteMapEntry
 
         fields = (

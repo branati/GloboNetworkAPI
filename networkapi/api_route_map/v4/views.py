@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -65,7 +65,7 @@ class RouteMapDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('route_map_post_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new RouteMap."""
 
@@ -82,7 +82,7 @@ class RouteMapDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('route_map_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update RouteMap."""
 
@@ -101,7 +101,7 @@ class RouteMapDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete RouteMap."""
 
@@ -154,7 +154,7 @@ class RouteMapEntryDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('routemap_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new RouteMapEntry."""
 
@@ -170,7 +170,7 @@ class RouteMapEntryDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('route_map_entry_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update RouteMapEntry."""
 
@@ -189,7 +189,7 @@ class RouteMapEntryDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete RouteMapEntry."""
 
@@ -242,7 +242,7 @@ class RouteMapView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('routemap_post')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Create new RouteMapEntry."""
 
@@ -261,7 +261,7 @@ class RouteMapView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('route_map_entry_put_v4')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Update RouteMapEntry."""
 
@@ -280,7 +280,7 @@ class RouteMapView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Delete RouteMapEntry."""
 
