@@ -129,19 +129,19 @@ class GroupUserAlterRemoveResource(RestResource):
                 try:
                     # save user group
                     ugroup.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to save the GroupUser.')
                     raise GrupoError(e, u'Failed to save the GroupUser.')
 
                 return self.response(dumps_networkapi({'user_group': {'id': ugroup.id}}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
         except UGrupoNameDuplicatedError:
             return self.response_error(182, name)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
         except UGrupoNotFoundError:
@@ -180,7 +180,7 @@ class GroupUserAlterRemoveResource(RestResource):
                 ugroup.delete()
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UGrupoNotFoundError:
             return self.response_error(180, id_ugroup)

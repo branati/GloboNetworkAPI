@@ -127,7 +127,7 @@ class AdministrativePermissionAddResource(RestResource):
             try:
                 # save Administrative Permission
                 adm_perm.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(
                     u'Failed to save the administrative permission.')
                 raise GrupoError(
@@ -139,7 +139,7 @@ class AdministrativePermissionAddResource(RestResource):
 
             return self.response(dumps_networkapi(perm_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -151,8 +151,8 @@ class AdministrativePermissionAddResource(RestResource):
         except UGrupoNotFoundError:
             return self.response_error(180, id_group)
 
-        except PermissaoAdministrativaDuplicatedError, e:
+        except PermissaoAdministrativaDuplicatedError as e:
             return self.response_error(351, e.message)
 
-        except (GrupoError, PermissionError), e:
+        except (GrupoError, PermissionError) as e:
             return self.response_error(1)

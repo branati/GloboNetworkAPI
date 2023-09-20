@@ -11,7 +11,7 @@ LOG = logging.getLogger(__name__)
 from networkapi.grupo import models
 
 
-class UGrupoFactory(factory.DjangoModelFactory):
+class UGrupoFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.UGrupo
 
     nome = factory.Sequence(lambda n: 'grupo-{0}'.format(n))

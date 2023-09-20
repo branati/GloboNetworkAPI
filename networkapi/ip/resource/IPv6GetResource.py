@@ -115,20 +115,20 @@ class IPv6GetResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(network_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(119)
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(281, id_ip)
-        except EquipamentoError, e:
+        except EquipamentoError as e:
             return self.response_error(1)
-        except IpEquipmentNotFoundError, e:
+        except IpEquipmentNotFoundError as e:
             return self.response_error(281, id_ip)
         except (IpError):
             return self.response_error(1)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)

@@ -393,7 +393,7 @@ def old_to_new(vip_request):
                         vrpp.optionvip = op_pt
                         vrpp.save()
 
-    except Exception, e:
+    except Exception as e:
         log.error(e)
         raise e
 
@@ -482,7 +482,7 @@ def new_to_old(vp):
         vip.set_new_variables(vip_map)
         vip.save()
 
-    except Exception, e:
+    except Exception as e:
         log.error(e)
         raise e
 
@@ -496,7 +496,7 @@ def delete_old(ids):
         else:
             RequisicaoVips.objects.filter(id=ids).delete()
 
-    except Exception, e:
+    except Exception as e:
         log.error(e)
         # raise e
 
@@ -508,6 +508,6 @@ def delete_new(ids):
             VipRequest.objects.filter(id__in=ids).delete()
         else:
             VipRequest.objects.filter(id=ids).delete()
-    except Exception, e:
+    except Exception as e:
         log.error(e)
         # raise e

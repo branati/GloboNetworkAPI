@@ -60,7 +60,7 @@ def _add_text_node(value, node, doc):
     try:
         textNode = doc.createTextNode(text)
         node.appendChild(textNode)
-    except TypeError, t:
+    except TypeError as t:
         raise InvalidNodeTypeXMLError(
             t, u'Conteúdo de um Nó do XML com tipo de dado inválido: %s ' % value)
 
@@ -84,7 +84,7 @@ def _add_nodes_to_parent(map, parent, doc):
     if map is None:
         return
 
-    for key, value in map.iteritems():
+    for key, value in map.items():
         try:
             if isinstance(value, dict):
                 node = doc.createElement(key)
@@ -97,7 +97,7 @@ def _add_nodes_to_parent(map, parent, doc):
                 parent.appendChild(node)
                 _add_text_node(value, node, doc)
 
-        except InvalidCharacterErr, i:
+        except InvalidCharacterErr as i:
             raise InvalidNodeNameXMLError(
                 i, u'Valor inválido para nome de uma TAG de XML: %s' % key)
 
@@ -114,7 +114,7 @@ def dumps(map, root_name, root_attributes=None):
     xml = ''
     try:
         implementation = getDOMImplementation()
-    except ImportError, i:
+    except ImportError as i:
         raise XMLError(i, u'Erro ao obter o DOMImplementation')
 
     doc = implementation.createDocument(None, root_name, None)
@@ -123,7 +123,7 @@ def dumps(map, root_name, root_attributes=None):
         root = doc.documentElement
 
         if (root_attributes is not None):
-            for key, value in root_attributes.iteritems():
+            for key, value in root_attributes.items():
                 attribute = doc.createAttribute(key)
                 attribute.nodeValue = value
                 root.setAttributeNode(attribute)
@@ -131,7 +131,7 @@ def dumps(map, root_name, root_attributes=None):
         _add_nodes_to_parent(map, root, doc)
 
         xml = doc.toxml('UTF-8')
-    except InvalidCharacterErr, i:
+    except InvalidCharacterErr as i:
         raise InvalidNodeNameXMLError(
             i, u'Valor inválido para nome de uma TAG de XML: %s' % root_name)
     finally:
@@ -212,7 +212,7 @@ def loads(xml, force_list=None):
 
     try:
         doc = parseString(xml)
-    except Exception, e:
+    except Exception as e:
         raise XMLError(e, u'Falha ao realizar o parse do xml.')
 
     root = doc.documentElement
@@ -234,29 +234,29 @@ def loads(xml, force_list=None):
 if __name__ == '__main__':
 
     map, attrs_map = loads('<teste/>')
-    print map
+    print(map)
 
     list = [{'id': None}, {'id': (2, 6)}]
     map = {'ambiente': list}
     xml = dumps(map, 'networkapi', {'versao': '1.0'})
-    print xml
+    print(xml)
 
     map, attrs_map = loads(xml)
-    print map
+    print(map)
 
     xml = '<?xml version="1.0" encoding="UTF-8"?><networkapi versao="1.0"><!--Comentario--><ambiente><id><!--Comentario--></id></ambiente><ambiente><id>3<teste>geovana</teste>2</id></ambiente></networkapi>'
     map, attrs_map = loads(xml)
-    print map
+    print(map)
 
     xml = '<?xml version="1.0" encoding="UTF-8"?><networkapi versao="1.0"><!--Comentario--><ambiente><id><!--Comentario--></id></ambiente><ambiente><id>3 2 5</id></ambiente></networkapi>'
     map, attrs_map = loads(xml)
-    print map
+    print(map)
 
     xml = dumps(map, 'networkapi', attrs_map)
-    print xml
+    print(xml)
 
     xml = dumps(None, 'networkapi', {'versao': '1.0'})
-    print xml
+    print(xml)
 
     xml = """<?xml version="1.0" encoding="UTF-8"?>
     <networkapi versao="1.0">
@@ -270,9 +270,9 @@ if __name__ == '__main__':
 
     map, attrs_map = loads(xml)
 
-    print map
+    print(map)
 
-    print dumps(map, 'networkapi', attrs_map)
+    print(dumps(map, 'networkapi', attrs_map))
 
     xml = """<?xml version="1.0" encoding="UTF-8"?>
 <networkapi versao="1.0">
@@ -287,9 +287,9 @@ if __name__ == '__main__':
 
     map, attrs_map = loads(xml)
 
-    print map
+    print(map)
 
-    print dumps(map, 'networkapi', attrs_map)
+    print(dumps(map, 'networkapi', attrs_map))
 
     xml = """<?xml version="1.0" encoding="UTF-8"?>
 <networkapi versao="1.0">
@@ -299,6 +299,6 @@ if __name__ == '__main__':
 
     map, attrs_map = loads(xml)
 
-    print map
+    print(map)
 
-    print dumps(map, 'networkapi', attrs_map)
+    print(dumps(map, 'networkapi', attrs_map))

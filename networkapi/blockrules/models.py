@@ -29,7 +29,8 @@ class Rule(BaseModel):
     environment = models.ForeignKey(
         'ambiente.Ambiente',
         db_column='id_ambiente',
-        null=False
+        null=False,
+        on_delete=models.DO_NOTHING
     )
     name = models.CharField(
         max_length=80,
@@ -37,11 +38,26 @@ class Rule(BaseModel):
         null=False,
         db_column='name'
     )
-    vip = models.ForeignKey(
-        'requisicaovips.RequisicaoVips',
+
+    # TODO
+    # Caso 5
+    # Erro de dependência circular
+    # django.db.migrations.exceptions.CircularDependencyError: requisicaovips.0001_initial, blockrules.0001_initial
+    # Alinhar com o time Globo
+    # https://django.readthedocs.io/en/stable/topics/migrations.html
+
+    # vip = models.ForeignKey(
+    #     'requisicaovips.RequisicaoVips',
+    #     db_column='id_vip',
+    #     null=True,
+    #     related_name='vip',
+    #     on_delete=models.DO_NOTHING
+    # )
+
+    vip = models.IntegerField(
         db_column='id_vip',
         null=True,
-        related_name='vip'
+        blank=True
     )
 
     log = logging.getLogger('Rule')
@@ -63,7 +79,8 @@ class BlockRules(BaseModel):
     environment = models.ForeignKey(
         'ambiente.Ambiente',
         db_column='id_ambiente',
-        null=False
+        null=False,
+        on_delete=models.DO_NOTHING
     )
     order = models.IntegerField(
         null=False,

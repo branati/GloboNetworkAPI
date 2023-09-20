@@ -41,9 +41,11 @@ class CantDissociateError(FilterError):
 
 class FilterEquipType(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id')
-    filter = models.ForeignKey(Filter, db_column='id_filter')
+    filter = models.ForeignKey(Filter, db_column='id_filter',
+        on_delete=models.DO_NOTHING)
     equiptype = models.ForeignKey(
-        'equipamento.TipoEquipamento', db_column='id_equiptype')
+        'equipamento.TipoEquipamento', db_column='id_equiptype',
+        on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('FilterEquipType')
 

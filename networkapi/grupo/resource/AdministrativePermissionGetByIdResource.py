@@ -65,7 +65,7 @@ class AdministrativePermissionGetByIdResource(RestResource):
 
             return self.response(dumps_networkapi(perms_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -74,5 +74,5 @@ class AdministrativePermissionGetByIdResource(RestResource):
         except PermissaoAdministrativaNotFoundError:
             return self.response_error(189, id_perm)
 
-        except GrupoError, e:
+        except GrupoError as e:
             return self.response_error(1)

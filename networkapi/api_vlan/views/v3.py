@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -68,7 +68,7 @@ class VlanDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('vlan_post')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Creates list of vlans."""
 
@@ -87,7 +87,7 @@ class VlanDBView(CustomAPIView):
     @raise_json_validate('vlan_put')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_obj_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Updates list of vlans."""
 
@@ -106,7 +106,7 @@ class VlanDBView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.delete_obj_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Deletes list of vlans."""
 
@@ -124,7 +124,7 @@ class VlanAsyncView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('vlan_post')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """Creates list of vlans."""
 
@@ -150,7 +150,7 @@ class VlanAsyncView(CustomAPIView):
     @raise_json_validate('vlan_put')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_obj_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """Updates list of vlans."""
 
@@ -176,7 +176,7 @@ class VlanAsyncView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.delete_obj_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """Deletes list of vlans."""
 

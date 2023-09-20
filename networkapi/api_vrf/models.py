@@ -11,6 +11,7 @@ from networkapi.api_vrf.exceptions import VrfAssociatedToVirtualInterface
 from networkapi.api_vrf.exceptions import VrfError
 from networkapi.api_vrf.exceptions import VrfNotFoundError
 from networkapi.api_vrf.exceptions import VrfRelatedToEnvironment
+
 from networkapi.filter.models import FilterNotFoundError
 from networkapi.models.BaseModel import BaseModel
 
@@ -140,6 +141,7 @@ class Vrf(BaseModel):
 
 
 class VrfVlanEquipment(BaseModel):
+    from networkapi.equipamento.models import Equipamento
 
     id = models.AutoField(
         primary_key=True,
@@ -158,7 +160,8 @@ class VrfVlanEquipment(BaseModel):
         on_delete=models.DO_NOTHING
     )
     equipment = models.ForeignKey(
-        'equipamento.Equipamento',
+        Equipamento,
+        #'equipamento.Equipamento',
         db_column='id_equipment',
         null=False,
         on_delete=models.DO_NOTHING
@@ -173,6 +176,7 @@ class VrfVlanEquipment(BaseModel):
 
 
 class VrfEquipment(BaseModel):
+    from networkapi.equipamento.models import Equipamento
 
     id = models.AutoField(
         primary_key=True,
@@ -185,7 +189,8 @@ class VrfEquipment(BaseModel):
         on_delete=models.DO_NOTHING
     )
     equipment = models.ForeignKey(
-        'equipamento.Equipamento',
+        Equipamento,
+        # 'equipamento.Equipamento',
         db_column='id_equipment',
         null=False,
         on_delete=models.DO_NOTHING

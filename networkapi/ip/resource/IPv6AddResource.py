@@ -132,11 +132,11 @@ class IPv6AddResource(RestResource):
 
                 return self.response(dumps_networkapi({'ip': ip_map}))
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except NetworkIPv6NotFoundError:
@@ -145,7 +145,7 @@ class IPv6AddResource(RestResource):
         except EquipamentoNotFoundError:
             return self.response_error(117, ip_map.get('id_equipment'))
 
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
 
         except UserNotAuthorizedError:

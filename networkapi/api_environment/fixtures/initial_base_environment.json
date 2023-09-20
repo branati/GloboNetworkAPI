@@ -107,7 +107,6 @@
   {
     "fields": {
       "ambiente_logico": 1,
-      "default_vrf": 1,
       "divisao_dc": 1,
       "grupo_l3": 1,
       "vxlan": false
@@ -118,7 +117,6 @@
   {
     "fields": {
       "ambiente_logico": 1,
-      "default_vrf": 1,
       "divisao_dc": 1,
       "grupo_l3": 2,
       "vxlan": false

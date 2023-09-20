@@ -272,7 +272,7 @@ class IPv4SaveResource(RestResource):
             return self.response_error(150, e.message)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
         except (IpError, NetworkIPv4Error, EquipamentoError, GrupoError) as e:

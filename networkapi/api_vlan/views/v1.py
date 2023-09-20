@@ -15,7 +15,7 @@
 # limitations under the License.
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -32,7 +32,7 @@ log = logging.getLogger(__name__)
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, Write))
-@commit_on_success
+@atomic
 def acl_remove_draft(request, id_vlan, acl_type):
     """
         Remove draft for acl
@@ -50,22 +50,22 @@ def acl_remove_draft(request, id_vlan, acl_type):
 
         return response
 
-    except Vlan.DoesNotExist, exception:
+    except Vlan.DoesNotExist as exception:
         log.error(exception)
         raise exceptions.VlanDoesNotExistException()
 
-    except exceptions.InvalidIdVlanException, exception:
+    except exceptions.InvalidIdVlanException as exception:
         log.error(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write))
-@commit_on_success
+@atomic
 def acl_save_draft(request, id_vlan, acl_type):
     """
         Save draft for acl
@@ -82,14 +82,14 @@ def acl_save_draft(request, id_vlan, acl_type):
 
         return response
 
-    except Vlan.DoesNotExist, exception:
+    except Vlan.DoesNotExist as exception:
         log.error(exception)
         raise exceptions.VlanDoesNotExistException()
 
-    except exceptions.InvalidIdVlanException, exception:
+    except exceptions.InvalidIdVlanException as exception:
         log.error(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()

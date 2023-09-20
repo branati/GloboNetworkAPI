@@ -95,7 +95,7 @@ class InterfaceResource(RestResource):
             else:
                 return self.search_interface_by_name_and_equipment(equipment_id, interface_name, is_new)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EquipamentoNotFoundError:
             return self.response_error(117, equipment_id)
@@ -224,9 +224,9 @@ class InterfaceResource(RestResource):
 
             return self.response(dumps_networkapi(networkapi_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except EquipamentoNotFoundError:
@@ -344,9 +344,9 @@ class InterfaceResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except InterfaceNotFoundError:
@@ -395,9 +395,9 @@ class InterfaceResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except InterfaceNotFoundError:

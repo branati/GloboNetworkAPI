@@ -5,7 +5,7 @@ import logging
 
 from django.core.exceptions import FieldError
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 
 from networkapi.ambiente.models import EnvironmentVip
 from networkapi.api_equipment import exceptions as exceptions_eqpt
@@ -80,11 +80,11 @@ def get_vip_request_by_ids(vip_request_ids):
         try:
             sp = get_vip_request_by_id(vip_request_id).id
             vps_ids.append(sp)
-        except ObjectDoesNotExistException, e:
+        except ObjectDoesNotExistException as e:
             raise ObjectDoesNotExistException(e)
-        except exceptions.VipRequestDoesNotExistException, e:
+        except exceptions.VipRequestDoesNotExistException as e:
             raise ObjectDoesNotExistException(e)
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(e)
 
     vip_requests = VipRequest.objects.filter(id__in=vps_ids)
@@ -98,9 +98,9 @@ def create_vip_request(vip_request, user):
     try:
         vip = VipRequest()
         vip.create_v3(vip_request, user)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(str(e))
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(e)
     else:
         return vip
@@ -112,11 +112,11 @@ def update_vip_request(vip_request, user, permit_created=False):
     try:
         vip = get_vip_request_by_id(vip_request.get('id'))
         vip.update_v3(vip_request, user, permit_created)
-    except exceptions.VipRequestDoesNotExistException, e:
+    except exceptions.VipRequestDoesNotExistException as e:
         raise ObjectDoesNotExistException(e.detail)
-    except ValidationAPIException, e:
+    except ValidationAPIException as e:
         raise ValidationAPIException(e)
-    except Exception, e:
+    except Exception as e:
         raise NetworkAPIException(e)
     else:
         return vip
@@ -130,13 +130,13 @@ def delete_vip_request(vip_request_ids, keep_ip='0'):
             vip = get_vip_request_by_id(vip_request_id)
             bypass_ip = True if keep_ip == '1' else False
             vip.delete_v3(bypass_ipv4=bypass_ip, bypass_ipv6=bypass_ip)
-        except exceptions.VipRequestDoesNotExistException, e:
+        except exceptions.VipRequestDoesNotExistException as e:
             raise ObjectDoesNotExistException(e.detail)
-        except exceptions.VipConstraintCreated, e:
+        except exceptions.VipConstraintCreated as e:
             raise ValidationAPIException(e)
-        except ValidationAPIException, e:
+        except ValidationAPIException as e:
             raise ValidationAPIException(e)
-        except Exception, e:
+        except Exception as e:
             raise NetworkAPIException(e)
     return vip
 
@@ -392,7 +392,7 @@ def prepare_apply(load_balance, vip, created=True, user=None):
     return load_balance
 
 
-@commit_on_success
+@atomic
 def create_real_vip_request(vip_requests, user):
 
     load_balance = dict()
@@ -427,7 +427,7 @@ def create_real_vip_request(vip_requests, user):
         viprequestportpool__vip_request_port__vip_request__id__in=ids).update(pool_created=True)
 
 
-@commit_on_success
+@atomic
 def update_real_vip_request(vip_requests, user):
 
     load_balance = dict()
@@ -577,7 +577,7 @@ def update_real_vip_request(vip_requests, user):
             id__in=pools_ids_del).update(pool_created=False)
 
 
-@commit_on_success
+@atomic
 def patch_real_vip_request(vip_requests, user):
 
     load_balance = dict()
@@ -615,7 +615,7 @@ def patch_real_vip_request(vip_requests, user):
         log.info('ended call')
 
 
-@commit_on_success
+@atomic
 def delete_real_vip_request(vip_requests, user, cleanup='0'):
     load_balance = dict()
     cleanup = True if cleanup == '1' else False

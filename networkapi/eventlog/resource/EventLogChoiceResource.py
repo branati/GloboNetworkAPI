@@ -99,11 +99,11 @@ class EventLogChoiceResource(RestResource):
 
             return self.response(dumps_networkapi(choices_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
         except (EventLogError):
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

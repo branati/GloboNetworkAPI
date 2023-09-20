@@ -40,7 +40,7 @@ def deploy(self, vip_id, user_id):
     try:
         facade.create_real_vip_request([vip_serializer.data], user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'Vip Request {} was not deployed.'.format(vip_obj)
         msg['reason'] = str(exception)
 
@@ -79,7 +79,7 @@ def undeploy(self, vip_id, user_id):
     try:
         facade.delete_real_vip_request([vip_serializer.data], user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'Vip Request {} was not undeployed.'.format(vip_obj)
         msg['reason'] = str(exception)
 
@@ -117,7 +117,7 @@ def redeploy(self, vip_dict, user_id):
         vip_obj = facade.get_vip_request_by_id(vip_id)
         facade.update_real_vip_request([vip_dict], user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'Vip Request {} was not redeployed.'.format(vip_obj)
         msg['reason'] = str(exception)
 

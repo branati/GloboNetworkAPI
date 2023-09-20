@@ -102,9 +102,9 @@ def get_prefix_IPV6(num_hosts):
 
 if __name__ == '__main__':
 
-    print get_prefix_IPV4(17)
-    print get_prefix_IPV4(33)
-    print get_prefix_IPV4(255)
+    print(get_prefix_IPV4(17))
+    print(get_prefix_IPV4(33))
+    print(get_prefix_IPV4(255))
 
     # IPV4
     # ========================================================================

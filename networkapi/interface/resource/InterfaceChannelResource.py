@@ -90,7 +90,7 @@ def alterar_interface(var, interface, port_channel, int_type, vlan_nativa, user,
                 amb_int.vlans = range_vlans
             try:
                 amb_int.create(user)
-            except Exception, e:
+            except Exception as e:
                 logger.error(e)
                 pass
 
@@ -221,16 +221,16 @@ class InterfaceChannelResource(RestResource):
 
             return self.response(dumps_networkapi({'port_channel': port_channel_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
-        except InterfaceError, e:
+        except InterfaceError as e:
             return self.response_error(405, e)
-        except api_interface_exceptions.InterfaceException, e:
+        except api_interface_exceptions.InterfaceException as e:
             return self.response_error(405, e)
-        except Exception, e:
+        except Exception as e:
             return self.response_error(405, e)
 
     def handle_get(self, request, user, *args, **kwargs):
@@ -268,9 +268,9 @@ class InterfaceChannelResource(RestResource):
 
             return self.response(dumps_networkapi({'channel': channel}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except InterfaceError:
@@ -342,17 +342,17 @@ class InterfaceChannelResource(RestResource):
 
             return self.response(dumps_networkapi({}))
 
-        except api_interface_exceptions.InterfaceException, e:
+        except api_interface_exceptions.InterfaceException as e:
             return self.response_error(410, e)
-        except api_interface_exceptions.InvalidKeyException, e:
+        except api_interface_exceptions.InvalidKeyException as e:
             return self.response_error(410, e)
-        except var_exceptions.VariableDoesNotExistException, e:
+        except var_exceptions.VariableDoesNotExistException as e:
             return self.response_error(410, e)
-        except api_interface_exceptions.InterfaceTemplateException, e:
+        except api_interface_exceptions.InterfaceTemplateException as e:
             return self.response_error(410, e)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
 
@@ -487,10 +487,10 @@ class InterfaceChannelResource(RestResource):
 
             return self.response(dumps_networkapi({'port_channel': port_channel_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
-        except InterfaceError, e:
+        except InterfaceError as e:
             return self.response_error(406, e)

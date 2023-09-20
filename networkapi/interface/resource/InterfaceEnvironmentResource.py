@@ -81,9 +81,9 @@ class InterfaceEnvironmentResource(RestResource):
 
             return self.response(dumps_networkapi(amb_int_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except InterfaceError:
@@ -126,9 +126,9 @@ class InterfaceEnvironmentResource(RestResource):
 
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except InterfaceError:
@@ -163,9 +163,9 @@ class InterfaceEnvironmentResource(RestResource):
 
             return self.response(dumps_networkapi({'ambiente': ambiente_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except InterfaceError:

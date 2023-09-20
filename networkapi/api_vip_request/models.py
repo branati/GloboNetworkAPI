@@ -2,10 +2,11 @@
 import logging
 from itertools import chain
 
-from _mysql_exceptions import OperationalError
+#from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import get_model
+from django.apps import apps
+# from django.apps import apps
 from django.db.models import Q
 
 from networkapi.admin_permission import AdminPermission
@@ -37,21 +38,24 @@ class VipRequest(BaseModel):
         'ip.Ip',
         db_column='id_ipv4',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     ipv6 = models.ForeignKey(
         'ip.Ipv6',
         db_column='id_ipv6',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     environmentvip = models.ForeignKey(
         'ambiente.EnvironmentVip',
         db_column='id_environmentvip',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     business = models.CharField(
@@ -137,22 +141,22 @@ class VipRequest(BaseModel):
         """
         try:
             return VipRequest.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(u'vip request not found. pk {}'.format(id))
             raise exceptions.VipRequestNotFoundError(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise exceptions.VipRequestError(
                 e, u'Failure to search the vip request.')
 
     def _is_ipv4_in_use(self, ipv4, id_vip=None):
         id_vip = id_vip if id_vip else self.id
-        spm_model = get_model('requisicaovips', 'ServerPoolMember')
-        vp_model = get_model('api_vip_request', 'VipRequest')
+        spm_model = apps.get_model('requisicaovips', 'ServerPoolMember')
+        vp_model = apps.get_model('api_vip_request', 'VipRequest')
 
         is_in_use = True
 
@@ -171,8 +175,8 @@ class VipRequest(BaseModel):
 
     def _is_ipv6_in_use(self, ipv6, id_vip=None):
         id_vip = id_vip if id_vip else self.id
-        spm_model = get_model('requisicaovips', 'ServerPoolMember')
-        vp_model = get_model('api_vip_request', 'VipRequest')
+        spm_model = apps.get_model('requisicaovips', 'ServerPoolMember')
+        vp_model = apps.get_model('api_vip_request', 'VipRequest')
 
         is_in_use = True
 
@@ -191,7 +195,7 @@ class VipRequest(BaseModel):
 
     @classmethod
     def get_pool_related(cls, id_vip):
-        sp_model = get_model('requisicaovips', 'ServerPool')
+        sp_model = apps.get_model('requisicaovips', 'ServerPool')
 
         pools = sp_model.objects.filter(
             viprequestportpool__vip_request_port__vip_request__id=id_vip
@@ -519,7 +523,7 @@ class VipRequest(BaseModel):
                 try:
                     sp = reqvip_models.ServerPool.objects.get(
                         id=pool['server_pool'])
-                except Exception, e:
+                except Exception as e:
                     self.log.error(e)
                     raise exceptions_pool.PoolDoesNotExistException(
                         pool['server_pool'])
@@ -729,7 +733,7 @@ class VipRequest(BaseModel):
                     self.log.info(
                         'Tried to delete Ipv4, because assoc with in more Vips.')
                     pass
-                except Exception, e:
+                except Exception as e:
                     self.log.error(e)
                     raise Exception('Error to delete Ipv4: %s.', e)
 
@@ -742,7 +746,7 @@ class VipRequest(BaseModel):
                     self.log.info(
                         'Tried to delete Ipv6, because assoc with in more Vips.')
                     pass
-                except Exception, e:
+                except Exception as e:
                     self.log.error(e)
                     raise Exception('Error to delete Ipv6: %s.', e)
 
@@ -763,11 +767,13 @@ class VipRequestOptionVip(BaseModel):
     vip_request = models.ForeignKey(
         VipRequest,
         db_column='id_vip_request',
+        on_delete=models.DO_NOTHING
     )
 
     optionvip = models.ForeignKey(
         'requisicaovips.OptionVip',
         db_column='id_opcoesvip',
+        on_delete=models.DO_NOTHING
     )
 
     @cached_property
@@ -814,15 +820,15 @@ class VipRequestOptionVip(BaseModel):
         """
         try:
             return VipRequestOptionVip.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(
                 u'vip request option vip not found. pk {}'.format(id))
             raise exceptions.VipRequestOptionVipNotFoundError(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise exceptions.VipRequestOptionVipError(
                 e, u'Failure to search the vip request option vip.')
@@ -840,16 +846,16 @@ class VipRequestOptionVip(BaseModel):
         try:
             return VipRequestOptionVip.objects.get(
                 vip_request_id=vip_request_id, optionvip__tipo_opcao=kind)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(
                 u'Vip request option vip not found. Vip {} '
                 u'kind {}'.format(vip_request_id, kind))
             raise exceptions.VipRequestOptionVipNotFoundError(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise exceptions.VipRequestOptionVipError(
                 e, u'Failure to search the vip request option vip.')
@@ -877,10 +883,10 @@ class VipRequestPort(BaseModel):
     vip_request = models.ForeignKey(
         VipRequest,
         db_column='id_vip_request',
+        on_delete=models.DO_NOTHING
     )
 
     port = models.IntegerField(
-        max_length=5,
         db_column='port'
     )
 
@@ -916,14 +922,14 @@ class VipRequestPort(BaseModel):
         """
         try:
             return VipRequestPort.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(u'vip request port not found. pk {}'.format(id))
             raise exceptions.VipRequestPortNotFoundError(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise exceptions.VipRequestPortError(
                 e, u'Failure to search the vip request port.')
@@ -1067,11 +1073,13 @@ class VipRequestPortOptionVip(BaseModel):
     vip_request_port = models.ForeignKey(
         VipRequestPort,
         db_column='id_vip_request_port',
+        on_delete=models.DO_NOTHING
     )
 
     optionvip = models.ForeignKey(
         'requisicaovips.OptionVip',
         db_column='id_opcoesvip',
+        on_delete=models.DO_NOTHING
     )
 
     class Meta(BaseModel.Meta):
@@ -1090,15 +1098,15 @@ class VipRequestPortOptionVip(BaseModel):
         """
         try:
             return VipRequestPortOptionVip.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(
                 u'vip request port option vip not found. pk {}'.format(id))
             raise exceptions.VipRequestPortOptionVipNotFoundError(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise exceptions.VipRequestPortOptionVipError(
                 e, u'Failure to search the vip request port option vip.')
@@ -1127,16 +1135,19 @@ class VipRequestPortPool(BaseModel):
     vip_request_port = models.ForeignKey(
         VipRequestPort,
         db_column='id_vip_request_port',
+        on_delete=models.DO_NOTHING
     )
 
     optionvip = models.ForeignKey(
         'requisicaovips.OptionVip',
         db_column='id_opcoesvip',
+        on_delete=models.DO_NOTHING
     )
 
     server_pool = models.ForeignKey(
         'requisicaovips.ServerPool',
         db_column='id_server_pool',
+        on_delete=models.DO_NOTHING
     )
 
     val_optionvip = models.CharField(
@@ -1170,14 +1181,14 @@ class VipRequestPortPool(BaseModel):
         """
         try:
             return VipRequestPortPool.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(u'vip request port pool not found. pk {}'.format(id))
             raise exceptions.VipRequestPortPoolNotFoundError(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise exceptions.VipRequestPortPoolError(
                 e, u'Failure to search the vip request port pool.')
@@ -1223,10 +1234,10 @@ class VipRequestDSCP(BaseModel):
     vip_request = models.ForeignKey(
         VipRequest,
         db_column='id_vip_request',
+        on_delete=models.DO_NOTHING
     )
 
     dscp = models.IntegerField(
-        max_length=2,
         db_column='dscp')
 
     class Meta(BaseModel.Meta):
@@ -1246,14 +1257,14 @@ class VipRequestDSCP(BaseModel):
         """
         try:
             return VipRequestDSCP.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(u'vip request dscp not found. pk {}'.format(id))
             raise exceptions.VipRequestDSCPNotFoundError(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise exceptions.VipRequestDSCPError(
                 e, u'Failure to search the vip request dscp.')

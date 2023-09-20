@@ -53,22 +53,7 @@
   },
   {
     "fields": {
-      "nome": "RACK-1"
-    },
-    "model": "ambiente.grupol3",
-    "pk": 1
-  },
-  {
-    "fields": {
-      "nome": "BALANCING"
-    },
-    "model": "ambiente.grupol3",
-    "pk": 2
-  },
-  {
-    "fields": {
       "ambiente_logico": 1,
-      "default_vrf": 1,
       "divisao_dc": 1,
       "father_environment": null,
       "filter": 1,
@@ -80,7 +65,6 @@
   {
     "fields": {
       "ambiente_logico": 1,
-      "default_vrf": 1,
       "divisao_dc": 1,
       "filter": 1,
       "grupo_l3": 2
@@ -278,15 +262,6 @@
       "environment_vip": 1
     },
     "model": "ambiente.environmentenvironmentvip",
-    "pk": 1
-  },
-  {
-    "fields": {
-      "ambiente": 2,
-      "nome": "VLAN 2 - BALACING",
-      "num_vlan": 2
-    },
-    "model": "vlan.vlan",
     "pk": 1
   },
   {

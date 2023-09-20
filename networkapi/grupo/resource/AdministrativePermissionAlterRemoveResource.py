@@ -139,7 +139,7 @@ class AdministrativePermissionAlterRemoveResource(RestResource):
                 try:
                     # update Administrative Permission
                     adm_perm.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(
                         u'Failed to update the administrative permission.')
                     raise PermissionError(
@@ -147,7 +147,7 @@ class AdministrativePermissionAlterRemoveResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -162,10 +162,10 @@ class AdministrativePermissionAlterRemoveResource(RestResource):
         except PermissaoAdministrativaNotFoundError:
             return self.response_error(189, id_perm)
 
-        except PermissaoAdministrativaDuplicatedError, e:
+        except PermissaoAdministrativaDuplicatedError as e:
             return self.response_error(351, e.message)
 
-        except (GrupoError, PermissionError), e:
+        except (GrupoError, PermissionError) as e:
             return self.response_error(1)
 
     def handle_delete(self, request, user, *args, **kwargs):
@@ -199,13 +199,13 @@ class AdministrativePermissionAlterRemoveResource(RestResource):
                 try:
                     # Remove Administrative Permission
                     adm_perm.delete()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the permission.')
                     raise GrupoError(e, u'Failed to remove the permission.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -214,5 +214,5 @@ class AdministrativePermissionAlterRemoveResource(RestResource):
         except PermissaoAdministrativaNotFoundError:
             return self.response_error(189, id_perm)
 
-        except GrupoError, e:
+        except GrupoError as e:
             return self.response_error(1)

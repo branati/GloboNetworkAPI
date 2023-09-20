@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -52,7 +52,7 @@ class VipRequestDeployView(CustomAPIView):
         try:
             response = facade.create_real_vip_request(
                 vip_serializer.data, request.user)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException(exception)
         finally:
@@ -85,7 +85,7 @@ class VipRequestDeployView(CustomAPIView):
         try:
             response = facade.delete_real_vip_request(
                 vip_serializer.data, request.user, cleanup)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException(exception)
         finally:
@@ -111,7 +111,7 @@ class VipRequestDeployView(CustomAPIView):
         try:
             response = facade.update_real_vip_request(
                 vips['vips'], request.user)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException(exception)
         finally:
@@ -135,7 +135,7 @@ class VipRequestDeployView(CustomAPIView):
         try:
             response = facade.patch_real_vip_request(
                 vips['vips'], request.user)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException(exception)
         finally:
@@ -269,7 +269,7 @@ class VipRequestDBView(CustomAPIView):
     @logs_method_apiview
     @raise_json_validate('vip_request_post')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
-    @commit_on_success
+    @atomic
     def post(self, request, *args, **kwargs):
         """
         Creates list of vip request
@@ -292,7 +292,7 @@ class VipRequestDBView(CustomAPIView):
     @raise_json_validate('vip_request_put')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.write_obj_permission])
-    @commit_on_success
+    @atomic
     def put(self, request, *args, **kwargs):
         """
         Updates list of vip request
@@ -306,7 +306,7 @@ class VipRequestDBView(CustomAPIView):
             verify_ports_vip(data)
             for vip in data['vips']:
                 facade.update_vip_request(vip, request.user)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException(exception)
         finally:
@@ -318,7 +318,7 @@ class VipRequestDBView(CustomAPIView):
     @raise_json_validate('')
     @permission_classes_apiview((IsAuthenticated, permissions.Write))
     @permission_obj_apiview([permissions.delete_obj_permission])
-    @commit_on_success
+    @atomic
     def delete(self, request, *args, **kwargs):
         """
         Deletes list of vip request
@@ -330,7 +330,7 @@ class VipRequestDBView(CustomAPIView):
         try:
             facade.delete_vip_request(
                 vip_request_ids, keepip)
-        except Exception, exception:
+        except Exception as exception:
             log.error(exception)
             raise api_exceptions.NetworkAPIException(exception)
         finally:

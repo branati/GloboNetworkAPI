@@ -8,7 +8,8 @@ from networkapi.distributedlock import LOCK_VLAN
 from networkapi.infrastructure.datatable import build_query_to_datatable_v3
 from networkapi.util.geral import create_lock
 from networkapi.util.geral import destroy_lock
-from networkapi.vlan.models import OperationalError
+# from networkapi.vlan.models import OperationalError
+from django.db.utils import OperationalError
 from networkapi.vlan.models import Vlan
 from networkapi.vlan.models import VlanError
 from networkapi.vlan.models import VlanErrorV3
@@ -20,9 +21,9 @@ def get_vlan_by_id(vlan_id):
 
     try:
         vlan = Vlan().get_by_pk(vlan_id)
-    except VlanNotFoundError, e:
+    except VlanNotFoundError as e:
         raise ObjectDoesNotExistException(str(e))
-    except (Exception, OperationalError), e:
+    except (Exception, OperationalError) as e:
         raise NetworkAPIException(str(e))
     else:
         return vlan
@@ -60,11 +61,11 @@ def update_vlan(vlan, user):
     try:
         vlan_obj = get_vlan_by_id(vlan.get('id'))
         vlan_obj.update_v3(vlan, user)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
-    except (VlanError, VlanErrorV3, ValidationAPIException), e:
+    except (VlanError, VlanErrorV3, ValidationAPIException) as e:
         raise ValidationAPIException(str(e))
-    except (Exception, NetworkAPIException), e:
+    except (Exception, NetworkAPIException) as e:
         raise NetworkAPIException(str(e))
     else:
         return vlan_obj
@@ -76,11 +77,11 @@ def create_vlan(vlan, user):
     try:
         vlan_obj = Vlan()
         vlan_obj.create_v3(vlan, user)
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
-    except (VlanError, VlanErrorV3, ValidationAPIException), e:
+    except (VlanError, VlanErrorV3, ValidationAPIException) as e:
         raise ValidationAPIException(str(e))
-    except (Exception, NetworkAPIException), e:
+    except (Exception, NetworkAPIException) as e:
         raise NetworkAPIException(str(e))
     else:
         return vlan_obj
@@ -93,11 +94,11 @@ def delete_vlan(vlan):
     try:
         vlan_obj = get_vlan_by_id(vlan)
         vlan_obj.delete_v3()
-    except ObjectDoesNotExistException, e:
+    except ObjectDoesNotExistException as e:
         raise ObjectDoesNotExistException(str(e))
-    except (VlanError, VlanErrorV3, ValidationAPIException), e:
+    except (VlanError, VlanErrorV3, ValidationAPIException) as e:
         raise ValidationAPIException(str(e))
-    except (Exception, NetworkAPIException), e:
+    except (Exception, NetworkAPIException) as e:
         raise NetworkAPIException(str(e))
     finally:
         destroy_lock(locks_list)

@@ -19,6 +19,7 @@ python manage.py makemigrations filter
 python manage.py makemigrations vlan
 python manage.py makemigrations tipoacesso
 
+
 python manage.py makemigrations api_asn
 python manage.py makemigrations api_list_config_bgp
 
@@ -46,6 +47,11 @@ python manage.py makemigrations snippets
 python manage.py makemigrations system
 
 python manage.py makemigrations usuario
+
+python manage.py makemigrations interface
+
+python manage.py makemigrations filterequiptype
+
 
 echo  ======================= Executing Migrate ===================================
 python manage.py migrate

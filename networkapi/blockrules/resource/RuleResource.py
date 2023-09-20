@@ -77,12 +77,12 @@ class RuleResource(RestResource):
 
             return self.response(dumps_networkapi({'rule': {'name': rule.name, 'rule_contents': rule_contents, 'rule_blocks': rule_blocks}}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error('Invalid param')
             return self.response_error(269, e.param, e.value)
         except Rule.DoesNotExist:
             return self.response_error(358)
-        except Exception, e:
+        except Exception as e:
             self.logerror(e)
             return self.response_error(1)
 
@@ -142,19 +142,19 @@ class RuleResource(RestResource):
 
             return self.response(dumps_networkapi({}))
 
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             self.log.error('Environment not found')
             return self.response_error(112)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
         except BlockRules.DoesNotExist:
             return self.response_error(359)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)
 
     def handle_put(self, request, user, *args, **kwargs):
@@ -231,10 +231,10 @@ class RuleResource(RestResource):
 
             return self.response(dumps_networkapi({}))
 
-        except AmbienteNotFoundError, e:
+        except AmbienteNotFoundError as e:
             self.log.error('Environment not found')
             return self.response_error(112)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except Rule.DoesNotExist:
             return self.response_error(358)
@@ -242,10 +242,10 @@ class RuleResource(RestResource):
             return self.response_error(359)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)
 
     def handle_delete(self, request, user, *args, **kwargs):
@@ -275,13 +275,13 @@ class RuleResource(RestResource):
 
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except Rule.DoesNotExist:
             return self.response_error(358)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)
 
     def __save_rule_contents(self, contents, blocks_id, environment, rule, user):

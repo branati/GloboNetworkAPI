@@ -19,7 +19,7 @@ from datetime import datetime
 from time import time
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from networkapi.queue_tools.rabbitmq import QueueManager
 
@@ -50,7 +50,8 @@ class EventLog(models.Model):
         'usuario.Usuario',
         db_column='id_user',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
     hora_evento = models.DateTimeField()
     acao = models.TextField()
@@ -64,7 +65,8 @@ class EventLog(models.Model):
         'eventlog.AuditRequest',
         db_column='id_audit_request',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     logger = logging.getLogger('EventLog')
@@ -115,7 +117,7 @@ class EventLog(models.Model):
             event_log.evento = ''
             event_log.resultado = 0
             event_log.save()
-        except Exception, e:
+        except Exception as e:
             cls.logger.error(
                 u'Falha ao salvar o log: evento = %s, id do usuario = %s.' % (evento, usuario))
             raise EventLogError(
@@ -163,10 +165,11 @@ class AuditRequest(models.Model):
 
     request_id = models.CharField(max_length=255)
     request_context = models.CharField(max_length=255)
-    ip = models.IPAddressField()
+    ip = models.GenericIPAddressField()
     path = models.CharField(max_length=1024)
     date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date'))
-    user = models.ForeignKey('usuario.Usuario')
+    user = models.ForeignKey('usuario.Usuario',
+        on_delete=models.DO_NOTHING)
 
     class Meta:
         db_table = u'audit_request'

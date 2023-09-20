@@ -12,7 +12,7 @@ from networkapi.requisicaovips.models import VipPortToPool
 class DsrL3toVipSerializer(serializers.ModelSerializer):
 
     id = serializers.Field()
-    requisicao_vip = serializers.PrimaryKeyRelatedField()
+    requisicao_vip = serializers.PrimaryKeyRelatedField(read_only=True)
     id_dsrl3 = serializers.Field()
 
     class Meta:
@@ -59,22 +59,26 @@ class RequestVipSerializer(serializers.ModelSerializer):
 
     ip = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=False
+        required=False,
+        read_only=True
     )
 
     ipv6 = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=False
+        required=False,
+        read_only=True
     )
 
     trafficreturn = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=False
+        required=False,
+        read_only=True
     )
 
     healthcheck_expect = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=False
+        required=False,
+        read_only=True
     )
 
     cliente = serializers.CharField(
@@ -83,17 +87,20 @@ class RequestVipSerializer(serializers.ModelSerializer):
 
     rule = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=False
+        required=False,
+        read_only=True
     )
 
     rule_applied = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=False
+        required=False,
+        read_only=True
     )
 
     rule_rollback = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=False
+        required=False,
+        read_only=True
     )
 
     areanegocio = serializers.CharField(
@@ -145,7 +152,7 @@ class RequestVipSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     'Is required to enter any Ip')
 
-        except EnvironmentVipNotFoundError, exception:
+        except EnvironmentVipNotFoundError as exception:
             raise serializers.ValidationError(exception.message)
 
         return attrs

@@ -27,7 +27,7 @@ def create_vlan(self, vlan_dict, user_id):
     try:
         vlan_obj = facade.create_vlan(vlan_dict, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'Vlan was not allocated.'
         msg['reason'] = str(exception)
 
@@ -60,7 +60,7 @@ def update_vlan(self, vlan_dict, user_id):
     try:
         facade.update_vlan(vlan_dict, user)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'Vlan was not updated.'.format(vlan_obj)
         msg['reason'] = str(exception)
 
@@ -90,7 +90,7 @@ def delete_vlan(self, vlan_id, user_id):
     try:
         facade.delete_vlan(vlan_id)
 
-    except Exception, exception:
+    except Exception as exception:
         msg['message'] = 'Vlan was not deallocated.'.format(vlan_obj)
         msg['reason'] = str(exception)
 

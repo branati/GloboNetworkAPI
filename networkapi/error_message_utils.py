@@ -352,7 +352,7 @@ def error_dumps(code, *args):
 
 
 if __name__ == '__main__':
-    print error_dumps(u'0001', u'Falha ao acessar a fonte de dados')
-    print error_dumps(1)
-    print error_dumps(3, 'Causa')
-    print error_messages[99]
+    print(error_dumps(u'0001', u'Falha ao acessar a fonte de dados'))
+    print(error_dumps(1))
+    print(error_dumps(3, 'Causa'))
+    print(error_messages[99])

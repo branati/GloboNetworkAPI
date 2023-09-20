@@ -130,7 +130,7 @@ class IPGetByEquipResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(network_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
@@ -138,10 +138,10 @@ class IPGetByEquipResource(RestResource):
             return self.response_error(150, 'IP %s not registered ' % id_equip)
         except EquipamentoNotFoundError:
             return self.response_error(117)
-        except IpEquipmentNotFoundError, e:
+        except IpEquipmentNotFoundError as e:
             return self.response_error(150, e.message)
         except (IpError, EquipamentoError):
             return self.response_error(1)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)

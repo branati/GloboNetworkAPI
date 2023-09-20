@@ -306,7 +306,7 @@ def _reals_can_associate_server_pool_by_environment_vip_on_request_vip(server_po
                         server_pool.environment.name, ipv6.ip_formated, environment_vip.name)
                 )
 
-    except Exception, error:
+    except Exception as error:
         log.error(error)
         raise error
 
@@ -337,7 +337,7 @@ def server_pool_ips_can_associate_with_vip_request(vip_request, vip_port_to_pool
                 _reals_can_associate_server_pool_by_environment_vip_on_request_vip(
                     server_pool, server_pool_member_list, environment_vip)
 
-    except Exception, error:
+    except Exception as error:
         log.error(error)
         raise error
 

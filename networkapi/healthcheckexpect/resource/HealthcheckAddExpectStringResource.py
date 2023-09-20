@@ -81,17 +81,17 @@ class HealthcheckAddExpectStringResource(RestResource):
 
             return self.response(dumps_networkapi({'healthcheck_expect': healtchcheck_dict}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except HealthcheckEqualError, e:
+        except HealthcheckEqualError as e:
             return self.response_error(313, e.message)
 
-        except HealthcheckExpectError, e:
+        except HealthcheckExpectError as e:
             return self.response_error(1)
 
-        except XMLError, e:
+        except XMLError as e:
             return self.response_error(1)

@@ -151,8 +151,8 @@ class IPEquipEvipResource(RestResource):
                     for dict_div_amb in lista_amb_div_6:
                         # if ipequip.ip.networkipv6.ambient_vip is not None and
                         # ipequip.ip.networkipv6.ambient_vip.id  == evip.id:
-                        print ipequip.ip.networkipv6.vlan.ambiente.divisao_dc.id
-                        print dict_div_amb.get('divisao_dc')
+                        print(ipequip.ip.networkipv6.vlan.ambiente.divisao_dc.id)
+                        print(dict_div_amb.get('divisao_dc'))
                         if (ipequip.ip.networkipv6.vlan.ambiente.divisao_dc.id == dict_div_amb.get('divisao_dc') and ipequip.ip.networkipv6.vlan.ambiente.ambiente_logico.id == dict_div_amb.get('ambiente_logico')):
                             lista_ipsv6_equip.append(ipequip.ip)
 
@@ -209,7 +209,7 @@ class IPEquipEvipResource(RestResource):
 
         except IpNotFoundByEquipAndVipError:
             return self.response_error(317, equip_name, id_evip)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except NetworkIPv4NotFoundError:
             return self.response_error(281)
@@ -219,9 +219,9 @@ class IPEquipEvipResource(RestResource):
             return self.response_error(283)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except (IpError, NetworkIPv4Error, EquipamentoError, GrupoError), e:
+        except (IpError, NetworkIPv4Error, EquipamentoError, GrupoError) as e:
             self.log.error(e)
             return self.response_error(1)

@@ -57,7 +57,7 @@ class InterfaceTypeGetAllResource(RestResource):
         except GrupoError:
             return self.response_error(1)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(369, e.param, e.value)
 
     def get_envs(self, tipos_interface):

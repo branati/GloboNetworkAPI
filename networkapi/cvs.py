@@ -13,7 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import commands
+import subprocess
+# import commands
 import logging
 import os
 
@@ -51,7 +52,7 @@ class Cvs():
 
             erro = os.system('cvs remove %s' % archive)
 
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
 
         finally:
@@ -73,7 +74,7 @@ class Cvs():
 
             erro = os.system('cvs add %s' % archive)
 
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
 
         finally:
@@ -96,7 +97,7 @@ class Cvs():
 
             erro = os.system("cvs commit -m '%s' %s" % (comment, archive))
 
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
 
         finally:
@@ -113,9 +114,9 @@ class Cvs():
         @raise CVSCommandError: Failed to execute command
         """
         try:
-            (status, output) = commands.getstatusoutput('cvs update')
+            (status, output) = subprocess.getstatusoutput('cvs update')
 
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
 
         finally:

@@ -75,19 +75,19 @@ class GrupoEquipamentoRemoveAssociationEquipResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except EquipamentoGrupoNotFoundError, e:
+        except EquipamentoGrupoNotFoundError as e:
             return self.response_error(185, id_equip, id_egrupo)
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(117, id_equip)
-        except EGrupoNotFoundError, e:
+        except EGrupoNotFoundError as e:
             return self.response_error(102)
-        except EquipamentoError, e:
+        except EquipamentoError as e:
             return self.response_error(1)
         except (XMLError):
             return self.response_error(1)

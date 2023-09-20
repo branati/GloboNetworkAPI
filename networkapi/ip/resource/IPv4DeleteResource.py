@@ -77,19 +77,19 @@ class IPv4DeleteResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(319, 'ip', 'ipv4', id_ip)
-        except IpCantRemoveFromServerPool, e:
+        except IpCantRemoveFromServerPool as e:
             return self.response_error(385, e.cause.get('ip'), e.cause.get('equip_name'), e.cause.get('server_pool_identifiers'))
-        except IpEquipCantDissociateFromVip, e:
+        except IpEquipCantDissociateFromVip as e:
             return self.response_error(352, e.cause.get('ip'), e.cause.get('equip_name'), e.cause.get('vip_id'))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except IpEquipmentNotFoundError, e:
+        except IpEquipmentNotFoundError as e:
             return self.response_error(308, id_ip)
-        except EquipamentoAmbienteNotFoundError, e:
+        except EquipamentoAmbienteNotFoundError as e:
             return self.response_error(307, e.message)
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(119)
         except (IpError, NetworkIPv4Error, GrupoError):
             return self.response_error(1)

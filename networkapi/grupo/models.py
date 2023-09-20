@@ -156,10 +156,10 @@ class UGrupo(BaseModel):
         """
         try:
             return UGrupo.objects.filter(id=id).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise UGrupoNotFoundError(
                 e, u'Dont there is a Group Use by pk = %s.' % id)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the Group User.')
             raise GrupoError(e, u'Failure to search the Group User.')
 
@@ -185,10 +185,10 @@ class Permission(BaseModel):
         """
         try:
             return Permission.objects.get(pk=pk)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise PermissionNotFoundError(
                 e, u'There is Permission with pk = %s.' % pk)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failed to search for a Permission.')
             raise PermissionError(e, u'Failed to search for a Permission.')
 
@@ -196,10 +196,10 @@ class Permission(BaseModel):
 class PermissaoAdministrativa(BaseModel):
     id = models.AutoField(
         primary_key=True, db_column='id_permissoes_administrativas')
-    permission = models.ForeignKey(Permission, db_column='permission_id')
+    permission = models.ForeignKey(Permission, db_column='permission_id', on_delete=models.DO_NOTHING)
     leitura = models.BooleanField()
     escrita = models.BooleanField()
-    ugrupo = models.ForeignKey(UGrupo, db_column='grupos_id')
+    ugrupo = models.ForeignKey(UGrupo, db_column='grupos_id', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('PermissaoAdministrativa')
 
@@ -231,9 +231,9 @@ class PermissaoAdministrativa(BaseModel):
             self.ugrupo = UGrupo.objects.get(id=self.ugrupo.id)
             return self.save()
 
-        except UGrupo.DoesNotExist, e:
+        except UGrupo.DoesNotExist as e:
             raise e
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Falha ao inserir uma Permissao Administrativa.')
             raise GrupoError(
                 e, u'Falha ao inserir uma Permissao Administrativa.')
@@ -250,10 +250,10 @@ class PermissaoAdministrativa(BaseModel):
         """
         try:
             return PermissaoAdministrativa.objects.get(pk=pk)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise PermissaoAdministrativaNotFoundError(
                 e, u'Não existe uma Permissao Administrativa com a pk = %s.' % pk)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao pesquisar uma Permissao Administrativa.')
             raise GrupoError(
                 e, u'Falha ao pesquisar uma Permissao Administrativa.')
@@ -263,10 +263,10 @@ class PermissaoAdministrativa(BaseModel):
     def get_permission_by_function_ugroup(cls, function, ugroup_id):
         try:
             return PermissaoAdministrativa.objects.filter(permission__function=function, ugrupo__id=ugroup_id)[0:1].get()
-        except ObjectDoesNotExist, o:
+        except ObjectDoesNotExist as o:
             raise PermissaoAdministrativaNotFoundError(
                 o, 'Grupo do Usuário %s não tem permissão na função %s.' % (ugroup_id, function))
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao pesquisar a permissão administrativa.')
             raise GrupoError(
                 e, u'Falha ao pesquisar a permissão administrativa.')
@@ -282,11 +282,11 @@ class PermissaoAdministrativa(BaseModel):
         """
         try:
             return PermissaoAdministrativa.objects.filter(permission__id=permission_id, ugrupo__id=ugroup_id)[0:1].get()
-        except ObjectDoesNotExist, o:
+        except ObjectDoesNotExist as o:
             # Arrumar MSG
             raise PermissaoAdministrativaNotFoundError(
                 o, 'Grupo do Usuário %s não tem permissão na função %s.' % (ugroup_id, permission_id))
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao pesquisar a permissão administrativa.')
             raise GrupoError(
                 e, u'Falha ao pesquisar a permissão administrativa.')
@@ -299,10 +299,10 @@ class PermissaoAdministrativa(BaseModel):
                 return q.filter(permission__function=function, escrita=1, ugrupo__id=ugroup.id)[0:1].get()
             else:
                 return q.filter(permission__function=function, leitura=1, ugrupo__id=ugroup.id)[0:1].get()
-        except ObjectDoesNotExist, o:
+        except ObjectDoesNotExist as o:
             raise PermissaoAdministrativaNotFoundError(
                 o, 'Grupo do Usuário %s não tem permissão de %s na função %s.' % (ugroup.nome, operation, function))
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 u'Falha ao pesquisar as permissões administrativas.')
             raise GrupoError(
@@ -325,10 +325,10 @@ class EGrupo(BaseModel):
     def get_by_pk(cls, pk):
         try:
             return EGrupo.objects.get(pk=pk)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise EGrupoNotFoundError(
                 e, u'There is no group with a pk = %s.' % pk)
-        except Exception, e:
+        except Exception as e:
             msg = u'Failed to search the equipment group {}.'
             cls.log.error(msg.format(pk))
             raise GrupoError(e, msg.format(pk))
@@ -337,7 +337,7 @@ class EGrupo(BaseModel):
     def search(cls):
         try:
             return EGrupo.objects.all()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao pesquisar os grupos de equipamento.')
             raise GrupoError(
                 e, u'Falha ao pesquisar os grupos de equipamento.')
@@ -359,9 +359,9 @@ class EGrupo(BaseModel):
                 pass
 
             self.save()
-        except EGrupoNameDuplicatedError, e:
+        except EGrupoNameDuplicatedError as e:
             raise e
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Falha ao inserir o grupo de equipamento.')
             raise GrupoError(e, u'Falha ao inserir o grupo de equipamento.')
 
@@ -392,9 +392,9 @@ class EGrupo(BaseModel):
 
             egrupo.__dict__.update(kwargs)
             egrupo.save(authenticated_user)
-        except EGrupoNameDuplicatedError, e:
+        except EGrupoNameDuplicatedError as e:
             raise e
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao atualizar o grupo de equipamento.')
             raise GrupoError(e, u'Falha ao atualizar o grupo de equipamento.')
 
@@ -416,7 +416,7 @@ class EGrupo(BaseModel):
 
         try:
             egrupo.delete()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao remover o grupo de equipamento.')
             raise GrupoError(e, u'Falha ao remover o grupo de equipamento.')
 
@@ -437,8 +437,8 @@ class EGrupo(BaseModel):
 
 class DireitosGrupoEquipamento(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_direito')
-    ugrupo = models.ForeignKey(UGrupo, db_column='id_ugrupo')
-    egrupo = models.ForeignKey(EGrupo, db_column='id_egrupo')
+    ugrupo = models.ForeignKey(UGrupo, db_column='id_ugrupo', on_delete=models.DO_NOTHING)
+    egrupo = models.ForeignKey(EGrupo, db_column='id_egrupo', on_delete=models.DO_NOTHING)
     leitura = models.BooleanField()
     escrita = models.BooleanField()
     alterar_config = models.BooleanField()
@@ -455,9 +455,9 @@ class DireitosGrupoEquipamento(BaseModel):
     def get_by_pk(cls, pk):
         try:
             return DireitosGrupoEquipamento.objects.get(pk=pk)
-        except DireitosGrupoEquipamento.DoesNotExist, e:
+        except DireitosGrupoEquipamento.DoesNotExist as e:
             raise e
-        except Exception, e:
+        except Exception as e:
             cls.log.error(
                 u'Falha ao pesquisar os direitos de um grupo de usuário em um grupo de equipamento.')
             raise GrupoError(
@@ -483,11 +483,11 @@ class DireitosGrupoEquipamento(BaseModel):
                     None, u'Direito Grupo Equipamento para o grupo de usuário %d e grupo de equipamento %s já cadastrado.' % (self.ugrupo_id, self.egrupo_id))
 
             self.save()
-        except UGrupo.DoesNotExist, e:
+        except UGrupo.DoesNotExist as e:
             raise e
-        except DireitoGrupoEquipamentoDuplicatedError, e:
+        except DireitoGrupoEquipamentoDuplicatedError as e:
             raise e
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 u'Falha ao inserir o direito do grupo de usuário no grupo de equipamento.')
             raise GrupoError(
@@ -519,7 +519,7 @@ class DireitosGrupoEquipamento(BaseModel):
 
             direito.__dict__.update(kwargs)
             direito.save(authenticated_user)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(
                 u'Falha ao atualizar os direitos de um grupo de usuário em um grupo de equipamento.')
             raise GrupoError(
@@ -536,7 +536,7 @@ class DireitosGrupoEquipamento(BaseModel):
         direito = DireitosGrupoEquipamento.get_by_pk(pk)
         try:
             direito.delete()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(
                 u'Falha ao remover os direitos de um grupo de usuário em um grupo de equipamento.')
             raise GrupoError(
@@ -562,7 +562,7 @@ class DireitosGrupoEquipamento(BaseModel):
                     q = q.filter(alterar_config=True)
 
             return q
-        except Exception, e:
+        except Exception as e:
             cls.log.error(
                 u'Falha ao pesquisar os direitos do grupo-equipamento.')
             raise GrupoError(

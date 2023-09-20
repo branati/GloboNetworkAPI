@@ -17,7 +17,6 @@ import threading
 
 local = threading.local()
 
-
 # Use in settings.py if using X_REQUEST_ID
 REQUEST_ID_HEADER = 'HTTP_X_REQUEST_ID'
 NO_REQUEST_ID = 'NoRequestId'  # Used if no request ID is available

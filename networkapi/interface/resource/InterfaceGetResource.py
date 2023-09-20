@@ -153,12 +153,12 @@ class InterfaceGetResource(RestResource):
 
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except InterfaceNotFoundError:
             return self.response_error(141)
         except (InterfaceError, GrupoError, EquipamentoError):
             return self.response_error(1)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)

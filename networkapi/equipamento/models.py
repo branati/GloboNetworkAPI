@@ -23,7 +23,7 @@ from django.apps import apps
 # from django.apps import apps
 
 from networkapi.ambiente.models import Ambiente
-from networkapi.ambiente.models import AmbienteNotFoundError
+# from networkapi.ambiente.models import AmbienteNotFoundError
 from networkapi.api_asn.v4.exceptions import AsnNotFoundError
 from networkapi.api_equipment.exceptions import EquipmentInvalidValueException
 from networkapi.grupo.models import EGrupo
@@ -31,7 +31,7 @@ from networkapi.grupo.models import EGrupoNotFoundError
 from networkapi.models.BaseModel import BaseModel
 from networkapi.roteiro.models import Roteiro
 from networkapi.tipoacesso.models import TipoAcesso, AccessTypeNotFoundError
-from networkapi.api_vrf.models import Vrf
+# from networkapi.api_vrf.models import Vrf
 from networkapi.api_vrf.exceptions import VrfNotFoundError
 
 
@@ -822,6 +822,10 @@ class Equipamento(BaseModel):
         self.delete()
 
     def create_v3(self, equipment):
+        from networkapi.ambiente.models import Ambiente
+        from networkapi.ambiente.models import AmbienteNotFoundError
+
+
 
         try:
             self.nome = equipment.get('name').upper()
@@ -882,7 +886,7 @@ class Equipamento(BaseModel):
             raise EquipamentoError(None, e)
 
     def update_v3(self, equipment):
-
+        from networkapi.ambiente.models import AmbienteNotFoundError
         try:
             self.tipo_equipamento = TipoEquipamento().get_by_pk(
                 equipment.get('equipment_type'))
@@ -1028,6 +1032,7 @@ class Equipamento(BaseModel):
         self.delete()
 
     def create_v4(self, equipment):
+        from networkapi.ambiente.models import AmbienteNotFoundError
 
         try:
             self.nome = equipment.get('name').upper()
@@ -1107,7 +1112,7 @@ class Equipamento(BaseModel):
             raise EquipamentoError(None, e)
 
     def update_v4(self, equipment):
-
+        from networkapi.ambiente.models import AmbienteNotFoundError
         try:
             self.tipo_equipamento = TipoEquipamento().get_by_pk(
                 equipment.get('equipment_type'))
@@ -1294,6 +1299,7 @@ class Equipamento(BaseModel):
 
 
 class EquipamentoAmbiente(BaseModel):
+    from networkapi.ambiente.models import Ambiente
     id = models.AutoField(primary_key=True, db_column='id_equip_do_ambiente')
     ambiente = models.ForeignKey(Ambiente, db_column='id_ambiente', on_delete=models.DO_NOTHING)
     equipamento = models.ForeignKey(Equipamento, db_column='id_equip', on_delete=models.DO_NOTHING)
@@ -1307,6 +1313,7 @@ class EquipamentoAmbiente(BaseModel):
         unique_together = ('equipamento', 'ambiente')
 
     def create(self, authenticated_user=None):
+        from networkapi.ambiente.models import Ambiente
         """Insere uma nova associação entre um Equipamento e um Ambiente.
 
         @return: Nothing
@@ -1447,6 +1454,7 @@ class EquipamentoAmbiente(BaseModel):
 
 
 class EquipmentControllerEnvironment(BaseModel):
+    from networkapi.ambiente.models import Ambiente
     id = models.AutoField(primary_key=True, db_column='id')
     environment = models.ForeignKey(
         Ambiente,
@@ -1642,6 +1650,7 @@ class EquipamentoGrupo(BaseModel):
 
 
 class EquipamentoAcesso(BaseModel):
+    from networkapi.api_vrf.models import Vrf
     id = models.AutoField(primary_key=True, db_column='id_equiptos_access')
     equipamento = models.ForeignKey(Equipamento, db_column='id_equip', on_delete=models.DO_NOTHING)
     fqdn = models.CharField(max_length=100)
@@ -1652,12 +1661,17 @@ class EquipamentoAcesso(BaseModel):
     tipo_acesso = models.ForeignKey(TipoAcesso, db_column='id_tipo_acesso', on_delete=models.DO_NOTHING)
     enable_pass = models.CharField(max_length=20, blank=True)
     # TODO
+    # Caso 4
     # Erro de dependência circular
     # django.db.migrations.exceptions.CircularDependencyError: equipamento.0001_initial, api_vrf.0001_initial
     # Alinhar com o time Globo
     # https://django.readthedocs.io/en/stable/topics/migrations.html
+
+    # 11/09/2023 - Solicitado para converter o campo que causa dependência cíclica (equipamento.vrf) para o tipo String.
+
     # vrf = models.ForeignKey(Vrf, blank=True, null=True, db_column='id_vrf', on_delete=models.DO_NOTHING)
 
+    vrf = models.CharField(max_length=100, blank=True, null=True, db_column='id_vrf')
     log = logging.getLogger('EquipamentoAcesso')
 
     class Meta(BaseModel.Meta):
@@ -1726,6 +1740,7 @@ class EquipamentoAcesso(BaseModel):
         # Valida a existência do equipamento
         self.equipamento = Equipamento.get_by_pk(self.equipamento.id)
         try:
+            from networkapi.api_vrf.models import Vrf
             # Validades tipo_acesso existence
             self.tipo_acesso = TipoAcesso.get_by_pk(self.tipo_acesso.id)
 

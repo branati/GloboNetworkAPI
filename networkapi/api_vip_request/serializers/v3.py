@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.db.models import get_model
+from django.apps import apps
 from rest_framework import serializers
 
 from networkapi.util.geral import get_app
@@ -25,7 +25,7 @@ class VipRequestPortPoolV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'l7_rule')
 
     class Meta:
-        VipRequestPortPool = get_model('api_vip_request',
+        VipRequestPortPool = apps.get_model('api_vip_request',
                                        'VipRequestPortPool')
         model = VipRequestPortPool
         fields = (
@@ -103,7 +103,7 @@ class VipRequestPortV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(opt, 'options')
 
     class Meta:
-        VipRequestPort = get_model('api_vip_request', 'VipRequestPort')
+        VipRequestPort = apps.get_model('api_vip_request', 'VipRequestPort')
         model = VipRequestPort
         fields = (
             'id',
@@ -166,8 +166,8 @@ class VipRequestPortV3Serializer(DynamicFieldsModelSerializer):
 
 class VipRequestV3Serializer(DynamicFieldsModelSerializer):
 
-    dscp = serializers.RelatedField(source='dscp')
-    default_names = serializers.RelatedField(source='default_names')
+    dscp = serializers.RelatedField(read_only=True)
+    default_names = serializers.RelatedField(read_only=True)
 
     environmentvip = serializers.SerializerMethodField('get_environmentvip')
     ipv4 = serializers.SerializerMethodField('get_ipv4')
@@ -217,7 +217,7 @@ class VipRequestV3Serializer(DynamicFieldsModelSerializer):
         return self.extends_serializer(obj, 'equipments')
 
     class Meta:
-        VipRequest = get_model('api_vip_request', 'VipRequest')
+        VipRequest = apps.get_model('api_vip_request', 'VipRequest')
         model = VipRequest
         fields = (
             'id',

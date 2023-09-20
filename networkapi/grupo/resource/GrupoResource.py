@@ -94,11 +94,11 @@ class GrupoEquipamentoResource(RestResource):
 
             return self.response(dumps_networkapi({'grupo': {'id': egroup.id}}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EGrupoNameDuplicatedError:
             return self.response_error(254, name)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
         except GrupoError:
@@ -149,13 +149,13 @@ class GrupoEquipamentoResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EGrupoNotFoundError:
             return self.response_error(102)
         except EGrupoNameDuplicatedError:
             return self.response_error(254, name)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
         except GrupoError:
@@ -183,9 +183,9 @@ class GrupoEquipamentoResource(RestResource):
                 EGrupo.remove(user, egroup_id)
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except GroupDontRemoveError, e:
+        except GroupDontRemoveError as e:
             return self.response_error(310, e.cause, e.message)
         except EGrupoNotFoundError:
             return self.response_error(102)
@@ -260,7 +260,7 @@ class DireitoGrupoEquipamentoResource(RestResource):
                     map_list.append(self.__get_direito_map(right))
 
             return self.response(dumps_networkapi({'direito_grupo_equipamento': map_list}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except DireitosGrupoEquipamento.DoesNotExist:
             return self.response_error(258, right_id)
@@ -362,7 +362,7 @@ class DireitoGrupoEquipamentoResource(RestResource):
             try:
                 xml_map, attrs_map = loads(request.raw_post_data)
                 self.log.debug('XML_MAP: %s', xml_map)
-            except XMLError, x:
+            except XMLError as x:
                 self.log.error(u'Erro ao ler o XML da requisicao.')
                 return self.response_error(3, x)
 
@@ -389,7 +389,7 @@ class DireitoGrupoEquipamentoResource(RestResource):
             direito.create(user)
 
             return self.response(dumps_networkapi({'direito_grupo_equipamento': {'id': direito.id}}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UGrupo.DoesNotExist:
             return self.response_error(180, direito_map.get('id_grupo_usuario'))
@@ -418,7 +418,7 @@ class DireitoGrupoEquipamentoResource(RestResource):
             try:
                 xml_map, attrs_map = loads(request.raw_post_data)
                 self.log.debug('XML_MAP: %s', xml_map)
-            except XMLError, x:
+            except XMLError as x:
                 self.log.error(u'Erro ao ler o XML da requisicao.')
                 return self.response_error(3, x)
 
@@ -447,7 +447,7 @@ class DireitoGrupoEquipamentoResource(RestResource):
                                                 exclusao=direito_map.get('exclusao'))
 
                 return self.response(dumps_networkapi({}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except DireitosGrupoEquipamento.DoesNotExist:
             return self.response_error(258, right_id)
@@ -476,7 +476,7 @@ class DireitoGrupoEquipamentoResource(RestResource):
                 DireitosGrupoEquipamento.remove(user, right_id)
 
                 return self.response(dumps_networkapi({}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except DireitosGrupoEquipamento.DoesNotExist:
             return self.response_error(258, right_id)

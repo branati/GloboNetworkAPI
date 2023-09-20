@@ -55,7 +55,7 @@ class HealthcheckExpect(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_healthcheck_expect')
     expect_string = models.CharField(max_length=50)
     match_list = models.CharField(max_length=50)
-    ambiente = models.ForeignKey(Ambiente, db_column='id_ambiente', null=True)
+    ambiente = models.ForeignKey(Ambiente, db_column='id_ambiente', null=True, on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('HealthcheckExpect')
 
@@ -72,7 +72,7 @@ class HealthcheckExpect(BaseModel):
                     ambiente__id=environment_id)
 
             return healthcheckexpects
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Falha ao pesquisar os healthcheck_expects.')
             raise HealthcheckExpectError(
                 e, u'Falha ao pesquisar os healthcheck_expects.')
@@ -99,7 +99,7 @@ class HealthcheckExpect(BaseModel):
                     else:
                         hce.delete()
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao desassociar os healthcheck_expects.')
             raise HealthcheckExpectError(
                 e, u'Falha ao desassociar os healthcheck_expects.')
@@ -108,10 +108,10 @@ class HealthcheckExpect(BaseModel):
     def get_by_pk(cls, id):
         try:
             return HealthcheckExpect.objects.get(pk=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise HealthcheckExpectNotFoundError(
                 e, u'Não existe um HealthcheckExpect com a pk = %s.' % id)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao pesquisar o healthcheck_expect.')
             raise HealthcheckExpectError(
                 e, u'Falha ao pesquisar o healthcheck_expect.')
@@ -124,7 +124,7 @@ class HealthcheckExpect(BaseModel):
                     ambiente=environment, match_list=match_list, expect_string=expect_string)
                 raise HealthcheckEqualError(None, 'healthcheckexpect com os dados : match_list : %s, expect_string: %s, ambiente_id: % s, já cadastrado' % (
                     match_list, expect_string, str(environment.id)))
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 pass
 
             self.ambiente = environment
@@ -135,10 +135,10 @@ class HealthcheckExpect(BaseModel):
 
             return self.id
 
-        except HealthcheckEqualError, e:
+        except HealthcheckEqualError as e:
             self.log.error(e.message)
             raise HealthcheckEqualError(None, e.message)
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Falha ao inserir healthcheck_expect.')
             raise HealthcheckExpectError(
                 e, u'Falha ao inserir healthcheck_expect.')
@@ -151,13 +151,13 @@ class HealthcheckExpect(BaseModel):
 
             return list(query)
 
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.error(u'Healthchecks Does Not Exists.')
             raise HealthcheckExpectNotFoundError(
                 e, u'Erro ao pequisar Healthcheks_expects'
             )
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao pesquisar o healthcheck_expect.')
             raise HealthcheckExpectError(
                 e, u'Falha ao pesquisar o healthcheck_expect.'
@@ -173,10 +173,10 @@ class HealthcheckExpect(BaseModel):
 
             return self.id
 
-        except HealthcheckEqualError, e:
+        except HealthcheckEqualError as e:
             self.log.error(e.message)
             raise HealthcheckEqualError(None, e.message)
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Falha ao inserir healthcheck_expect.')
             raise HealthcheckExpectError(
                 e, u'Falha ao inserir healthcheck_expect.')

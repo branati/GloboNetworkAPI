@@ -1,0 +1,11 @@
+#-*- coding:utf-8 -*-
+SQL_UP = u"""
+INSERT INTO `variables` (`name`, `value`, `description`) VALUES ('use_authapi', 'False', 'use_authapi');
+INSERT INTO `variables` (`name`, `value`, `description`) VALUES ('time_cache_salt_key', '86400', 'time_cache_salt_key');
+"""
+
+SQL_DOWN = u"""
+DELETE FROM `variables` WHERE `name`='use_authapi' AND `value`='False' AND `description`='use_authapi';
+DELETE FROM `variables` WHERE `name`='time_cache_salt_key' AND `value`='86400' AND `description`='time_cache_salt_key';
+
+"""

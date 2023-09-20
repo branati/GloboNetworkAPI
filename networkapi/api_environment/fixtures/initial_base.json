@@ -161,42 +161,7 @@
     "model": "grupo.egrupo",
     "pk": 3
   },
-  {
-    "fields": {
-      "alterar_config": "1",
-      "egrupo": 1,
-      "escrita": "1",
-      "exclusao": "1",
-      "leitura": "1",
-      "ugrupo": 1
-    },
-    "model": "grupo.direitosgrupoequipamento",
-    "pk": 1
-  },
-  {
-    "fields": {
-      "alterar_config": "1",
-      "egrupo": 2,
-      "escrita": "1",
-      "exclusao": "1",
-      "leitura": "1",
-      "ugrupo": 1
-    },
-    "model": "grupo.direitosgrupoequipamento",
-    "pk": 2
-  },
-  {
-    "fields": {
-      "alterar_config": "1",
-      "egrupo": 3,
-      "escrita": "1",
-      "exclusao": "1",
-      "leitura": "1",
-      "ugrupo": 1
-    },
-    "model": "grupo.direitosgrupoequipamento",
-    "pk": 3
-  },
+
   {
     "fields": {
       "egrupo": 1,

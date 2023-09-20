@@ -129,23 +129,23 @@ class IPv6EditResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(150, e.message)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except NetworkIPv6NotFoundError:
             return self.response_error(281)
         except EquipamentoNotFoundError:
             return self.response_error(117, ip_map.get('id_equipment'))
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
         except IpEquipmentAlreadyAssociation:
             return self.response_error(150, e.message)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except (IpError, NetworkIPv6Error, EquipamentoError, GrupoError), e:
+        except (IpError, NetworkIPv6Error, EquipamentoError, GrupoError) as e:
             self.log.error(e)
             return self.response_error(1)

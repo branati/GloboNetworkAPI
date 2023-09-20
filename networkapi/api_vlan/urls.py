@@ -13,24 +13,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from django.conf.urls import patterns
-from django.conf.urls import url
+
+# from django.conf.urls import patterns
+# from django.conf.urls import url
 
 from networkapi.api_vlan.views import v3 as views
+from networkapi.api_vlan.views import v1 as views_v1
+from django.urls import re_path
 
-
-urlpatterns = patterns(
-    'networkapi.api_vlan.views.v1',
-    url(r'^vlan/acl/remove/draft/(?P<id_vlan>[^/]+)/(?P<acl_type>[^/]+)/$',
-        'acl_remove_draft'),
-    url(r'^vlan/acl/save/draft/(?P<id_vlan>[^/]+)/(?P<acl_type>[^/]+)/$',
-        'acl_save_draft'),
+urlpatterns = [
+    # 'networkapi.api_vlan.views.v1',
+    re_path(r'^vlan/acl/remove/draft/(?P<id_vlan>[^/]+)/(?P<acl_type>[^/]+)/$',
+        views_v1.acl_remove_draft),
+    re_path(r'^vlan/acl/save/draft/(?P<id_vlan>[^/]+)/(?P<acl_type>[^/]+)/$',
+        views_v1.acl_save_draft),
 
 
     ########################
     # Vlan V3
     ########################
-    url(r'^v3/vlan/async/((?P<obj_ids>[;\w]+)/)?$',
+    re_path(r'^v3/vlan/async/((?P<obj_ids>[;\w]+)/)?$',
         views.VlanAsyncView.as_view()),
-    url(r'^v3/vlan/((?P<obj_ids>[;\w]+)/)?$', views.VlanDBView.as_view()),
-)
+    re_path(r'^v3/vlan/((?P<obj_ids>[;\w]+)/)?$', views.VlanDBView.as_view()),
+]

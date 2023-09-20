@@ -95,7 +95,7 @@ class GrupoEquipamentoAssociaEquipamentoResource(RestResource):
                 if ((int(egrupo.GRUPO_EQUIPAMENTO_ORQUESTRACAO) == int(id_grupo)) and (int(equip.tipo_equipamento.id) != int(tipo_equipamento.TIPO_EQUIPAMENTO_SERVIDOR_VIRTUAL))):
                     raise EquipamentoError(
                         None, "Equipamentos que não sejam do tipo 'Servidor Virtual' não podem fazer parte do grupo 'Equipamentos Orquestração'.")
-            except EquipamentoError, e:
+            except EquipamentoError as e:
                 return self.response_error(150, e.message)
 
             equipamento_grupo = EquipamentoGrupo()
@@ -112,20 +112,20 @@ class GrupoEquipamentoAssociaEquipamentoResource(RestResource):
 
             return self.response(dumps_networkapi(map_return))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except TipoEquipamentoNotFoundError, e:
+        except TipoEquipamentoNotFoundError as e:
             return self.response_error(150, e.message)
-        except ModeloNotFoundError, e:
+        except ModeloNotFoundError as e:
             return self.response_error(150, e.message)
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(117, equip_id)
-        except EquipamentoNameDuplicatedError, e:
+        except EquipamentoNameDuplicatedError as e:
             return self.response_error(e.message)
-        except EquipamentoError, e:
+        except EquipamentoError as e:
             return self.response_error(150, e.message)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)

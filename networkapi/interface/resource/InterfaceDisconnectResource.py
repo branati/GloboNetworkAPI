@@ -131,9 +131,9 @@ class InterfaceDisconnectResource(RestResource):
             # Return None for success
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except InterfaceInvalidBackFrontError, e:
+        except InterfaceInvalidBackFrontError as e:
             return self.response_error(307, e.message)
         except InterfaceNotFoundError:
             return self.response_error(141)
@@ -141,6 +141,6 @@ class InterfaceDisconnectResource(RestResource):
             return self.response_error(1)
         except api_interface_exceptions.InterfaceException:
             return self.response_error(413)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)

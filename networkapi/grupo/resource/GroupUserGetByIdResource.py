@@ -64,14 +64,14 @@ class GroupUserGetByIdResource(RestResource):
 
             return self.response(dumps_networkapi(ugroup_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except UGrupoNotFoundError, e:
+        except UGrupoNotFoundError as e:
             return self.response_error(180, id_ugroup)
 
-        except GrupoError, e:
+        except GrupoError as e:
             return self.response_error(1)

@@ -77,15 +77,15 @@ class IPv6GetAvailableResource(RestResource):
 
             return self.response(dumps_networkapi(network_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except NetworkIPv6NotFoundError:
             return self.response_error(286)
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
         except (IpError, NetworkIPv6Error, EquipamentoError, GrupoError):

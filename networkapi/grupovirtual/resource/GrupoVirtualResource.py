@@ -91,7 +91,7 @@ class GroupVirtualResource(RestResource):
         try:
             xml_map, attrs_map = loads(
                 request.raw_post_data, ['vip', 'equipamento', 'id_equipamento'])
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
 
@@ -122,7 +122,7 @@ class GroupVirtualResource(RestResource):
                             ip_id = vip_map['id_ip']
                             try:
                                 ip_id = int(ip_id)
-                            except (TypeError, ValueError), e:
+                            except (TypeError, ValueError) as e:
                                 self.log.error(
                                     u'Valor do id_ip inválido: %s.', ip_id)
                                 raise IpNotFoundError(
@@ -148,7 +148,7 @@ class GroupVirtualResource(RestResource):
                             for equip_id in equipment_ids:
                                 try:
                                     equip_id = int(equip_id)
-                                except (TypeError, ValueError), e:
+                                except (TypeError, ValueError) as e:
                                     self.log.error(
                                         u'Valor do id_equipamento inválido: %s.', equip_id)
                                     raise EquipamentoNotFoundError(
@@ -167,7 +167,7 @@ class GroupVirtualResource(RestResource):
                             equip_id = equipment_map['id']
                             try:
                                 equip_id = int(equip_id)
-                            except (TypeError, ValueError), e:
+                            except (TypeError, ValueError) as e:
                                 self.log.error(
                                     u'Valor do id do equipamento inválido: %s.', equip_id)
                                 raise EquipamentoNotFoundError(
@@ -187,7 +187,7 @@ class GroupVirtualResource(RestResource):
             return self.response_error(117, equip_id)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
         except (IpError, EquipamentoError, GrupoError, RequisicaoVipsError) as e:
             self.log.error(e)
@@ -478,17 +478,17 @@ class GroupVirtualResource(RestResource):
             return self.response_error(137)
         except InvalidBalAtivoValueError:
             return self.response_error(129)
-        except InvalidTransbordoValueError, t:
+        except InvalidTransbordoValueError as t:
             transbordo = 'nulo'
             if t.message is not None:
                 transbordo = t.message
             return self.response_error(130, transbordo)
-        except InvalidServicePortValueError, s:
+        except InvalidServicePortValueError as s:
             porta = 'nulo'
             if s.message is not None:
                 porta = s.message
             return self.response_error(138, porta)
-        except InvalidRealValueError, r:
+        except InvalidRealValueError as r:
             real = 'nulo'
             if r.message is not None:
                 real = r.message
@@ -513,7 +513,7 @@ class GroupVirtualResource(RestResource):
         try:
             xml_map, attrs_map = loads(request.raw_post_data, [
                                        'vip', 'equipamento', 'id_equipamento', 'reals_weight', 'reals_priority', 'real', 'transbordo', 'porta'])
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
 
@@ -564,11 +564,11 @@ class GroupVirtualResource(RestResource):
 
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except VlanNotFoundError:
             return self.response_error(116)
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e)
         except (IpError, VlanError, EquipamentoError, GrupoError, RequisicaoVipsError, HealthcheckExpectError):
             return self.response_error(1)

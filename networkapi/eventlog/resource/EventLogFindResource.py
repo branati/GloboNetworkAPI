@@ -164,13 +164,13 @@ class EventLogFindResource(RestResource):
 
             return self.response(dumps_networkapi(eventlog_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
         except (EventLogError):
             return self.response_error(1)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)
 
     def handle_get(self, request, user, *args, **kwargs):
@@ -183,5 +183,5 @@ class EventLogFindResource(RestResource):
             version = dict()
             version['api_version'] = API_VERSION
             return self.response(dumps_networkapi(version))
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

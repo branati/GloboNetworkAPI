@@ -63,7 +63,7 @@ class HealthcheckExpectGetResource(RestResource):
 
             return self.response(dumps_networkapi({'healthcheck_expect': healthcheckexpect_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except HealthcheckExpectNotFoundError:
             return self.response_error(124)

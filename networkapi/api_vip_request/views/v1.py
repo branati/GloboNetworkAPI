@@ -16,7 +16,7 @@
 import logging
 
 from django.db.models import Q
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
@@ -47,7 +47,7 @@ log = logging.getLogger(__name__)
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 @deprecated(new_uri='api/v3/vip-request/')
 def add_pools(request):
     """
@@ -75,22 +75,22 @@ def add_pools(request):
 
         return Response(status=status.HTTP_201_CREATED)
 
-    except RequisicaoVips.DoesNotExist, exception:
+    except RequisicaoVips.DoesNotExist as exception:
         log.error(exception)
         raise exceptions.VipRequestDoesNotExistException()
 
-    except ServerPool.DoesNotExist, exception:
+    except ServerPool.DoesNotExist as exception:
         log.error(exception)
         raise pool_exceptions.PoolDoesNotExistException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, Write))
-@commit_on_success
+@atomic
 @deprecated(new_uri='api/v3/vip-request/')
 def delete(request):
     """
@@ -143,14 +143,14 @@ def delete(request):
 
         syncs.delete_new(ids)
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def list_environment_by_environment_vip(request, environment_vip_id):
 
     try:
@@ -169,19 +169,19 @@ def list_environment_by_environment_vip(request, environment_vip_id):
 
         return Response(serializer_environment.data)
 
-    except EnvironmentVip.DoesNotExist, exception:
+    except EnvironmentVip.DoesNotExist as exception:
         log.error(exception)
         raise api_exceptions.ObjectDoesNotExistException(
             'Environment Vip Does Not Exist')
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['POST', 'PUT'])
 @permission_classes((IsAuthenticated, Write))
-@commit_on_success
+@atomic
 @deprecated(new_uri='api/v3/vip-request/(<pk>)/')
 def save(request, pk=None):
 
@@ -199,34 +199,34 @@ def save(request, pk=None):
 
             return Response(data=data)
 
-    except EnvironmentVipNotFoundError, error:
+    except EnvironmentVipNotFoundError as error:
         log.error(error)
         raise exceptions.EnvironmentVipDoesNotExistException()
 
-    except exceptions.InvalidIdVipRequestException, exception:
+    except exceptions.InvalidIdVipRequestException as exception:
         log.error(exception)
         raise exception
 
-    except RequisicaoVips.DoesNotExist, exception:
+    except RequisicaoVips.DoesNotExist as exception:
         log.error(exception)
         raise exceptions.VipRequestDoesNotExistException()
 
-    except (InvalidValueError, RequisicaoVipsError, api_exceptions.ValidationException), exception:
+    except (InvalidValueError, RequisicaoVipsError, api_exceptions.ValidationException) as exception:
         log.error(exception)
         raise api_exceptions.ValidationException()
 
-    except api_exceptions.EnvironmentEnvironmentVipNotBoundedException, exception:
+    except api_exceptions.EnvironmentEnvironmentVipNotBoundedException as exception:
         log.error(exception)
         raise exception
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, Read))
-@commit_on_success
+@atomic
 def get_by_pk(request, pk):
 
     try:
@@ -235,14 +235,14 @@ def get_by_pk(request, pk):
 
         return Response(data)
 
-    except exceptions.InvalidIdVipRequestException, exception:
+    except exceptions.InvalidIdVipRequestException as exception:
         log.error(exception)
         raise exception
 
-    except RequisicaoVips.DoesNotExist, exception:
+    except RequisicaoVips.DoesNotExist as exception:
         log.error(exception)
         raise exceptions.VipRequestDoesNotExistException()
 
-    except Exception, exception:
+    except Exception as exception:
         log.error(exception)
         raise api_exceptions.NetworkAPIException()
