@@ -203,7 +203,7 @@ class NetworkEditResource(RestResource):
 
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except NetworkIPv4NotFoundError:
             return self.response_error(281)
@@ -215,12 +215,12 @@ class NetworkEditResource(RestResource):
             return self.response_error(111)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except NetworkIpAddressNotAvailableError, e:
+        except NetworkIpAddressNotAvailableError as e:
             return self.response_error(335)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except (NetworkIPv4Error, NetworkIPv6Error, GrupoError, EnvironmentVipError, VlanError), e:
+        except (NetworkIPv4Error, NetworkIPv6Error, GrupoError, EnvironmentVipError, VlanError) as e:
             self.log.error(e)
             return self.response_error(1)
 
@@ -299,10 +299,10 @@ class NetworkEditResource(RestResource):
 
                 return self.response(dumps_networkapi({'network': network_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             return self.response_error(116)
 
     def activate_network(self, user, id):

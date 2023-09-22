@@ -141,7 +141,7 @@ class Ipv4GetAvailableForVipResource(RestResource):
                                                             'Balanceador nessas redes.'
                                                       % (evip.finalidade_txt, evip.cliente_txt, evip.ambiente_p44_txt))
 
-                    except (IpNotAvailableError, IpRangeAlreadyAssociation), e:
+                    except (IpNotAvailableError, IpRangeAlreadyAssociation) as e:
                         cont_balanceador_not_found = cont_balanceador_not_found + 1
                         if raise_not_found_balanceamento:
                             raise IpNotAvailableError(None, e.message)
@@ -154,18 +154,18 @@ class Ipv4GetAvailableForVipResource(RestResource):
 
                 return self.response(dumps_networkapi({'ip': model_to_dict(ip_new)}))
 
-        except NetworkNotInEvip, e:
+        except NetworkNotInEvip as e:
             return self.response_error(321, 'ipv4')
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
         except EnvironmentVipNotFoundError:
             return self.response_error(283)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except (IpError, EquipamentoError, GrupoError), e:
+        except (IpError, EquipamentoError, GrupoError) as e:
             return self.response_error(1)

@@ -74,7 +74,7 @@ class QueueManager(object):
             self._msgs.append(dict_obj)
             self.log.debug('dict_obj:%s', dict_obj)
 
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 u'QueueManagerError - Error on appending objects to queue.')
             self.log.error(e)
@@ -112,7 +112,7 @@ class QueueManager(object):
 
             conn.close()
 
-        except Exception, e:
+        except Exception as e:
 
             self.log.error(
                 u'QueueManagerError - Error on sending objects from queue.')

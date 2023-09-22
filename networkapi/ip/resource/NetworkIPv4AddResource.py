@@ -232,18 +232,18 @@ class NetworkIPv4AddResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(vlan_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except NetworkTypeNotFoundError, e:
+        except NetworkTypeNotFoundError as e:
             self.log.error(u'The network_type parameter does not exist.')
             return self.response_error(111)
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             self.log.error(u'Vlan not found')
             return self.response_error(116)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
-        except GrupoError, e:
+        except GrupoError as e:
             return self.response_error(1)
         except EnvironmentVipNotFoundError:
             return self.response_error(283)
@@ -251,7 +251,7 @@ class NetworkIPv4AddResource(RestResource):
             return self.response_error(295)
         except ConfigEnvironmentInvalidError:
             return self.response_error(294)
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e)
         except NetworkAPIException as e:
             return self.response_error(150, e)

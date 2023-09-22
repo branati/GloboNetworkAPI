@@ -113,13 +113,13 @@ class Ipv6RemoveResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except IpCantRemoveFromServerPool, e:
+        except IpCantRemoveFromServerPool as e:
             return self.response_error(385, e.cause.get('ip'), e.cause.get('equip_name'), e.cause.get('server_pool_identifiers'))
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(319, 'ip', 'ipv6', ipv6_id)
-        except IpEquipCantDissociateFromVip, e:
+        except IpEquipCantDissociateFromVip as e:
             return self.response_error(352, e.cause['ip'], e.cause['equip_name'], e.cause['vip_id'])
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except IpNotFoundError:
             return self.response_error(119)
@@ -131,5 +131,5 @@ class Ipv6RemoveResource(RestResource):
             return self.response_error(120)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except (IpError, EquipamentoError, GrupoError, IntegrityError), e:
+        except (IpError, EquipamentoError, GrupoError, IntegrityError) as e:
             return self.response_error(1)

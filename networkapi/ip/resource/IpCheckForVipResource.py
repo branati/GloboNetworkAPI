@@ -152,20 +152,20 @@ class IpCheckForVipResource(RestResource):
 
             return self.response(dumps_networkapi({'ip': ip_dict}))
 
-        except NetworkNotInEvip, e:
+        except NetworkNotInEvip as e:
             return self.response_error(321, e.cause)
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except EnvironmentVipNotFoundError, e:
+        except EnvironmentVipNotFoundError as e:
             return self.response_error(283)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(334, e.message)
         except (IpError):
             return self.response_error(1)

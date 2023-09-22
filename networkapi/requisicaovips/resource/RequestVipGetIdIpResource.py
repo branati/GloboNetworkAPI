@@ -16,7 +16,7 @@
 """
 """
 import logging
-from string import split
+# from string import split
 
 from django.db.models import Q
 
@@ -144,7 +144,7 @@ def get_vips(vips):
                     if equip.equipamento.nome not in list_equips:
 
                         list_equips.append(equip.equipamento.nome)
-        except Exception, e:
+        except Exception as e:
             pass
 
         vip_dict['ipv4_description'] = descricao_ipv4
@@ -247,7 +247,7 @@ class RequestVipGetIdIpResource(RestResource):
                     blocks, ip, version = break_ip(ip)
                     try:
                         IPAddress(ip)
-                    except ValueError, e:
+                    except ValueError as e:
                         raise InvalidValueError(None, 'ip', ip)
 
                     # Filter octs
@@ -305,9 +305,9 @@ class RequestVipGetIdIpResource(RestResource):
 
             return self.response(dumps_networkapi(vip_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)

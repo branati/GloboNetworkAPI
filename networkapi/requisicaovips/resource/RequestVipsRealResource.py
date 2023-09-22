@@ -124,10 +124,10 @@ class RequestVipsRealResource(RestResource):
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except ScriptError, e:
+        except ScriptError as e:
             return self.response_error(2, e)
 
         except IpNotFoundError:
@@ -145,16 +145,16 @@ class RequestVipsRealResource(RestResource):
         except IpEquipmentNotFoundError:
             return self.response_error(118, ip_id, equip_id)
 
-        except IpNotFoundByEquipAndVipError, e:
+        except IpNotFoundByEquipAndVipError as e:
             return self.response_error(334, e.message)
 
-        except RequestVipWithoutServerPoolError, e:
+        except RequestVipWithoutServerPoolError as e:
             return self.response_error(374, e.message)
 
         except (RequisicaoVipsError, EquipamentoError, IpError, GrupoError):
             return self.response_error(1)
 
-        except Exception, e:
+        except Exception as e:
             if isinstance(e, IntegrityError):
                 # Duplicate value for Port Vip, Port Real and IP
                 return self.response_error(353)
@@ -189,10 +189,10 @@ class RequestVipsRealResource(RestResource):
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except ScriptError, e:
+        except ScriptError as e:
             return self.response_error(2, e)
 
         except IpNotFoundError:
@@ -237,10 +237,10 @@ class RequestVipsRealResource(RestResource):
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except ScriptError, e:
+        except ScriptError as e:
             return self.response_error(2, e)
 
         except IpNotFoundError:

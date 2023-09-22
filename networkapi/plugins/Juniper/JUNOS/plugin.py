@@ -247,7 +247,7 @@ class JUNOS(BasePlugin):
             self.close()
             raise exceptions.APIException(message)
         # Caution to use generic exception here, may cause overlaps in specific exceptions in try_lock()
-        # except Exception, e:
+        # except Exception as e:
 
     def ensure_privilege_level(self, privilege_level=None):
 

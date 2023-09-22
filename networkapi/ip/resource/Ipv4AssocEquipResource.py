@@ -198,7 +198,7 @@ class Ipv4AssocEquipResource(RestResource):
                         # self.oct4,equipment_id)
                         raise IpEquipmentAlreadyAssociation(None, u'Ip %s.%s.%s.%s already has association with Equipament %s.' % (
                             ip.oct1, ip.oct2, ip.oct3, ip.oct4, equip_id))
-                    except IpEquipmentNotFoundError, e:
+                    except IpEquipmentNotFoundError as e:
                         pass
 
                     equipment = Equipamento().get_by_pk(equip_id)
@@ -253,22 +253,22 @@ class Ipv4AssocEquipResource(RestResource):
 
                         # Delete vlan's cache
                         destroy_cache_function([net.vlan_id])
-                    except EquipamentoAmbienteDuplicatedError, e:
+                    except EquipamentoAmbienteDuplicatedError as e:
                         # If already exists, OK !
                         pass
 
-                except IpRangeAlreadyAssociation, e:
+                except IpRangeAlreadyAssociation as e:
                     raise IpRangeAlreadyAssociation(None, e.message)
-                except IpEquipmentAlreadyAssociation, e:
+                except IpEquipmentAlreadyAssociation as e:
                     raise IpEquipmentAlreadyAssociation(None, e.message)
-                except AddressValueError, e:
+                except AddressValueError as e:
                     self.log.error(e)
                     raise IpNotAvailableError(
                         None, u'Ip %s.%s.%s.%s is invalid' % (ip.oct1, ip.oct2, ip.oct3, ip.oct4))
-                except IpNotAvailableError, e:
+                except IpNotAvailableError as e:
                     raise IpNotAvailableError(None, u'Ip %s.%s.%s.%s not available for network %s.' % (
                         ip.oct1, ip.oct2, ip.oct3, ip.oct4, net.id))
-                except (IpError, EquipamentoError), e:
+                except (IpError, EquipamentoError) as e:
                     self.log.error(
                         u'Error adding new IP or relationship ip-equipment.')
                     raise IpError(
@@ -276,29 +276,29 @@ class Ipv4AssocEquipResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except IpRangeAlreadyAssociation, e:
+        except IpRangeAlreadyAssociation as e:
             return self.response_error(347)
-        except VlanNumberNotAvailableError, e:
+        except VlanNumberNotAvailableError as e:
             return self.response_error(314, e.message)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(150, e.message)
         except NetworkIPv4NotFoundError:
             return self.response_error(281)
         except EquipamentoNotFoundError:
             return self.response_error(117, ip_map.get('id_equipment'))
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
-        except IpEquipmentNotFoundError, e:
+        except IpEquipmentNotFoundError as e:
             return self.response_error(150, e.message)
-        except IpEquipmentAlreadyAssociation, e:
+        except IpEquipmentAlreadyAssociation as e:
             return self.response_error(150, e.message)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except (IpError, NetworkIPv4Error, EquipamentoError, GrupoError), e:
+        except (IpError, NetworkIPv4Error, EquipamentoError, GrupoError) as e:
             self.log.error(e)
             return self.response_error(1)

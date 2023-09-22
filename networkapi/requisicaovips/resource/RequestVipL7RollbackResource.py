@@ -110,11 +110,11 @@ class RequestVipL7RollbackResource(RestResource):
                     vip_old.save(user, commit=True)
                     return self.response_error(2, stdout + stderr)
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
 
         except UserNotAuthorizedError:

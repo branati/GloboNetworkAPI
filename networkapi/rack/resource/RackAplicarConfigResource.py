@@ -660,7 +660,7 @@ class RackAplicarConfigResource(RestResource):
             # BE - PRODUCAO
             try:
                 environment_list = ambiente_prod(user, rack, environment_list)
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 raise var_exceptions.VariableDoesNotExistException(e)
             except:
                 raise RackAplError(
@@ -677,7 +677,7 @@ class RackAplicarConfigResource(RestResource):
             try:
                 environment_list = ambiente_prod_fe(
                     user, rack, environment_list)
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 raise var_exceptions.VariableDoesNotExistException(e)
             except:
                 raise RackAplError(
@@ -706,12 +706,12 @@ class RackAplicarConfigResource(RestResource):
 
             return self.response(dumps_networkapi(map))
 
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             self.log.error(exception)
             raise var_exceptions.VariableDoesNotExistException()
-        except RackConfigError, e:
+        except RackConfigError as e:
             return self.response_error(382, e.param, e.value)
-        except RackAplError, e:
+        except RackAplError as e:
             return self.response_error(383, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()

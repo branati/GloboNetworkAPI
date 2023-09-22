@@ -16,7 +16,7 @@
 from __future__ import with_statement
 
 import logging
-from string import upper
+# from string import upper
 
 from networkapi.admin_permission import AdminPermission
 from networkapi.ambiente.models import EnvironmentVip
@@ -281,16 +281,16 @@ class RequestHealthcheckResource(RestResource):
                     vip_old.save(user, commit=True)
                     return self.response_error(2, stdout + stderr)
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
         except EquipmentGroupsNotAuthorizedError:
             return self.response_error(271)
         except RequestVipsNotBeenCreatedError:
             return self.response_error(270, vip_id)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(332, e.param, e.value)
         except HealthcheckExpectNotFoundError:
             return self.response_error(124)
@@ -320,19 +320,19 @@ class RequestHealthcheckResource(RestResource):
             return self.response_error(136)
         except InvalidMaxConValueError:
             return self.response_error(137)
-        except InvalidServicePortValueError, e:
+        except InvalidServicePortValueError as e:
             porta = 'nulo'
             if e.message is not None:
                 porta = e.message
             return self.response_error(138, porta)
-        except InvalidRealValueError, e:
+        except InvalidRealValueError as e:
             real = 'nulo'
             if e.message is not None:
                 real = e.message
             return self.response_error(151, real)
         except InvalidBalAtivoValueError:
             return self.response_error(129)
-        except InvalidTransbordoValueError, e:
+        except InvalidTransbordoValueError as e:
             transbordo = 'nulo'
             if e.message is not None:
                 transbordo = e.message
@@ -341,5 +341,5 @@ class RequestHealthcheckResource(RestResource):
             return self.not_authorized()
         except IpNotFoundByEquipAndVipError:
             return self.response_error(334, e.message)
-        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError), e:
+        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError) as e:
             return self.response_error(1)

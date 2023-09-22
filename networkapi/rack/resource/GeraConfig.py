@@ -63,7 +63,7 @@ def dic_vlan_core(variablestochangecore, rack, name_core, name_rack):
         SO_OOB_NETipv4 = IPNetwork(get_variable('net_core'))
         # Vlan para cadastrar
         vlan_so_name = get_variable('vlan_so_name')
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável BASE_SO ou SO_OOB_NETipv4.')
@@ -126,7 +126,7 @@ def dic_lf_spn(user, rack):
         # CIDR sala 01 => 10.128.0.0/12
         CIDRBE[0] = IPNetwork(get_variable('cidr_sl01'))
         CIDREBGP[0] = IPNetwork(get_variable('cidr_bgp'))
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável BASE_RACK ou VLAN<BE,FE,BORDA,CACHOS,TORxTOR> ou CIDR<BE,EBGP>.')
@@ -294,7 +294,7 @@ def dic_pods(rack):
         # CIDR sala 01 => 10.128.0.0/12
         CIDRBEipv4 = IPNetwork(get_variable('cidr_be_v4'))
         CIDRBEipv6 = IPNetwork(get_variable('cidr_be_v6'))
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável CIDR<BEv4,BEv6>.')
@@ -424,7 +424,7 @@ def dic_hosts_cloud(rack):
         hosts['VLAN_MNGT_BO'] = int(get_variable('vlan_mngt_bo'))
         hosts['VLAN_MNGT_CA'] = int(get_variable('vlan_mngt_ca'))
         hosts['VLAN_MNGT_FILER'] = int(get_variable('vlan_mngt_filer'))
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável VLAN_MNGT<BE,FE,BO,CA,FILER> ou CIDR<BEv4,BEv6>.')
@@ -551,7 +551,7 @@ def dic_fe_prod(rack):
         CIDRFEipv4[0] = IPNetwork(get_variable('cidr_fe_v4'))
         # CIDRFE[1] = IPNetwork('172.20.1.0/14')
         CIDRFEipv6[0] = IPNetwork(get_variable('cidr_fe_v6'))
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável VLAN_MNGT<BE,FE,BO,CA,FILER> ou CIDR<FEv4,FEv6>.')
@@ -610,7 +610,7 @@ def autoprovision_coreoob(rack, FILEINCR1, FILEINCR2, FILEINOOB, name_core1, nam
         fileoutcore2 = get_variable(
             'path_to_add_config') + HOSTNAME_CORE2 + '-ADD-' + HOSTNAME_RACK[2] + '.cfg'
         fileoutoob = get_variable('path_to_config') + HOSTNAME_OOB + '.cfg'
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável PATH_TO_<GUIDE, CONFIG> ou BASE_SO.')
@@ -770,7 +770,7 @@ def autoprovision_splf(rack,FILEINLF1, FILEINLF2,FILEINSP1, FILEINSP2, FILEINSP3
         VLANBORDACACHOS = int(get_variable("vlanbordacachos"))
         ###
 
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável PATH_TO_GUIDE ou BASE_<RACK,AS> ou VLAN<BE,FE,BORDA,CACHOS>.')
@@ -808,7 +808,7 @@ def autoprovision_splf(rack,FILEINLF1, FILEINLF2,FILEINSP1, FILEINSP2, FILEINSP3
         SPINE2ipv6 = IPNetwork(get_variable('net_spn02_v6'))
         SPINE3ipv6 = IPNetwork(get_variable('net_spn03_v6'))
         SPINE4ipv6 = IPNetwork(get_variable('net_spn04_v6'))
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável CIDR<BE,EBGP> ou <BE,FE,BORDA,CACHOS> ou SPINE<1,2,3,4>ipv6.')
@@ -825,7 +825,7 @@ def autoprovision_splf(rack,FILEINLF1, FILEINLF2,FILEINSP1, FILEINSP2, FILEINSP3
     try:
         IBGPToRLxLipv4 = IPNetwork(get_variable('ibgptorlxlip_v4'))
         IBGPToRLxLipv6 = IPNetwork(get_variable('ibgptorlxlip_v6'))
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável IBGPToRLxL<ipv4,ipv6>.')
@@ -891,7 +891,7 @@ def autoprovision_splf(rack,FILEINLF1, FILEINLF2,FILEINSP1, FILEINSP2, FILEINSP3
         CIDRFEipv4[0] = IPNetwork(get_variable('cidr_fe_v4'))
         # CIDRFE[1] = IPNetwork('172.20.1.0/14')
         CIDRFEipv6[0] = IPNetwork(get_variable('cidr_fe_v6'))
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável CIDR<FE,BE><ipv4,ipv6>.')
@@ -930,7 +930,7 @@ def autoprovision_splf(rack,FILEINLF1, FILEINLF2,FILEINSP1, FILEINSP2, FILEINSP3
         variablestochangeleaf2['IMAGE_SO_LF'] = get_variable('image_so_lf')
         variablestochangeleaf2['ASSPINE1'] = get_variable('base_as_spn03')
         variablestochangeleaf2['ASSPINE2'] = get_variable('base_as_spn04')
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável ASSPINE<1,2,3,4> ou KICKSTART_SO_LF ou IMAGE_SO_LF.')
@@ -940,7 +940,7 @@ def autoprovision_splf(rack,FILEINLF1, FILEINLF2,FILEINSP1, FILEINSP2, FILEINSP3
         ID_VLT_LF2 = get_variable('id_vlt_lf2')
         PRIORITY_VLT_LF1 = get_variable('priority_vlt_lf1')
         PRIORITY_VLT_LF2 = get_variable('priority_vlt_lf2')
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando as variáveis ID_VLT_LF<1,2> ou PRIORITY_VLT_LF<1,2>')
@@ -1111,7 +1111,7 @@ def autoprovision_splf(rack,FILEINLF1, FILEINLF2,FILEINSP1, FILEINSP2, FILEINSP3
             'path_to_add_config') + HOSTNAME_SP4 + '-ADD-' + HOSTNAME_RACK[2] + '.cfg'
         fileoutleaf1 = get_variable('path_to_config') + HOSTNAME_LF1 + '.cfg'
         fileoutleaf2 = get_variable('path_to_config') + HOSTNAME_LF2 + '.cfg'
-    except ObjectDoesNotExist, exception:
+    except ObjectDoesNotExist as exception:
         log.error(exception)
         raise var_exceptions.VariableDoesNotExistException(
             'Erro buscando a variável PATH_TO_CONFIG ou PATH_TO_ADD_CONFIG.')

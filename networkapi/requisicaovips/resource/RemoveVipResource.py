@@ -163,16 +163,16 @@ class RemoveVipResource(RestResource):
                 # Return XML
                 return self.response(dumps_networkapi(map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(117)
-        except RequisicaoVipsNotFoundError, e:
+        except RequisicaoVipsNotFoundError as e:
             return self.response_error(152)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
         except (RequisicaoVipsError, GrupoError, HealthcheckExpectError, EquipamentoError, IpError):
             return self.response_error(1)

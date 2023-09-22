@@ -79,7 +79,7 @@ class OptionVipResource(RestResource):
             try:
                 # Save Option Vip
                 option_vip.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the option vip.')
                 raise OptionVipError(e, u'Failed to save the option vip')
 
@@ -88,13 +88,13 @@ class OptionVipResource(RestResource):
 
             return self.response(dumps_networkapi(option_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
@@ -148,19 +148,19 @@ class OptionVipResource(RestResource):
                 try:
                     # Update Option Vip
                     option_vip.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the option vip.')
                     raise OptionVipError(e, u'Failed to update the option vip')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
@@ -202,13 +202,13 @@ class OptionVipResource(RestResource):
                 try:
                     # Delete Option Vip
                     option_vip.delete(user)
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to delete the option vip.')
                     raise OptionVipError(e, u'Failed to delete the option vip')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -249,7 +249,7 @@ class OptionVipResource(RestResource):
                 # Find Option VIP by ID to check if it exist
                 option_vip = OptionVip.objects.get(id=id_option_vip)
 
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 self.log.error(
                     u'There is no option vip with pk = %s.', id_option_vip)
                 return self.response_error(289)
@@ -259,7 +259,7 @@ class OptionVipResource(RestResource):
 
             return self.response(dumps_networkapi(option_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

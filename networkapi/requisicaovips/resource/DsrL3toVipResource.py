@@ -67,7 +67,7 @@ class DsrL3toVipResource(RestResource):
                 # Find Option VIP by ID to check if it exist
                 dsrl3 = DsrL3_to_Vip.objects.get(id=id_dsrl3_vip)
 
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 self.log.error(
                     u'There is no dsrl3 with pk = %s.', id_dsrl3_vip)
                 return self.response_error(289)
@@ -77,7 +77,7 @@ class DsrL3toVipResource(RestResource):
 
             return self.response(dumps_networkapi(option_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

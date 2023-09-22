@@ -219,7 +219,7 @@ class IpResource(RestResource):
                 map['ip_equipamento'] = ipequipamento_map
 
                 return self.response(dumps_networkapi(map))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except IpNotFoundError:
             return self.response_error(119)
@@ -240,7 +240,7 @@ class IpResource(RestResource):
 
         try:
             xml_map, attrs_map = loads(request.raw_post_data)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
 
@@ -258,21 +258,21 @@ class IpResource(RestResource):
                 return self.response(dumps_networkapi({'ip': response[1]}))
             else:
                 return self.response_error(response[0])
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except VlanNotFoundError:
             return self.response_error(116)
-        except NetworkIPv4NotFoundError, e:
+        except NetworkIPv4NotFoundError as e:
             return self.response_error(281)
         except EquipamentoNotFoundError:
             return self.response_error(117, ip_map.get('id_equipamento'))
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except (IpError, VlanError, EquipamentoError, GrupoError), e:
+        except (IpError, VlanError, EquipamentoError, GrupoError) as e:
             return self.response_error(1, e)
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1, e)
 
     def handle_delete(self, request, user, *args, **kwargs):
@@ -332,23 +332,23 @@ class IpResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except IpCantRemoveFromServerPool, e:
+        except IpCantRemoveFromServerPool as e:
             return self.response_error(385, e.cause.get('ip'), e.cause.get('equip_name'), e.cause.get('server_pool_identifiers'))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(117, e.message)
         except IpEquipmentNotFoundError:
             return self.response_error(118, ip_id, equip_id)
         except IpNotFoundError:
             return self.response_error(119)
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(319, 'ip', 'ipv4', ip_id)
-        except IpEquipCantDissociateFromVip, e:
+        except IpEquipCantDissociateFromVip as e:
             return self.response_error(352, e.cause['ip'], e.cause['equip_name'], e.cause['vip_id'])
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except (IpError, GrupoError, EquipamentoError, IntegrityError), e:
+        except (IpError, GrupoError, EquipamentoError, IntegrityError) as e:
             if isinstance(e.cause, IntegrityError):
                 # IP associated VIP
                 self.log.error(u'Failed to update the request vip.')
@@ -408,7 +408,7 @@ class IpResource(RestResource):
 
             return self.response(dumps_networkapi({'ip': ip_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except IpNotFoundError:
             return self.response_error(119)

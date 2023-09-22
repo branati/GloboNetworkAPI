@@ -13,7 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import commands
+# import commands
+import subprocess
 import glob
 import logging
 import shutil
@@ -58,7 +59,7 @@ def desativar_vlan_rede(user, rack):
                 if net4.active:
                     try:
                         net4.deactivate(user, True)
-                    except Exception, e:
+                    except Exception as e:
                         network_errors.append(str(net4.id))
                         pass
 
@@ -69,7 +70,7 @@ def desativar_vlan_rede(user, rack):
                 if net6.active:
                     try:
                         net6.deactivate(user, True)
-                    except Exception, e:
+                    except Exception as e:
                         network_errors.append(str(net6.id))
                         pass
 
@@ -129,12 +130,12 @@ def aplicar(rack):
                     try:
                         equip = Equipamento.get_by_name(nome)
                         if not equip.maintenance:
-                            (erro, result) = commands.getstatusoutput(
+                            (erro, result) = subprocess.getstatusoutput(
                                 '/usr/bin/backuper -T acl -b %s -e -i %s -w 300' % (var, nome))
                             if erro:
                                 raise RackAplError(
                                     None, None, 'Falha ao aplicar as configuracoes: %s' % (result))
-                    except RackAplError, e:
+                    except RackAplError as e:
                         raise e
                     except:
                         # Error equipment not found, do nothing
@@ -235,15 +236,15 @@ class RackDeleteResource(RestResource):
             with distributedlock(LOCK_RACK % rack_id):
                 try:
                     rack.delete()
-                except RackNumberNotFoundError, e:
+                except RackNumberNotFoundError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the Rack.')
                     raise RackError(e, u'Failed to remove the Rack.')
 
             return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -255,15 +256,15 @@ class RackDeleteResource(RestResource):
         except RackError:
             return self.response_error(378)
 
-        except VlanNetworkError, e:
+        except VlanNetworkError as e:
             return self.response_error(369, e.message)
 
-        except VlanInactiveError, e:
+        except VlanInactiveError as e:
             return self.response_error(368)
 
-        except RackAplError, e:
+        except RackAplError as e:
             return self.response_error(383, e.param, e.value)
 
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             self.log.error(exception)
             raise var_exceptions.VariableDoesNotExistException()

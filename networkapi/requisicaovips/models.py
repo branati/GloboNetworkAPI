@@ -16,12 +16,13 @@
 from __future__ import with_statement
 
 import logging
-from string import upper
+# from string import upper
 
-from _mysql_exceptions import OperationalError
+# from _mysql_exceptions import OperationalError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import get_model
+from django.apps import apps
+#from django.apps import apps
 from django.db.models import Q
 
 from networkapi.admin_permission import AdminPermission
@@ -52,15 +53,19 @@ from networkapi.util import mount_ipv6_string
 from networkapi.util.decorators import cached_property
 from networkapi.util.geral import get_app
 
-# from networkapi.api_pools.exceptions import PoolError
+from networkapi.api_pools.exceptions import PoolError
+# def print_loaded_models():
+#     for model in apps.get_models():
+#         print(model._meta.app_label, model.__name__)
+# print_loaded_models()
+from networkapi.ip.models import Ip, IpNotFoundByEquipAndVipError, Ipv6
+# Ip = apps.get_model('ip', 'Ip')
+# IpNotFoundByEquipAndVipError = apps.get_model('ip', 'IpNotFoundByEquipAndVipError')
+# Ipv6 = apps.get_model('ip', 'Ipv6')
 
-Ip = get_model('ip', 'Ip')
-IpNotFoundByEquipAndVipError = get_model('ip', 'IpNotFoundByEquipAndVipError')
-Ipv6 = get_model('ip', 'Ipv6')
-
-# Healthcheck = get_model('healthcheckexpect', 'Healthcheck')
-# HealthcheckExpect = get_model('healthcheckexpect', 'HealthcheckExpect')
-# HealthcheckExpectNotFoundError = get_model(
+# Healthcheck = apps.get_model('healthcheckexpect', 'Healthcheck')
+# HealthcheckExpect = apps.get_model('healthcheckexpect', 'HealthcheckExpect')
+# HealthcheckExpectNotFoundError = apps.get_model(
 #     'healthcheckexpect', 'HealthcheckExpectNotFoundError')
 
 
@@ -336,14 +341,14 @@ class OptionVip(BaseModel):
         """
         try:
             return OptionVip.objects.filter(id=id).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise OptionVipNotFoundError(
                 e, u'Dont there is a option vip by pk = %s.' % id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the option vip.')
             raise OptionVipError(e, u'Failure to search the option vip.')
 
@@ -357,7 +362,7 @@ class OptionVip(BaseModel):
         """
         try:
             return OptionVip.objects.all()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Vip.')
             raise OptionVipError(e, u'Failure to list all Option Vip.')
 
@@ -378,7 +383,7 @@ class OptionVip(BaseModel):
 
             return ovips
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Vip.')
             raise OptionVipError(e, u'Failure to list all Option Vip.')
 
@@ -399,7 +404,7 @@ class OptionVip(BaseModel):
 
             return ovips
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Vip.')
             raise OptionVipError(e, u'Failure to list all Option Vip.')
 
@@ -420,7 +425,7 @@ class OptionVip(BaseModel):
 
             return ovips
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Vip Healthcheck.')
             raise OptionVipError(
                 e, u'Failure to list all Option Vip Healthcheck.')
@@ -448,7 +453,7 @@ class OptionVip(BaseModel):
 
             return ovips
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Vip Traffic Return.')
             raise OptionVipError(
                 e, u'Failure to list all Option Vip Traffic Return.')
@@ -470,7 +475,7 @@ class OptionVip(BaseModel):
 
             return ovips
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Vip.')
             raise OptionVipError(e, u'Failure to list all Option Vip.')
 
@@ -491,7 +496,7 @@ class OptionVip(BaseModel):
 
             return ovips
 
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Option Vip.')
             raise OptionVipError(e, u'Failure to list all Option Vip.')
 
@@ -527,20 +532,23 @@ class RequisicaoVips(BaseModel):
         'ip.Ip',
         db_column='ips_id_ip',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     ipv6 = models.ForeignKey(
         'ip.Ipv6',
         db_column='ipsv6_id_ipv6',
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     trafficreturn = models.ForeignKey(
         'requisicaovips.OptionVip',
         db_column='id_traffic_return',
-        default=12, blank=True, null=True
+        default=12, blank=True, null=True,
+        on_delete=models.DO_NOTHING
     )
 
     l7_filter = models.TextField(
@@ -575,7 +583,8 @@ class RequisicaoVips(BaseModel):
         'healthcheckexpect.HealthcheckExpect',
         null=True,
         db_column='id_healthcheck_expect',
-        blank=True
+        blank=True,
+        on_delete=models.DO_NOTHING
     )
 
     rule = models.ForeignKey(
@@ -628,14 +637,14 @@ class RequisicaoVips(BaseModel):
         """
         try:
             return RequisicaoVips.objects.get(id=id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise RequisicaoVipsNotFoundError(
                 e, u'Dont there is a request of vips by pk = %s.' % id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the request vip.')
             raise RequisicaoVipsError(e, u'Failure to search the request vip.')
 
@@ -655,9 +664,9 @@ class RequisicaoVips(BaseModel):
             try:
                 dsrl3 = DsrL3_to_Vip.get_by_vip_id(vip_id)
                 dsrl3.delete(authenticated_user)
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 pass
-            except RequisicaoVipsMissingDSRL3idError, e:
+            except RequisicaoVipsMissingDSRL3idError as e:
                 cls.log.error(
                     u'Requisao Vip nao possui id DSRL3 correspondente cadastrado no banco')
                 raise RequisicaoVipsMissingDSRL3idError(
@@ -665,11 +674,11 @@ class RequisicaoVips(BaseModel):
 
             vip.delete()
 
-        except RequisicaoVipsNotFoundError, e:
+        except RequisicaoVipsNotFoundError as e:
             cls.log.error(u'Requisao Vip nao encontrada')
             raise RequisicaoVipsNotFoundError(
                 e, 'Requisao Vip com id %s nao encontrada' % vip_id)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao remover requisicao VIP.')
             raise RequisicaoVipsError(e, u'Falha ao remover requisicao VIP.')
 
@@ -683,7 +692,7 @@ class RequisicaoVips(BaseModel):
         """
         try:
             return RequisicaoVips.objects.all()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all Request Vip.')
             raise RequisicaoVipsError(e, u'Failure to list all Request Vip.')
 
@@ -697,7 +706,7 @@ class RequisicaoVips(BaseModel):
         """
         try:
             return RequisicaoVips.objects.filter(healthcheck_expect__id=healthcheck_exp)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(
                 u'Failure to list Request Vip with healthcheck expect.')
             raise RequisicaoVipsError(
@@ -713,7 +722,7 @@ class RequisicaoVips(BaseModel):
         """
         try:
             return RequisicaoVips.objects.filter(ip__id=id_ipv4)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list Request Vip by ipv4.')
             raise RequisicaoVipsError(
                 e, u'Failure to list Request Vip by ipv4.')
@@ -728,7 +737,7 @@ class RequisicaoVips(BaseModel):
         """
         try:
             return RequisicaoVips.objects.filter(ipv6__id=id_ipv6)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list Request Vip by ipv4.')
             raise RequisicaoVipsError(
                 e, u'Failure to list Request Vip by ipv4.')
@@ -839,7 +848,7 @@ class RequisicaoVips(BaseModel):
 
     def set_new_variables(self, data):
 
-        Healthcheck = get_model('healthcheckexpect', 'Healthcheck')
+        Healthcheck = apps.get_model('healthcheckexpect', 'Healthcheck')
 
         log = logging.getLogger('insert_vip_request_set_new_variables')
 
@@ -1375,7 +1384,7 @@ class RequisicaoVips(BaseModel):
 
         try:
             vip.save(authenticated_user)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Falha ao atualizar a requisição de vip.')
             raise RequisicaoVipsError(
                 e, u'Falha ao atualizar a requisição de vip.')
@@ -1391,7 +1400,7 @@ class RequisicaoVips(BaseModel):
             self.validado = validado
 
             self.save()
-        except RequisicaoVipsError, e:
+        except RequisicaoVipsError as e:
             self.log.error(u'Falha ao validar a requisição de vip.')
             raise RequisicaoVipsError(
                 e, u'Falha ao validar a requisição de vip.')
@@ -1478,7 +1487,7 @@ class RequisicaoVips(BaseModel):
 
         try:
             self.save()
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Falha ao inserir a requisição de vip.')
             raise RequisicaoVipsError(
                 e, u'Falha ao inserir a requisição de vip.')
@@ -1645,8 +1654,8 @@ class RequisicaoVips(BaseModel):
 
         """
 
-        HealthcheckExpect = get_model('healthcheckexpect', 'HealthcheckExpect')
-        HealthcheckExpectNotFoundError = get_model(
+        HealthcheckExpect = apps.get_model('healthcheckexpect', 'HealthcheckExpect')
+        HealthcheckExpectNotFoundError = apps.get_model(
             'healthcheckexpect', 'HealthcheckExpectNotFoundError')
 
         # Get XML data
@@ -1749,10 +1758,10 @@ class RequisicaoVips(BaseModel):
         @raise IpError: Failed to search for the IP.
         """
 
-        Ip = get_model('ip', 'Ip')
-        IpNotFoundByEquipAndVipError = get_model(
+        Ip = apps.get_model('ip', 'Ip')
+        IpNotFoundByEquipAndVipError = apps.get_model(
             'ip', 'IpNotFoundByEquipAndVipError')
-        Ipv6 = get_model('ip', 'Ipv6')
+        Ipv6 = apps.get_model('ip', 'Ipv6')
 
         if is_valid_ipv4(ip):
 
@@ -1832,9 +1841,9 @@ class RequisicaoVips(BaseModel):
         return ip, equip, evip
 
     def save_vips_and_ports(self, vip_map, user):
-        Healthcheck = get_model('healthcheckexpect', 'Healthcheck')
+        Healthcheck = apps.get_model('healthcheckexpect', 'Healthcheck')
 
-        HealthcheckExpect = get_model('healthcheckexpect', 'HealthcheckExpect')
+        HealthcheckExpect = apps.get_model('healthcheckexpect', 'HealthcheckExpect')
 
         # Ports Vip
         ports_vip_map = vip_map.get('portas_servicos')
@@ -2168,8 +2177,8 @@ class RequisicaoVips(BaseModel):
 
 class OptionVipEnvironmentVip(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id')
-    option = models.ForeignKey(OptionVip, db_column='id_opcoesvip')
-    environment = models.ForeignKey(EnvironmentVip, db_column='id_ambiente')
+    option = models.ForeignKey(OptionVip, db_column='id_opcoesvip', on_delete=models.DO_NOTHING)
+    environment = models.ForeignKey(EnvironmentVip, db_column='id_ambiente', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('OptionVipEnvironmentVip')
 
@@ -2190,15 +2199,15 @@ class OptionVipEnvironmentVip(BaseModel):
         try:
             return OptionVipEnvironmentVip.objects.filter(option__id=option_id,
                                                           environment__id=environment_id).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise OptionVipEnvironmentVipNotFoundError(
                 e, u'Dont there is a OptionVipEnvironmentVip by option_id = %s and environment_id = %s' % (
                     option_id, environment_id))
-        except OperationalError, e:
+        except OperationalError as e:
             self.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Failure to search the OptionVipEnvironmentVip.')
             raise OptionVipEnvironmentVipError(
                 e, u'Failure to search the OptionVipEnvironmentVip.')
@@ -2232,13 +2241,15 @@ class ServerPool(BaseModel):
         'healthcheckexpect.Healthcheck',
         db_column='healthcheck_id_healthcheck',
         default=1,
-        null=True  # This attribute is here to not raise a exception
+        null=True, # This attribute is here to not raise a exception
+        on_delete=models.DO_NOTHING
     )
 
     servicedownaction = models.ForeignKey(
         'api_pools.OptionPool',
         db_column='service-down-action_id',
-        default=5
+        default=5,
+        on_delete=models.DO_NOTHING
     )
 
     default_port = models.IntegerField(
@@ -2249,7 +2260,15 @@ class ServerPool(BaseModel):
         db_column='default_limit'
     )
 
-    pool_created = models.NullBooleanField(
+    # TODO
+    # Clean this
+    # pool_created = models.NullBooleanField(
+    #     db_column='pool_criado',
+    #     default=False,
+    #     null=True
+    # )
+
+    pool_created = models.BooleanField(
         db_column='pool_criado',
         default=False,
         null=True
@@ -2258,6 +2277,7 @@ class ServerPool(BaseModel):
     environment = models.ForeignKey(
         Ambiente,
         db_column='ambiente_id_ambiente',
+        on_delete=models.DO_NOTHING
     )
 
     lb_method = models.CharField(
@@ -2331,14 +2351,14 @@ class ServerPool(BaseModel):
 
         try:
             return ServerPool.objects.filter(id=id).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.exception(u'There is no ServerPool with pk = %s.' % id)
             raise exceptions.PoolDoesNotExistException(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the ServerPool.')
             raise exceptions.PoolError(e, u'Failure to search the ServerPool.')
 
@@ -2586,7 +2606,8 @@ class ServerPoolMember(BaseModel):
 
     server_pool = models.ForeignKey(
         ServerPool,
-        db_column='id_server_pool'
+        db_column='id_server_pool',
+        on_delete=models.DO_NOTHING
     )
 
     identifier = models.CharField(
@@ -2596,13 +2617,15 @@ class ServerPoolMember(BaseModel):
     ip = models.ForeignKey(
         'ip.Ip',
         db_column='ips_id_ip',
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     ipv6 = models.ForeignKey(
         'ip.Ipv6',
         db_column='ipsv6_id_ipv6',
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     priority = models.IntegerField()
@@ -2620,7 +2643,8 @@ class ServerPoolMember(BaseModel):
     healthcheck = models.ForeignKey(
         'healthcheckexpect.Healthcheck',
         db_column='healthcheck_id_healthcheck',
-        null=True
+        null=True,
+        on_delete=models.DO_NOTHING
     )
 
     member_status = models.IntegerField(
@@ -2704,15 +2728,15 @@ class ServerPoolMember(BaseModel):
 
         try:
             return ServerPoolMember.objects.filter(id=id).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             cls.log.exception(
                 u'There is no ServerPoolMember with pk = %s.' % id)
             raise exceptions.PoolMemberDoesNotExistException(id)
-        except OperationalError, e:
+        except OperationalError as e:
             cls.log.error(u'Lock wait timeout exceeded.')
             raise OperationalError(
                 e, u'Lock wait timeout exceeded; try restarting transaction')
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the ServerPoolMember.')
             raise exceptions.PoolError(
                 e, u'Failure to search the ServerPoolMember.')
@@ -2782,8 +2806,8 @@ class ServerPoolMember(BaseModel):
         @raise IpError
         """
 
-        model_ip = get_model('ip', 'Ip')
-        model_ipv6 = get_model('ip', 'Ipv6')
+        model_ip = apps.get_model('ip', 'Ip')
+        model_ipv6 = apps.get_model('ip', 'Ipv6')
         pools_exceptions = get_app('api_pools', 'exceptions')
 
         # Server Pool
@@ -2847,8 +2871,8 @@ class ServerPoolMember(BaseModel):
         @raise IpError
         """
 
-        model_ip = get_model('ip', 'Ip')
-        model_ipv6 = get_model('ip', 'Ipv6')
+        model_ip = apps.get_model('ip', 'Ip')
+        model_ipv6 = apps.get_model('ip', 'Ipv6')
         pools_exceptions = get_app('api_pools', 'exceptions')
 
         # Ip
@@ -2883,9 +2907,10 @@ class VipPortToPool(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_vip_port_to_pool')
 
     requisicao_vip = models.ForeignKey(
-        RequisicaoVips, db_column='id_requisicao_vips')
+        RequisicaoVips, db_column='id_requisicao_vips',
+        on_delete=models.DO_NOTHING)
 
-    server_pool = models.ForeignKey(ServerPool, db_column='id_server_pool')
+    server_pool = models.ForeignKey(ServerPool, db_column='id_server_pool', on_delete=models.DO_NOTHING)
 
     port_vip = models.IntegerField(db_column='vip_port')
 
@@ -2917,7 +2942,7 @@ class VipPortToPool(BaseModel):
         """
         try:
             return VipPortToPool.objects.filter(requisicao_vip__id=id_vip)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list Request VipPortToPool by id_vip.')
             raise RequisicaoVipsError(
                 e, u'Failure to list Request VipPortToPool by id_vip.')
@@ -2927,7 +2952,8 @@ class DsrL3_to_Vip(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_dsrl3_to_vip')
 
     requisicao_vip = models.ForeignKey(
-        RequisicaoVips, db_column='id_requisicao_vips')
+        RequisicaoVips, db_column='id_requisicao_vips',
+        on_delete=models.DO_NOTHING)
 
     id_dsrl3 = models.IntegerField(db_column='id_dsrl3')
 
@@ -2968,10 +2994,10 @@ class DsrL3_to_Vip(BaseModel):
         try:
             return DsrL3_to_Vip.objects.filter(
                 requisicao_vip__id=id_vip).uniqueResult()
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise ObjectDoesNotExist(
                 e, u'There is not DSRL3 entry for vip = %s.' % id_vip)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list id of DSR L3 by id_vip.')
             raise RequisicaoVipsError(
                 e, u'Failure to list Request DsrL3_to_Vip by id_vip.')
@@ -2986,6 +3012,6 @@ class DsrL3_to_Vip(BaseModel):
         """
         try:
             return DsrL3_to_Vip.objects.all()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to list all DsrL3_to_Vip .')
             raise OptionVipError(e, u'Failure to list all DsrL3_to_Vip.')

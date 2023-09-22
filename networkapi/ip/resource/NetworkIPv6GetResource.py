@@ -69,12 +69,12 @@ class NetworkIPv6GetResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(network_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except NetworkIPv6NotFoundError, e:
+        except NetworkIPv6NotFoundError as e:
             return self.response_error(286)
         except (NetworkIPv6Error):
             return self.response_error(1)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)

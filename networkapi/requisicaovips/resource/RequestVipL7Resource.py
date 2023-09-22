@@ -120,7 +120,7 @@ class RequestVipL7Resource(RestResource):
 
             return self.response(dumps_networkapi({'vip': request_vip_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except (RequisicaoVipsNotFoundError):
             return self.response_error(152)

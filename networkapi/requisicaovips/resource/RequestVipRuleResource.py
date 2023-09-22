@@ -160,23 +160,23 @@ class RequestVipRuleResource(RestResource):
 
             return self.response(dumps_networkapi({'sucesso': success_map}))
 
-        except VipRequestBlockAlreadyInRule, e:
+        except VipRequestBlockAlreadyInRule as e:
             self.log.error(e.message)
             return self.response_error(361)
-        except VipRequestNoBlockInRule, e:
+        except VipRequestNoBlockInRule as e:
             self.log.error(e.message)
             return self.response_error(362)
-        except RequisicaoVipsNotFoundError, e:
+        except RequisicaoVipsNotFoundError as e:
             return self.response_error(152)
         except BlockRules.DoesNotExist:
             return self.response_error(359)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
         except AddBlockOverrideNotDefined:
             return self.response_error(371)
-        except BaseException, e:
+        except BaseException as e:
             return self.response_error(1)
 
     def insert_block_in_rule(self, id_block, rule_applied):

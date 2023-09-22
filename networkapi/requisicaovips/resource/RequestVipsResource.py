@@ -144,7 +144,7 @@ class RequestVipsResource(RestResource):
             try:
                 evip = EnvironmentVip.get_by_values(
                     finalidade, cliente, ambiente)
-            except Exception, e:
+            except Exception as e:
                 raise EnvironmentVipNotFoundError(
                     e, 'The fields finality or client or ambiente is None')
 
@@ -247,7 +247,7 @@ class RequestVipsResource(RestResource):
                 # SYNC_VIP
                 old_to_new(vip)
 
-            except Exception, e:
+            except Exception as e:
                 if isinstance(e, IntegrityError):
                     # Duplicate value for Port Vip, Port Real and IP
                     self.log.error(u'Failed to save the request vip.')
@@ -262,7 +262,7 @@ class RequestVipsResource(RestResource):
 
             return self.response(dumps_networkapi({'requisicao_vip': vip_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EnvironmentVipNotFoundError:
             return self.response_error(316, vip_map['finalidade'], vip_map['cliente'], vip_map['ambiente'])
@@ -292,12 +292,12 @@ class RequestVipsResource(RestResource):
             return self.response_error(136)
         except InvalidMaxConValueError:
             return self.response_error(137)
-        except InvalidServicePortValueError, e:
+        except InvalidServicePortValueError as e:
             porta = 'nulo'
             if e.message is not None:
                 porta = e.message
             return self.response_error(138, porta)
-        except InvalidRealValueError, e:
+        except InvalidRealValueError as e:
             real = 'nulo'
             if e.message is not None:
                 real = e.message
@@ -308,18 +308,18 @@ class RequestVipsResource(RestResource):
             return self.response_error(117, equip_aux_error)
         except IpEquipmentNotFoundError:
             return self.response_error(318, ip_aux_error, equip_aux_error)
-        except InvalidTransbordoValueError, e:
+        except InvalidTransbordoValueError as e:
             transbordo = 'nulo'
             if e.message is not None:
                 transbordo = e.message
             return self.response_error(130, transbordo)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except IpNotFoundByEquipAndVipError, e:
+        except IpNotFoundByEquipAndVipError as e:
             return self.response_error(334, e.message)
         except Rule.DoesNotExist:
             return self.response_error(358)
-        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError), e:
+        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError) as e:
             return self.response_error(1)
 
     @deprecated(new_uri='api/v3/vip-request/<pk>/')
@@ -509,11 +509,11 @@ class RequestVipsResource(RestResource):
                     # SYNC_VIP
                     old_to_new(vip)
 
-                except RequestVipServerPoolConstraintError, e:
+                except RequestVipServerPoolConstraintError as e:
                     self.log.error(e.message)
                     return self.response_error(384, e.message)
 
-                except Exception, e:
+                except Exception as e:
                     if isinstance(e, IntegrityError):
                         # Duplicate value for Port Vip, Port Real and IP
                         self.log.error(u'Failed to update the request vip.')
@@ -525,10 +525,10 @@ class RequestVipsResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except RequestVipServerPoolConstraintError, e:
+        except RequestVipServerPoolConstraintError as e:
             return self.response_error(375)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EnvironmentVipNotFoundError:
             return self.response_error(316, vip_map['finalidade'], vip_map['cliente'], vip_map['ambiente'])
@@ -566,28 +566,28 @@ class RequestVipsResource(RestResource):
             return self.response_error(136)
         except InvalidMaxConValueError:
             return self.response_error(137)
-        except InvalidServicePortValueError, e:
+        except InvalidServicePortValueError as e:
             porta = 'nulo'
             if e.message is not None:
                 porta = e.message
             return self.response_error(138, porta)
-        except InvalidRealValueError, e:
+        except InvalidRealValueError as e:
             real = 'nulo'
             if e.message is not None:
                 real = e.message
             return self.response_error(151, real)
         except InvalidBalAtivoValueError:
             return self.response_error(129)
-        except InvalidTransbordoValueError, e:
+        except InvalidTransbordoValueError as e:
             transbordo = 'nulo'
             if e.message is not None:
                 transbordo = e.message
             return self.response_error(130, transbordo)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except IpNotFoundByEquipAndVipError, e:
+        except IpNotFoundByEquipAndVipError as e:
             return self.response_error(334, e.message)
         except Rule.DoesNotExist:
             return self.response_error(358)
-        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError), e:
+        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError) as e:
             return self.response_error(1)

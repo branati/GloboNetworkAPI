@@ -156,7 +156,9 @@ class DatacenterRooms(BaseModel):
 
     id = models.AutoField(primary_key=True, db_column='id_dcroom')
     name = models.CharField(max_length=100, unique=True)
-    dc = models.ForeignKey(Datacenter, unique=True, db_column='id_dc')
+    dc = models.OneToOneField(
+        Datacenter, unique=True, db_column='id_dc',
+        on_delete=models.DO_NOTHING)
     racks = models.IntegerField(blank=True, null=True)
     spines = models.IntegerField(blank=True, null=True)
     leafs = models.IntegerField(blank=True, null=True)
@@ -232,13 +234,35 @@ class Rack(BaseModel):
     mac_sw1 = models.CharField(max_length=17, blank=True, null=True, db_column='mac_sw1')
     mac_sw2 = models.CharField(max_length=17, blank=True, null=True, db_column='mac_sw2')
     mac_ilo = models.CharField(max_length=17, blank=True, null=True, db_column='mac_ilo')
-    id_sw1 = models.ForeignKey('equipamento.Equipamento', blank=True, null=True, db_column='id_equip1', related_name='equipamento_sw1')
-    id_sw2 = models.ForeignKey('equipamento.Equipamento', blank=True, null=True, db_column='id_equip2', related_name='equipamento_sw2')
-    id_ilo = models.ForeignKey('equipamento.Equipamento', blank=True, null=True, db_column='id_equip3', related_name='equipamento_ilo')
+    id_sw1 = models.ForeignKey(
+        'equipamento.Equipamento',
+        blank=True,
+        null=True,
+        db_column='id_equip1',
+        related_name='equipamento_sw1',
+        on_delete=models.DO_NOTHING)
+    id_sw2 = models.ForeignKey(
+        'equipamento.Equipamento',
+        blank=True,
+        null=True,
+        db_column='id_equip2',
+        related_name='equipamento_sw2',
+        on_delete=models.DO_NOTHING)
+    id_ilo = models.ForeignKey(
+        'equipamento.Equipamento',
+        blank=True,
+        null=True,
+        db_column='id_equip3',
+        related_name='equipamento_ilo',
+        on_delete=models.DO_NOTHING)
 
     config = models.BooleanField(default=False)
     create_vlan_amb = models.BooleanField(default=False)
-    dcroom = models.ForeignKey(DatacenterRooms, db_column='dcroom', null=True)
+    dcroom = models.ForeignKey(
+        DatacenterRooms,
+        db_column='dcroom',
+        null=True,
+        on_delete=models.DO_NOTHING)
 
     class Meta(BaseModel.Meta):
         db_table = u'racks'
@@ -400,8 +424,8 @@ class EnvironmentRack(BaseModel):
     log = logging.getLogger('EnvironmentRack')
 
     id = models.AutoField(primary_key=True, db_column='id_ambienterack')
-    ambiente = models.ForeignKey('ambiente.Ambiente', db_column='id_ambiente')
-    rack = models.ForeignKey(Rack, db_column='id_rack')
+    ambiente = models.ForeignKey('ambiente.Ambiente', db_column='id_ambiente',on_delete=models.DO_NOTHING)
+    rack = models.ForeignKey(Rack, db_column='id_rack',on_delete=models.DO_NOTHING)
 
     class Meta(BaseModel.Meta):
         db_table = u'ambiente_rack'

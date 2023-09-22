@@ -161,7 +161,7 @@ def insert_vip_request(vip_map, user):
     try:
         environment_vip = EnvironmentVip.get_by_values(
             finalidade, cliente, ambiente)
-    except Exception, e:
+    except Exception as e:
         raise EnvironmentVipNotFoundError(
             e, 'The fields finality or client or ambiente is None')
 
@@ -298,7 +298,7 @@ class RequisicaoVipsResource(RestResource):
         try:
             xml_map, attrs_map = loads(
                 request.raw_post_data, ['transbordo', 'porta', 'real'])
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
 
@@ -321,7 +321,7 @@ class RequisicaoVipsResource(RestResource):
             else:
                 return self.response_error(response[0])
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except EnvironmentVipNotFoundError:
             return self.response_error(316, vip_map['finalidade'], vip_map['cliente'], vip_map['ambiente'])
@@ -353,17 +353,17 @@ class RequisicaoVipsResource(RestResource):
             return self.response_error(137)
         except InvalidBalAtivoValueError:
             return self.response_error(129)
-        except InvalidTransbordoValueError, t:
+        except InvalidTransbordoValueError as t:
             transbordo = 'nulo'
             if t.message is not None:
                 transbordo = t.message
             return self.response_error(130, transbordo)
-        except InvalidServicePortValueError, s:
+        except InvalidServicePortValueError as s:
             porta = 'nulo'
             if s.message is not None:
                 porta = s.message
             return self.response_error(138, porta)
-        except InvalidRealValueError, r:
+        except InvalidRealValueError as r:
             real = 'nulo'
             if r.message is not None:
                 real = r.message
@@ -372,7 +372,7 @@ class RequisicaoVipsResource(RestResource):
             return self.not_authorized()
         except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError):
             return self.response_error(1)
-        except IpNotFoundByEquipAndVipError, e:
+        except IpNotFoundByEquipAndVipError as e:
             return self.response_error(334, e.message)
 
     def handle_get(self, request, user, *args, **kwargs):
@@ -431,7 +431,7 @@ class RequisicaoVipsResource(RestResource):
 
             return self.response(dumps_networkapi({'vip': request_vip_map}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except (RequisicaoVipsNotFoundError):
             return self.response_error(152)
@@ -443,7 +443,7 @@ class RequisicaoVipsResource(RestResource):
             try:
                 xml_map, attrs_map = loads(
                     request.raw_post_data, ['transbordo', 'porta', 'real'])
-            except XMLError, x:
+            except XMLError as x:
                 self.log.error(u'Erro ao ler o XML da requisição.')
                 return self.response_error(3, x)
 
@@ -495,17 +495,17 @@ class RequisicaoVipsResource(RestResource):
             return self.response_error(137)
         except InvalidBalAtivoValueError:
             return self.response_error(129)
-        except InvalidTransbordoValueError, t:
+        except InvalidTransbordoValueError as t:
             transbordo = 'nulo'
             if t.message is not None:
                 transbordo = t.message
             return self.response_error(130, transbordo)
-        except InvalidServicePortValueError, s:
+        except InvalidServicePortValueError as s:
             porta = 'nulo'
             if s.message is not None:
                 porta = s.message
             return self.response_error(138, porta)
-        except InvalidRealValueError, r:
+        except InvalidRealValueError as r:
             real = 'nulo'
             if r.message is not None:
                 real = r.message
@@ -531,7 +531,7 @@ class RequisicaoVipsResource(RestResource):
 
             return self.__update_vip(vip_id, request, user)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except (RequisicaoVipsNotFoundError):
             return self.response_error(152)

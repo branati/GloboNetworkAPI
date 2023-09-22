@@ -120,10 +120,10 @@ class RequestAllVipsIPv6Resource(RestResource):
 
             return self.response(dumps_networkapi(vips_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(119)
 
         except UserNotAuthorizedError:

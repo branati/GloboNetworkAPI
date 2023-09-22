@@ -99,7 +99,7 @@ class RackEditResource(RestResource):
 
             return self.response(dumps_networkapi(rack_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(369, e.param, e.value)
 
         except UserNotAuthorizedError:

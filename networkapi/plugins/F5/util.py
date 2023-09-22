@@ -5,8 +5,11 @@ import copy
 import logging
 from functools import wraps
 
-import bigsuds
+# import bigsuds
+from f5 import bigip
 import ipaddress
+
+from terminal import unicode
 
 from networkapi.plugins import exceptions as base_exceptions
 from networkapi.plugins.F5 import lb
@@ -32,19 +35,21 @@ def transation(func):
     def inner(self, *args, **kwargs):
         if not kwargs.__contains__('connection') or kwargs['connection']:
             try:
+                # tx = lb.Lb.
                 access = args[0].get('access').filter(
                     tipo_acesso__protocolo='https').uniqueResult()
                 self._lb = lb.Lb(access.fqdn, access.user, access.password)
                 if not kwargs.__contains__('transation') or kwargs['transation']:
                     log.info('Transaction Started')
+
                     with bigsuds.Transaction(self._lb._channel):
                         return func(self, *args, **kwargs)
                 else:
                     return func(self, *args, **kwargs)
-            except bigsuds.OperationFailed, e:
+            except bigsuds.OperationFailed as e:
                 log.error(e)
                 raise base_exceptions.CommandErrorException(e)
-            except Exception, e:
+            except Exception as e:
                 log.error('Error  %s' % e)
                 raise base_exceptions.CommandErrorException(e)
         else:
@@ -61,7 +66,7 @@ def connection(func):
             self._lb = lb.Lb(access.fqdn, access.user, access.password)
             self._lb._channel.System.Session.set_transaction_timeout(60)
             return func(self, *args, **kwargs)
-        except bigsuds.OperationFailed, e:
+        except bigsuds.OperationFailed as e:
             log.error(e)
             raise base_exceptions.CommandErrorException(e)
     return inner
@@ -75,7 +80,7 @@ def connection_simple(func):
                 tipo_acesso__protocolo='https').uniqueResult()
             self._lb = lb.Lb(access.fqdn, access.user, access.password, False)
             return func(self, *args, **kwargs)
-        except bigsuds.OperationFailed, e:
+        except bigsuds.OperationFailed as e:
             log.error(e)
             raise base_exceptions.CommandErrorException(e)
     return inner

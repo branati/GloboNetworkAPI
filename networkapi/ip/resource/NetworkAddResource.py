@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import logging
-from string import split
+# from string import split
 
 from networkapi.admin_permission import AdminPermission
 from networkapi.ambiente.models import ConfigEnvironmentInvalidError

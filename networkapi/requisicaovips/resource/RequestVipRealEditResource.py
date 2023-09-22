@@ -503,7 +503,7 @@ class RequestVipRealEditResource(RestResource):
 
                             return self.response_error(2, stdout + stderr)
 
-                except Exception, e:
+                except Exception as e:
                     if isinstance(e, IntegrityError):
                         # Duplicate value for Port Vip, Port Real and IP
                         self.log.error(u'Failed to update the request vip.')
@@ -526,16 +526,16 @@ class RequestVipRealEditResource(RestResource):
                 else:
                     return self.response(dumps_networkapi({}))
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
         except EquipmentGroupsNotAuthorizedError:
             return self.response_error(271)
         except RequestVipsNotBeenCreatedError:
             return self.response_error(270, vip_id)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except IpNotFoundError:
             return self.response_error(328, ip_aux_error, equip_aux_error)
@@ -559,7 +559,7 @@ class RequestVipRealEditResource(RestResource):
             return self.response_error(133)
         except InvalidPriorityValueError:
             return self.response_error(325)
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(326, equip_aux_error)
         except IpEquipmentNotFoundError:
             return self.response_error(327, ip_aux_error, equip_aux_error)
@@ -571,19 +571,19 @@ class RequestVipRealEditResource(RestResource):
             return self.response_error(136)
         except InvalidMaxConValueError:
             return self.response_error(137)
-        except InvalidServicePortValueError, e:
+        except InvalidServicePortValueError as e:
             porta = 'nulo'
             if e.message is not None:
                 porta = e.message
             return self.response_error(138, porta)
-        except InvalidRealValueError, e:
+        except InvalidRealValueError as e:
             real = 'nulo'
             if e.message is not None:
                 real = e.message
             return self.response_error(151, real)
         except InvalidBalAtivoValueError:
             return self.response_error(129)
-        except InvalidTransbordoValueError, e:
+        except InvalidTransbordoValueError as e:
             transbordo = 'nulo'
             if e.message is not None:
                 transbordo = e.message
@@ -592,9 +592,9 @@ class RequestVipRealEditResource(RestResource):
             return self.not_authorized()
         except IpNotFoundByEquipAndVipError:
             return self.response_error(334, e.message)
-        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError), e:
+        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError) as e:
             return self.response_error(1)
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Failed to update the request vip.')
             if isinstance(e, IntegrityError):
                 # Duplicate value for Port Vip, Port Real and IP

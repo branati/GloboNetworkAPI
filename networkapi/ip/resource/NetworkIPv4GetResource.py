@@ -69,12 +69,12 @@ class NetworkIPv4GetResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(network_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except NetworkIPv4NotFoundError, e:
+        except NetworkIPv4NotFoundError as e:
             return self.response_error(281)
         except (NetworkIPv4Error):
             return self.response_error(1)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)

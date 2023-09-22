@@ -107,7 +107,7 @@ class BasePlugin(object):
                         device, port=self.connect_port, username=username, password=password)
                     self.channel = self.remote_conn.invoke_shell()
                     connected = 1
-                except Exception, e:
+                except Exception as e:
                     retries += 1
                     # not capable of connecting after max retries
                     if retries is self.connect_max_retries:
@@ -119,7 +119,7 @@ class BasePlugin(object):
         except IOError, e:
             log.error('Could not connect to host %s: %s' % (device, e))
             raise exceptions.ConnectionException(device)
-        except Exception, e:
+        except Exception as e:
             log.error('Error connecting to host %s: %s' % (device, e))
             raise Exception(e)
 
@@ -149,7 +149,7 @@ class BasePlugin(object):
 
         try:
             stdin, stdout, stderr = self.channel.exec_command('%s' % (command))
-        except Exception, e:
+        except Exception as e:
             log.error('Error in connection. Cannot send command %s: %s' %
                       (command, e))
             raise api_exceptions.NetworkAPIException

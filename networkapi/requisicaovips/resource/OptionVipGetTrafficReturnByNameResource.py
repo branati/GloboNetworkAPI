@@ -103,15 +103,15 @@ class OptionVipGetTrafficReturnByNameResource(RestResource):
         except UserNotAuthorizedError:
             return self.not_authorized()
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(1, x)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except OptionVipError:
             return self.response_error(1)
 
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)

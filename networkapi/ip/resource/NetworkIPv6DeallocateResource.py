@@ -112,17 +112,17 @@ class NetworkIPv6DeallocateResource(RestResource):
                 # Return nothing
                 return self.response(dumps_networkapi({}))
 
-        except IpCantRemoveFromServerPool, e:
+        except IpCantRemoveFromServerPool as e:
             return self.response_error(386, e.cause.get('network_ipv6_ip'), e.cause.get('ip'), e.cause.get('server_pool_identifiers'))
-        except EquipamentoAmbienteNotFoundError, e:
+        except EquipamentoAmbienteNotFoundError as e:
             return self.response_error(320)
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(319, 'network', 'networkipv6', network_ipv6_id)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except NetworkIPv6NotFoundError, e:
+        except NetworkIPv6NotFoundError as e:
             return self.response_error(286)
-        except UserNotAuthorizedError, e:
+        except UserNotAuthorizedError as e:
             return self.not_authorized()
-        except Exception, e:
+        except Exception as e:
             return self.response_error(1)

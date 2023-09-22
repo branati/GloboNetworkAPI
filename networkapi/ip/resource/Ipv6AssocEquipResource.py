@@ -188,7 +188,7 @@ class Ipv6AssocEquipResource(RestResource):
 
                         raise IpEquipmentAlreadyAssociation(None, u'Ipv6 %s:%s:%s:%s:%s:%s:%s:%s already has association with Equipament %s.' % (
                             ip.block1, ip.block2, ip.block3, ip.block4, ip.block5, ip.block6, ip.block7, ip.block8, equip_id))
-                    except IpEquipmentNotFoundError, e:
+                    except IpEquipmentNotFoundError as e:
                         pass
 
                     equipment = Equipamento().get_by_pk(equip_id)
@@ -247,22 +247,22 @@ class Ipv6AssocEquipResource(RestResource):
                         equipment_environment.ambiente = net.vlan.ambiente
                         equipment_environment.create(user)
 
-                    except EquipamentoAmbienteDuplicatedError, e:
+                    except EquipamentoAmbienteDuplicatedError as e:
                         # If already exists, OK !
                         pass
 
-                except IpRangeAlreadyAssociation, e:
+                except IpRangeAlreadyAssociation as e:
                     raise IpRangeAlreadyAssociation(None, e.message)
-                except IpEquipmentAlreadyAssociation, e:
+                except IpEquipmentAlreadyAssociation as e:
                     raise IpEquipmentAlreadyAssociation(None, e.message)
-                except AddressValueError, e:
+                except AddressValueError as e:
                     self.log.error(e)
                     raise IpNotAvailableError(None, u'Ipv6 %s:%s:%s:%s:%s:%s:%s:%s is invalid' % (
                         ip.block1, ip.block2, ip.block3, ip.block4, ip.block5, ip.block6, ip.block7, ip.block8))
-                except IpNotAvailableError, e:
+                except IpNotAvailableError as e:
                     raise IpNotAvailableError(None, u'Ipv6 %s:%s:%s:%s:%s:%s:%s:%s not available for network %s.' % (
                         ip.block1, ip.block2, ip.block3, ip.block4, ip.block5, ip.block6, ip.block7, ip.block8, net.id))
-                except IpError, e:
+                except IpError as e:
                     self.log.error(
                         u'Error adding new IPv6 or relationship ip-equipment.')
                     raise IpError(
@@ -270,27 +270,27 @@ class Ipv6AssocEquipResource(RestResource):
 
                 return self.response(dumps_networkapi({}))
 
-        except IpRangeAlreadyAssociation, e:
+        except IpRangeAlreadyAssociation as e:
             return self.response_error(347)
-        except VlanNumberNotAvailableError, e:
+        except VlanNumberNotAvailableError as e:
             return self.response_error(314, e.message)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except IpNotFoundError, e:
+        except IpNotFoundError as e:
             return self.response_error(150, e.message)
         except NetworkIPv6NotFoundError:
             return self.response_error(286)
         except EquipamentoNotFoundError:
             return self.response_error(117, ip_map.get('id_equipment'))
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
-        except IpEquipmentAlreadyAssociation, e:
+        except IpEquipmentAlreadyAssociation as e:
             return self.response_error(150, e.message)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
-        except (IpError, NetworkIPv6Error, EquipamentoError, GrupoError), e:
+        except (IpError, NetworkIPv6Error, EquipamentoError, GrupoError) as e:
             self.log.error(e)
             return self.response_error(1)

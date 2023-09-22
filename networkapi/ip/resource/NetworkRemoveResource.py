@@ -86,22 +86,22 @@ class NetworkRemoveResource(RestResource):
 
             return self.response(dumps_networkapi({'network': network_map}))
 
-        except NetworkInactiveError, e:
+        except NetworkInactiveError as e:
             self.log.error(e.cause)
             return self.response_error(self.CODE_MESSAGE_INACTIVE_NETWORK)
 
-        except NetworkIPv4NotFoundError, e:
+        except NetworkIPv4NotFoundError as e:
             self.log.error(e.message)
             return self.response_error(self.CODE_MESSAGE_OBJECT_DOES_NOT_EXIST_V4)
 
-        except NetworkIPv6NotFoundError, e:
+        except NetworkIPv6NotFoundError as e:
             self.log.error(e.message)
             return self.response_error(self.CODE_MESSAGE_OBJECT_DOES_NOT_EXIST_V6)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(self.CODE_MESSAGE_INVALID_PARAM, e.param, e.value)
 
-        except Exception, e:
+        except Exception as e:
             return self.response_error(self.CODE_MESSAGE_DEFAULT_ERROR)
 
     def check_permission_equipment(self, user, ids):

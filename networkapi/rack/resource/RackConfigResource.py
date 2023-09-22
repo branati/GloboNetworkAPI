@@ -409,7 +409,7 @@ class RackConfigResource(RestResource):
 
             return self.response(dumps_networkapi(map))
 
-        except RackConfigError, e:
+        except RackConfigError as e:
             return self.response_error(382, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -424,13 +424,13 @@ class RackConfigResource(RestResource):
         except InterfaceNotFoundError:
             return self.response_error(141)
 
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             self.log.error(exception)
             raise var_exceptions.VariableDoesNotExistException()
 
-        except ForemanException, e:
+        except ForemanException as e:
             self.log.error('Error acessing Foreman Server %s' % str(e))
             return self.response_error(391, str(e))
 
-        except RequestException, e:
+        except RequestException as e:
             return self.response_error(391, e)

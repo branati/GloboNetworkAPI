@@ -110,7 +110,7 @@ class OptionVipEnvironmentVipAssociationResource(RestResource):
 
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except OptionVipNotFoundError:
             return self.response_error(289)
@@ -177,7 +177,7 @@ class OptionVipEnvironmentVipAssociationResource(RestResource):
 
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except OptionVipEnvironmentVipNotFoundError:
             return self.response_error(291)

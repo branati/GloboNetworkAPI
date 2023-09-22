@@ -229,11 +229,11 @@ class RequestMaxconResource(RestResource):
                         spm.save(user, commit=True)
                     return self.response_error(2, stdout + stderr)
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
 
-        except ScriptError, s:
+        except ScriptError as s:
             return self.response_error(2, s)
 
         except EquipmentGroupsNotAuthorizedError:
@@ -242,7 +242,7 @@ class RequestMaxconResource(RestResource):
         except RequestVipsNotBeenCreatedError:
             return self.response_error(270, vip_id)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(332, e.param, e.value)
 
         except IpNotFoundError:
@@ -278,7 +278,7 @@ class RequestMaxconResource(RestResource):
         except InvalidPriorityValueError:
             return self.response_error(325)
 
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(326, equip_aux_error)
 
         except IpEquipmentNotFoundError:
@@ -296,13 +296,13 @@ class RequestMaxconResource(RestResource):
         except InvalidMaxConValueError:
             return self.response_error(137)
 
-        except InvalidServicePortValueError, e:
+        except InvalidServicePortValueError as e:
             porta = 'nulo'
             if e.message is not None:
                 porta = e.message
             return self.response_error(138, porta)
 
-        except InvalidRealValueError, e:
+        except InvalidRealValueError as e:
             real = 'nulo'
             if e.message is not None:
                 real = e.message
@@ -311,7 +311,7 @@ class RequestMaxconResource(RestResource):
         except InvalidBalAtivoValueError:
             return self.response_error(129)
 
-        except InvalidTransbordoValueError, e:
+        except InvalidTransbordoValueError as e:
             transbordo = 'nulo'
             if e.message is not None:
                 transbordo = e.message
@@ -323,5 +323,5 @@ class RequestMaxconResource(RestResource):
         except IpNotFoundByEquipAndVipError:
             return self.response_error(334, e.message)
 
-        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError), e:
+        except (RequisicaoVipsError, EquipamentoError, IpError, HealthcheckExpectError, GrupoError) as e:
             return self.response_error(1)

@@ -117,19 +117,19 @@ class NetworkIPv4DeallocateResource(RestResource):
                 # Return nothing
                 return self.response(dumps_networkapi({}))
 
-        except IpCantRemoveFromServerPool, e:
+        except IpCantRemoveFromServerPool as e:
             return self.response_error(386, e.cause.get('network_ip'), e.cause.get('ip'), e.cause.get('server_pool_identifiers'))
-        except EquipamentoAmbienteNotFoundError, e:
+        except EquipamentoAmbienteNotFoundError as e:
             return self.response_error(320)
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(319, 'network', 'networkipv4', network_ipv4_id)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except NetworkIPv4NotFoundError, e:
+        except NetworkIPv4NotFoundError as e:
             return self.response_error(281)
-        except UserNotAuthorizedError, e:
+        except UserNotAuthorizedError as e:
             return self.not_authorized()
-        except Exception, e:
+        except Exception as e:
             if isinstance(e, IntegrityError):
                 # IP associated VIP
                 self.log.error(u'Failed to update the request vip.')

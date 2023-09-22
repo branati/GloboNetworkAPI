@@ -90,7 +90,7 @@ class RequestVipGetByIdResource(RestResource):
             try:
                 dsrl3_to_vip_obj = DsrL3_to_Vip.get_by_vip_id(vip.id)
                 vip_map['dsrl3'] = dsrl3_to_vip_obj.id_dsrl3
-            except ObjectDoesNotExist, e:
+            except ObjectDoesNotExist as e:
                 pass
 
             # Maxcon, lbmethod e hc
@@ -181,13 +181,13 @@ class RequestVipGetByIdResource(RestResource):
 
             return self.response(dumps_networkapi(returned_map))
 
-        except RequisicaoVipsNotFoundError, e:
+        except RequisicaoVipsNotFoundError as e:
             self.log.error(e)
             return self.response_error(152)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             self.log.error(
                 u'Parameter %s is invalid. Value: %s.', e.param, e.value)
             return self.response_error(269, e.param, e.value)
-        except BaseException, e:
+        except BaseException as e:
             self.log.error(e)
             return self.response_error(1)

@@ -269,22 +269,22 @@ class NetworkIPv6AddResource(RestResource):
             # Return XML
             return self.response(dumps_networkapi(vlan_map))
 
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except NetworkTypeNotFoundError, e:
+        except NetworkTypeNotFoundError as e:
             self.log.error(u'The network_type parameter does not exist.')
             return self.response_error(111)
 
-        except VlanNotFoundError, e:
+        except VlanNotFoundError as e:
             self.log.error(u'Vlan not found')
             return self.response_error(116)
 
-        except NetworkTypeNotFoundError, e:
+        except NetworkTypeNotFoundError as e:
             return self.response_error(111)
 
         except EnvironmentVipNotFoundError:
@@ -299,7 +299,7 @@ class NetworkIPv6AddResource(RestResource):
         except ConfigEnvironmentInvalidError:
             return self.response_error(294)
 
-        except IpNotAvailableError, e:
+        except IpNotAvailableError as e:
             return self.response_error(150, e.message)
 
         except (IpError, NetworkIPv6Error, GrupoError, VlanError):

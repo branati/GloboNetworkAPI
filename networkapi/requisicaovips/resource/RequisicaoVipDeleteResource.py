@@ -89,26 +89,26 @@ class RequisicaoVipDeleteResource(RestResource):
                     if ipv6 and not keep_ip:
                         if not self.is_ipv6_in_use(ipv6, vip_id):
                             ipv6.delete()
-                except IpCantRemoveFromServerPool, e:
+                except IpCantRemoveFromServerPool as e:
                     raise e
-                except IpCantBeRemovedFromVip, e:
+                except IpCantBeRemovedFromVip as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     raise RequisicaoVipsError(
                         e, u'Failed to remove Vip Request.')
 
             return self.response(dumps_networkapi({}))
 
-        except IpCantRemoveFromServerPool, e:
+        except IpCantRemoveFromServerPool as e:
             return self.response_error(389, e.cause.get('vip_id'), e.cause.get('ip'), e.cause.get('server_pool_identifiers'))
-        except IpCantBeRemovedFromVip, e:
+        except IpCantBeRemovedFromVip as e:
             return self.response_error(390, e.cause.get('vip_id'), e.cause.get('vip_id_identifiers'), e.cause.get('ip'))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except RequisicaoVipsNotFoundError, e:
+        except RequisicaoVipsNotFoundError as e:
             self.log.error(e.message)
             return self.response_error(152)
-        except RequisicaoVipsError, e:
+        except RequisicaoVipsError as e:
             self.log.error(e.message)
             return self.response_error(1)
 
