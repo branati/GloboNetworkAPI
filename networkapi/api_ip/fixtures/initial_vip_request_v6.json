@@ -5,7 +5,7 @@
             "created": false,
             "environmentvip": 1,
             "ipv4": null,
-            "ipv6": 4,
+            "ipv6": 51,
             "name": "name",
             "service": "service"
         },
@@ -84,7 +84,7 @@
             "created": true,
             "environmentvip": 1,
             "ipv4": null,
-            "ipv6": 5,
+            "ipv6": 52,
             "name": "name",
             "service": "service"
         },

@@ -33,4 +33,4 @@ class Variable (BaseModel):
 
     class Meta(BaseModel.Meta):
         db_table = u'variables'
-        managed = True
+        managed = False

@@ -76,10 +76,10 @@ class ScriptGetEquipmentResource(RestResource):
 
             return self.response(dumps_networkapi({'script': script_list}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
-        except EquipamentoNotFoundError, e:
+        except EquipamentoNotFoundError as e:
             return self.response_error(117, id_equipment)
 
         except UserNotAuthorizedError:

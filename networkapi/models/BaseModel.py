@@ -21,6 +21,7 @@ from django.db.models.deletion import Collector
 from networkapi.models.BaseManager import BaseManager
 
 
+
 class BaseModel(models.Model):
 
     """

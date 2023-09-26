@@ -82,7 +82,6 @@
     {
         "fields": {
             "ambiente_logico": 1,
-            "default_vrf": 1,
             "divisao_dc": 1,
             "father_environment": null,
             "filter": 1,
@@ -192,49 +191,10 @@
     },
     {
         "fields": {
-            "alterar_config": "1",
-            "egrupo": 1,
-            "escrita": "1",
-            "exclusao": "1",
-            "leitura": "1",
-            "ugrupo": 1
-        },
-        "model": "grupo.direitosgrupoequipamento",
-        "pk": 1
-    },
-    {
-        "fields": {
             "egrupo": 1,
             "equipamento": 1
         },
         "model": "equipamento.equipamentogrupo",
         "pk": 1
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "equipamento": 1,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "equipamento": 3,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "nome": "VLAN 1 - ENVIRONMENT EQPT",
-            "num_vlan": "4"
-        },
-        "model": "vlan.vlan",
-        "pk": 4
     }
 ]

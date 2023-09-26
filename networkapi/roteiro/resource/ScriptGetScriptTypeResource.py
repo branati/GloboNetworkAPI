@@ -71,7 +71,7 @@ class ScriptGetScriptTypeResource(RestResource):
 
             return self.response(dumps_networkapi({'script': script_list}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except TipoRoteiroNotFoundError:

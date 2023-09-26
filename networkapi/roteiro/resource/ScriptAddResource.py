@@ -117,7 +117,7 @@ class ScriptAddResource(RestResource):
             try:
                 # save Script
                 scr.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the Script.')
                 raise RoteiroError(e, u'Failed to save the Script.')
 
@@ -134,7 +134,7 @@ class ScriptAddResource(RestResource):
                     modelos.modelo = modelo
                     modelos.create(user)
                     modelo_list.append(modelos.modelo)
-            except Exception, e:
+            except Exception as e:
                 raise RoteiroError(e, u'Failed to save modelo_roteiro.')
 
             # verificar se há equipamento daquele modelo que não está associado
@@ -160,7 +160,7 @@ class ScriptAddResource(RestResource):
 
             return self.response(dumps_networkapi(script_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except TipoRoteiroNotFoundError:

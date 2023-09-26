@@ -18,11 +18,11 @@ from django.db.models.signals import post_save
 from django.db.models.signals import pre_delete
 from django.db.models.signals import pre_save
 
-from networkapi.models.models_signal_receiver import audit_post_save
-from networkapi.models.models_signal_receiver import audit_pre_delete
-from networkapi.models.models_signal_receiver import audit_pre_save
-
-###### SIGNALS #####
-pre_save.connect(audit_pre_save)
-post_save.connect(audit_post_save)
-pre_delete.connect(audit_pre_delete)
+# from networkapi.models.models_signal_receiver import audit_post_save
+# from networkapi.models.models_signal_receiver import audit_pre_delete
+# from networkapi.models.models_signal_receiver import audit_pre_save
+#
+# ##### SIGNALS #####
+# pre_save.connect(audit_pre_save)
+# post_save.connect(audit_post_save)
+# pre_delete.connect(audit_pre_delete)

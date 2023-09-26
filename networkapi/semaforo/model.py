@@ -51,7 +51,7 @@ class Semaforo(models.Model):
             semaforo = Semaforo.objects.get(pk=id)
             semaforo.descricao = semaforo.descricao
             semaforo.save()
-        except Exception, e:
+        except Exception as e:
             cls.log.error(
                 u'Falha ao realizar o lock para o identificador %s.' % id)
             raise SemaforoError(

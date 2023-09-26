@@ -96,7 +96,6 @@
     {
         "fields": {
             "ambiente_logico": 1,
-            "default_vrf": 1,
             "divisao_dc": 1,
             "filter": 1,
             "grupo_l3": 1
@@ -107,7 +106,6 @@
     {
         "fields": {
             "ambiente_logico": 1,
-            "default_vrf": 1,
             "divisao_dc": 1,
             "filter": 1,
             "grupo_l3": 2
@@ -118,7 +116,6 @@
     {
         "fields": {
             "ambiente_logico": 1,
-            "default_vrf": 1,
             "divisao_dc": 1,
             "filter": 1,
             "grupo_l3": 3
@@ -550,42 +547,6 @@
     },
     {
         "fields": {
-            "alterar_config": "1",
-            "egrupo": 1,
-            "escrita": "1",
-            "exclusao": "1",
-            "leitura": "1",
-            "ugrupo": 1
-        },
-        "model": "grupo.direitosgrupoequipamento",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "alterar_config": "1",
-            "egrupo": 2,
-            "escrita": "1",
-            "exclusao": "1",
-            "leitura": "1",
-            "ugrupo": 1
-        },
-        "model": "grupo.direitosgrupoequipamento",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "alterar_config": "1",
-            "egrupo": 3,
-            "escrita": "1",
-            "exclusao": "1",
-            "leitura": "1",
-            "ugrupo": 1
-        },
-        "model": "grupo.direitosgrupoequipamento",
-        "pk": 3
-    },
-    {
-        "fields": {
             "egrupo": 1,
             "equipamento": 1
         },
@@ -663,186 +624,6 @@
         },
         "model": "equipamento.equipamentogrupo",
         "pk": 10
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "equipamento": 1,
-            "is_router": true
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "equipamento": 2,
-            "is_router": true
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "ambiente": 2,
-            "equipamento": 3,
-            "is_router": true
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 3
-    },
-    {
-        "fields": {
-            "ambiente": 2,
-            "equipamento": 4,
-            "is_router": true
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 4
-    },
-    {
-        "fields": {
-            "ambiente": 3,
-            "equipamento": 5,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 5
-    },
-    {
-        "fields": {
-            "ambiente": 3,
-            "equipamento": 6,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 6
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "equipamento": 7,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 7
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "equipamento": 8,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 8
-    },
-    {
-        "fields": {
-            "ambiente": 2,
-            "equipamento": 9,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 9
-    },
-    {
-        "fields": {
-            "ambiente": 2,
-            "equipamento": 10,
-            "is_router": false
-        },
-        "model": "equipamento.equipamentoambiente",
-        "pk": 10
-    },
-    {
-        "fields": {
-            "ambiente": 1,
-            "nome": "VLAN NUM 2 - RACK-1",
-            "num_vlan": 2
-        },
-        "model": "vlan.vlan",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "ambiente": 2,
-            "nome": "VLAN NUM 2 - RACK-1",
-            "num_vlan": 2
-        },
-        "model": "vlan.vlan",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "ambiente": 3,
-            "nome": "VLAN 2 - BALACING",
-            "num_vlan": 2
-        },
-        "model": "vlan.vlan",
-        "pk": 3
-    },
-    {
-        "fields": {
-            "active": "1",
-            "ambient_vip": null,
-            "block": "24",
-            "broadcast": "192.168.1.0",
-            "cluster_unit": null,
-            "mask_oct1": "255",
-            "mask_oct2": "255",
-            "mask_oct3": "255",
-            "mask_oct4": "0",
-            "network_type": 1,
-            "oct1": "192",
-            "oct2": "168",
-            "oct3": "1",
-            "oct4": "0",
-            "vlan": 1
-        },
-        "model": "ip.networkipv4",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "active": "1",
-            "ambient_vip": null,
-            "block": "24",
-            "broadcast": "192.168.2.0",
-            "cluster_unit": null,
-            "mask_oct1": "255",
-            "mask_oct2": "255",
-            "mask_oct3": "255",
-            "mask_oct4": "0",
-            "network_type": 1,
-            "oct1": "192",
-            "oct2": "168",
-            "oct3": "2",
-            "oct4": "0",
-            "vlan": 2
-        },
-        "model": "ip.networkipv4",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "active": "1",
-            "ambient_vip": 1,
-            "block": "24",
-            "broadcast": "192.162.1.0",
-            "cluster_unit": "cluster-unit-1",
-            "mask_oct1": "255",
-            "mask_oct2": "255",
-            "mask_oct3": "255",
-            "mask_oct4": "0",
-            "network_type": 2,
-            "oct1": "162",
-            "oct2": "168",
-            "oct3": "1",
-            "oct4": "0",
-            "vlan": 3
-        },
-        "model": "ip.networkipv4",
-        "pk": 3
     },
     {
         "fields": {

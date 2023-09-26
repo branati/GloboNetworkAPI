@@ -17,7 +17,7 @@ import logging
 import re
 
 from django.core.cache import cache
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from networkapi.eventlog.models import AuditRequest
 from networkapi.eventlog.models import EventLog

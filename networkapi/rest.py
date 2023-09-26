@@ -14,10 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
-from httplib import *
-from urllib2 import *
+# from httplib import *
+from http.client import *
+from urllib import *
 
-from _mysql_exceptions import OperationalError
+
+
+from django.db.utils import OperationalError
+# from _mysql_exceptions import OperationalError
+from django.db.transaction import atomic
 from django.db import transaction
 from django.http import HttpResponse
 from rest_framework.exceptions import AuthenticationFailed
@@ -64,7 +69,7 @@ class RestResource(object):
 
     log = logging.getLogger('RestResource')
 
-    @transaction.commit_manually
+    # @transaction.atomic
     def handle_request(self, request, *args, **kwargs):
         """Recebe a requisição e redireciona para o método apropriado.
 
@@ -89,13 +94,13 @@ class RestResource(object):
         except AuthenticationFailed:
             self.log.error(u'Authentication failed.')
             response = self.not_authenticated()
-        except (LockNotAcquiredError, OperationalError), e:
+        except (LockNotAcquiredError, OperationalError) as e:
             self.log.error(u'Lock wait timeout exceeded.')
             return self.response_error(273)
-        except XMLError, e:
+        except XMLError as e:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, e)
-        except Exception, e:
+        except Exception as e:
             self.log.exception(u'Erro não esperado.')
             response = self.response_error(1)
         finally:

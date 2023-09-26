@@ -38,7 +38,7 @@ def save_variable(name, value, description):
 
     try:
         var.save()
-    except Exception, e:
+    except Exception as e:
         log.info("Erro inserindo variavel: %s" % (e))
         raise Exception("Erro inserindo variavel: %s" % (e))
 
@@ -70,7 +70,7 @@ def get_by_name(name):
 
 def get_value(name, default=None):
     try:
-        var = Variable.objects.filter(name=name).uniqueResult()
+        var = Variable.objects.filter(name=name).first()
     except ObjectDoesNotExist:
         if default:
             return default
@@ -82,6 +82,6 @@ def delete_variable(user, variable_id):
     try:
         variable = get_by_id(variable_id)
         variable.delete(user)
-    except Exception, exception:
+    except Exception as exception:
         log.exception(exception)
         raise api_exceptions.NetworkAPIException()

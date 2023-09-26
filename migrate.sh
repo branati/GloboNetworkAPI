@@ -6,6 +6,10 @@ cd dbmigrate
 db-migrate up
 cd ..
 
+export PYTHONUNBUFFERED="1"
+export NETWORKAPI_DATABASE_PASSWORD="SuperSecret"
+export NETWORKAPI_DATABASE_HOST="127.0.0.1"
+
 echo  ======================= Executing Make Migrations ===================================
 python manage.py makemigrations
 python manage.py makemigrations api_aws
@@ -19,10 +23,8 @@ python manage.py makemigrations filter
 python manage.py makemigrations vlan
 python manage.py makemigrations tipoacesso
 
-
 python manage.py makemigrations api_asn
 python manage.py makemigrations api_list_config_bgp
-
 
 python manage.py makemigrations ip
 python manage.py makemigrations api_route_map
@@ -52,6 +54,7 @@ python manage.py makemigrations interface
 
 python manage.py makemigrations filterequiptype
 
+python manage.py makemigrations config
 
 echo  ======================= Executing Migrate ===================================
 python manage.py migrate

@@ -1281,7 +1281,8 @@ class Ip(BaseModel):
             @raise OperationalError: Lock wait timeout exceeded.
         """
         try:
-            return Ip.objects.filter(id=id).uniqueResult()
+            ip = Ip.objects.filter(id=id).first()
+            return ip
         except ObjectDoesNotExist as e:
             raise IpNotFoundError(e, u'There is no IP with pk = %s.' % id)
         except OperationalError as e:

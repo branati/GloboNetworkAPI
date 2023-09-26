@@ -47,7 +47,7 @@
   },
   {
     "fields": {
-      "ip": 1,
+      "ip": 10,
       "equipamento": 3
     },
     "model": "ip.ipv6equipament",
@@ -55,7 +55,7 @@
   },
   {
     "fields": {
-      "ip": 2,
+      "ip": 11,
       "equipamento": 3
     },
     "model": "ip.ipv6equipament",

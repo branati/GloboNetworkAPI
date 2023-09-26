@@ -19,7 +19,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from networkapi.snippets.permissions import Read, Write
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework.response import Response
 from networkapi.snippets.serializers import ServerPoolSerializer
 from networkapi.requisicaovips.models import ServerPool
@@ -27,7 +27,7 @@ from networkapi.requisicaovips.models import ServerPool
 
 @api_view(['GET', 'POST'])
 @permission_classes((IsAuthenticated, Read, Write))
-@commit_on_success
+@atomic
 def snippet_list(request):
     """
     List all code snippets, or create a new snippet.

@@ -95,7 +95,7 @@ class ScriptTypeAddResource(RestResource):
             try:
                 # save Script Type
                 script_type.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the Script Type.')
                 raise RoteiroError(e, u'Failed to save the Script Type.')
 
@@ -105,7 +105,7 @@ class ScriptTypeAddResource(RestResource):
 
             return self.response(dumps_networkapi(script_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except TipoRoteiroNameDuplicatedError:

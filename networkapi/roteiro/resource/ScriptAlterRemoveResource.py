@@ -168,13 +168,13 @@ class ScriptAlterRemoveResource(RestResource):
                 try:
                     # update Script
                     scr.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the Script.')
                     raise RoteiroError(e, u'Failed to update the Script.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -229,15 +229,15 @@ class ScriptAlterRemoveResource(RestResource):
                     # remove Script
                     script.delete()
 
-                except RoteiroHasEquipamentoError, e:
+                except RoteiroHasEquipamentoError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the Script.')
                     raise RoteiroError(e, u'Failed to remove the Script.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
