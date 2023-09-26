@@ -87,13 +87,13 @@ class UserGroupDissociateResource(RestResource):
                     # remove UserGroup
                     user_group.delete()
 
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the UserGroup.')
                     raise GrupoError(e, u'Failed to remove the UserGroup.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

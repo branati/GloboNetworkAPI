@@ -90,13 +90,13 @@ class UsuarioChangePassResource(RestResource):
                 try:
                     # update User
                     usr.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the user.')
                     raise UsuarioError(e, u'Failed to update the user.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -105,7 +105,7 @@ class UsuarioChangePassResource(RestResource):
         except UsuarioNotFoundError:
             return self.response_error(177, id_user)
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisicao.')
             return self.response_error(3, x)
         except (UsuarioError, GrupoError):

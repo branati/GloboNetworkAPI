@@ -12,7 +12,7 @@ from networkapi.usuario import models
 LOG = logging.getLogger(__name__)
 
 
-class UsuarioFactory(factory.DjangoModelFactory):
+class UsuarioFactory(factory.django.DjangoModelFactory):
 
     """
     usr = Usuario()
@@ -28,7 +28,7 @@ class UsuarioFactory(factory.DjangoModelFactory):
     try:
         # save User
         usr.save()
-    except Exception, e:
+    except Exception as e:
         self.log.error(u'Failed to save the user.')
         raise UsuarioError(e, u'Failed to save the user.')
     """

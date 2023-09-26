@@ -65,13 +65,13 @@ def logs_method_apiview(func):
         log = logging.getLogger(type(self).__name__)
 
         try:
-            request.DATA
+            request.data
         except ParseError:
             pass
 
         log.info(
             'View:%s, method:%s - Data send: %s -  Url params: %s' % (
-                type(self).__name__, request.method, request.DATA, kwargs))
+                type(self).__name__, request.method, request.data, kwargs))
         return func(self, request, *args, **kwargs)
     return inner
 
@@ -110,17 +110,17 @@ def raise_exception_treat(func):
     def inner(self, request, *args, **kwargs):
         try:
             return func(self, request, *args, **kwargs)
-        except ValidationError, error:
+        except ValidationError as error:
             log.error(error)
             raise rest_exceptions.ValidationExceptionJson(error)
         except (exceptions_api.APIException, exceptions_api.AuthenticationFailed,
                 exceptions_api.MethodNotAllowed, exceptions_api.NotAcceptable,
                 exceptions_api.NotAuthenticated, exceptions_api.ParseError,
                 exceptions_api.PermissionDenied, exceptions_api.Throttled,
-                exceptions_api.UnsupportedMediaType, rest_exceptions.ValidationAPIException), error:
+                exceptions_api.UnsupportedMediaType, rest_exceptions.ValidationAPIException) as error:
             log.error(error)
             raise error
-        except Exception, error:
+        except Exception as error:
             log.error(error)
             raise rest_exceptions.NetworkAPIException(error)
     return inner

@@ -10,6 +10,7 @@ from django.test import TestCase
 
 from networkapi.usuario.tests import factory
 
+
 LOG = logging.getLogger(__name__)
 
 

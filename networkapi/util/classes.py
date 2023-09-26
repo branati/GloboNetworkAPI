@@ -10,7 +10,12 @@ class CustomAPIView(APIView):
         response = super(CustomAPIView, self)\
             .finalize_response(request, *args, **kwargs)
 
-        response['X-Request-Context'] = local.request_context
-        response['X-Request-Id'] = local.request_id,
+        # TODO
+        # Tratado quando os objetos não existirem em local
+
+        response['X-Request-Context'] = local.request_context if hasattr(local, 'request_context') else ''
+        # response['X-Request-Context'] = getattr(local.request_context, 'request_context', '')
+        response['X-Request-Id'] = local.request_id if hasattr(local, 'request_id') else '',
+        # response['X-Request-Id'] = local.request_id
 
         return response

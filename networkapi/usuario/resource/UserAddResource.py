@@ -122,7 +122,7 @@ class UserAddResource(RestResource):
             try:
                 # save User
                 usr.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the user.')
                 raise UsuarioError(e, u'Failed to save the user.')
 
@@ -132,7 +132,7 @@ class UserAddResource(RestResource):
 
             return self.response(dumps_networkapi(perm_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UsuarioNameDuplicatedError:

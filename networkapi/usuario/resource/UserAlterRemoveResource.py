@@ -145,13 +145,13 @@ class UserAlterRemoveResource(RestResource):
                 try:
                     # update User
                     usr.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update the user.')
                     raise UsuarioError(e, u'Failed to update the user.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -207,15 +207,15 @@ class UserAlterRemoveResource(RestResource):
                     # remove User
                     usr.delete()
 
-                except UsuarioHasEventOrGrupoError, e:
+                except UsuarioHasEventOrGrupoError as e:
                     raise e
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to remove the user.')
                     raise GrupoError(e, u'Failed to remove the user.')
 
                 return self.response(dumps_networkapi({}))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

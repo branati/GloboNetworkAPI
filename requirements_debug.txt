@@ -2,4 +2,4 @@
 --requirement requirements_test.txt
 
 django-pdb==0.6.2
-virtualenv==20.24.3
+virtualenv==20.24.5

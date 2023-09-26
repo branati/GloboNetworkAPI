@@ -102,7 +102,6 @@ class CacheUser(object):
         """
         try:
             salt = get_cache('salt_key')
-
             if not salt:
                 salt_key = generate_key()
                 set_cache('salt_key', salt_key, int(get_value('time_cache_salt_key')))
@@ -123,7 +122,6 @@ class CacheUser(object):
         """
         try:
             salt = self._generate_salt_key()
-
             if salt:
                 self.log.debug('The encrypt key was taken successfully!')
                 hash_text = str(username + password)
@@ -216,7 +214,8 @@ class Usuario(BaseModel):
 
     @classmethod
     def encode_password(cls, pwd):
-        return hashlib.md5(pwd).hexdigest()
+        return hashlib.md5(pwd.encode('utf-8')).hexdigest()
+        # return hashlib.md5(pwd).hexdigest()
 
     @classmethod
     def get_by_pk(cls, pk):
@@ -227,10 +226,10 @@ class Usuario(BaseModel):
         """
         try:
             return Usuario.objects.get(pk=pk)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise UsuarioNotFoundError(
                 e, u'Dont there is a Group L3 by pk = %s.' % pk)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the User.')
             raise UsuarioError(e, u'Failure to search the User.')
 
@@ -243,10 +242,10 @@ class Usuario(BaseModel):
         """
         try:
             return Usuario.objects.get(user__iexact=name)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise UsuarioNotFoundError(
                 e, u'There is no User with username = %s.' % name)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the User.')
             raise UsuarioError(e, u'Failure to search the User.')
 
@@ -301,10 +300,10 @@ class Usuario(BaseModel):
                 return Usuario.objects.prefetch_related('grupos').get(user_ldap__iexact=ldap_usr, ativo=1)
             else:
                 return Usuario.objects.prefetch_related('grupos').get(user_ldap__iexact=ldap_usr)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise UsuarioNotFoundError(
                 e, u'There is no User with ldap_user = %s.' % ldap_usr)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the User.')
             raise UsuarioError(e, u'Failure to search the User.')
 
@@ -335,7 +334,14 @@ class Usuario(BaseModel):
 
             # AuthAPI authentication
             try:
+                # import ipdb; ipdb.set_trace()
+                # TODO
+                # Prezados, detectei que o sistema ao executar uma parte do código, procura na tabela variables, no campo name, o valor use_authapi e não o encontra. Pesquisei em todo o código ocorrências de onde o sistema insere essa informação e não encontrei.
+                # Com isso, é possível constatar que a informação foi inserida manualmente em algum momento no banco de produção.
+                # Poderiam verificar se a informação existe em produção, só para confirmação?
+
                 if convert_string_or_int_to_boolean(get_value('use_authapi')):
+
                     response = self.get_by_authapi(username, password)
 
                     if response.status_code == 200:
@@ -370,11 +376,11 @@ class Usuario(BaseModel):
                     return_user = self.get_by_ldap_user(username, True)
                 else:
                     bypass = 1
-            except exceptions.VariableDoesNotExistException, e:
+            except exceptions.VariableDoesNotExistException as e:
                 self.log.error(
                     'Error getting LDAP config variables (use_ldap). Trying local authentication')
                 bypass = 1
-            except UsuarioNotFoundError, e:
+            except UsuarioNotFoundError as e:
                 self.log.debug(
                     "Using local authentication for user \'%s\'" % username)
                 bypass = 1
@@ -394,15 +400,18 @@ class Usuario(BaseModel):
 
                     return return_user
 
-                except ldap.INVALID_CREDENTIALS, e:
+                except ldap.INVALID_CREDENTIALS as e:
                     self.log.error('LDAP authentication error %s' % e)
-                except exceptions.VariableDoesNotExistException, e:
+                except exceptions.VariableDoesNotExistException as e:
                     self.log.error(
                         'Error getting LDAP config variables (ldap_server, ldap_param).')
 
             # local auth
             try:
                 password = Usuario.encode_password(password)
+                # TODO
+                # To show encrypted password and use in database
+                # print(password)
                 user = Usuario.objects.prefetch_related('grupos').get(user=username, pwd=password, ativo=1)
 
                 if convert_string_or_int_to_boolean(get_value('use_cache_user')):
@@ -421,7 +430,7 @@ class Usuario(BaseModel):
         except MultipleObjectsReturned:
             self.log.error(
                 u'Múltiplos usuários encontrados com o mesmo login e senha: %s', username)
-        except Exception, e:
+        except Exception as e:
             self.log.error(u'Falha ao pesquisar o usuário.')
             raise UsuarioError(e, u'Falha ao pesquisar o usuário.')
         return None
@@ -429,8 +438,8 @@ class Usuario(BaseModel):
 
 class UsuarioGrupo(BaseModel):
     id = models.AutoField(primary_key=True, db_column='id_usuarios_do_grupo')
-    usuario = models.ForeignKey(Usuario, db_column='id_user')
-    ugrupo = models.ForeignKey('grupo.UGrupo', db_column='id_grupo')
+    usuario = models.ForeignKey(Usuario, db_column='id_user', on_delete=models.DO_NOTHING)
+    ugrupo = models.ForeignKey('grupo.UGrupo', db_column='id_grupo', on_delete=models.DO_NOTHING)
 
     log = logging.getLogger('UsuarioGrupo')
 
@@ -448,10 +457,10 @@ class UsuarioGrupo(BaseModel):
         """
         try:
             return UsuarioGrupo.objects.filter(usuario__id=user_id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise UsuarioNotFoundError(
                 e, u'Dont there is a UserGroup by user = %s.' % user_id)
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the UserGroup.')
             raise UsuarioError(e, u'Failure to search the UserGroup.')
 
@@ -464,9 +473,9 @@ class UsuarioGrupo(BaseModel):
         """
         try:
             return UsuarioGrupo.objects.get(usuario__id=user_id, ugrupo__id=group_id)
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist as e:
             raise UserGroupNotFoundError(
                 e, u'Dont there is a UserGroup by user = %s and group = %s.' % (user_id, group_id))
-        except Exception, e:
+        except Exception as e:
             cls.log.error(u'Failure to search the UserGroup.')
             raise UsuarioError(e, u'Failure to search the UserGroup.')

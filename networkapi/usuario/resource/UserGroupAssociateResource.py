@@ -94,7 +94,7 @@ class UserGroupAssociateResource(RestResource):
             try:
                 # save UserGroup
                 user_group.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save the UserGroup.')
                 raise UsuarioError(e, u'Failed to save the UserGroup.')
 
@@ -104,7 +104,7 @@ class UserGroupAssociateResource(RestResource):
 
             return self.response(dumps_networkapi(usr_grp_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

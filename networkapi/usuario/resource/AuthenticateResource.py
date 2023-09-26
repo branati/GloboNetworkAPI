@@ -136,11 +136,11 @@ class AuthenticateResource(RestResource):
 
         except UsuarioNotFoundError:
             return self.response(dumps_networkapi({}))
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Error reading the XML request.')
             return self.response_error(3, x)
         except UsuarioError:

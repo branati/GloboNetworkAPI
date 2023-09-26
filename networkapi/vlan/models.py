@@ -258,13 +258,13 @@ class Vlan(BaseModel):
         max_length=200,
         blank=True
     )
-    acl_valida = models.BooleanField()
+    acl_valida = models.BooleanField(default=False)
     acl_file_name_v6 = models.CharField(
         max_length=200,
         blank=True
     )
-    acl_valida_v6 = models.BooleanField()
-    ativada = models.BooleanField()
+    acl_valida_v6 = models.BooleanField(default=False)
+    ativada = models.BooleanField(default=True)
     vrf = models.CharField(
         max_length=100,
         null=True,

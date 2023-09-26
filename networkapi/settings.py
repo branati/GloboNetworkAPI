@@ -16,10 +16,12 @@
 import logging
 import os
 import sys
+import importlib
 
-reload(sys)
+# reload(sys) Antigo
+importlib.reload(sys)
 
-sys.setdefaultencoding('utf-8')
+# sys.setdefaultencoding('utf-8') Já é padrão no Python3
 
 # Include base path in system path for Python old.
 syspath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -40,7 +42,8 @@ NETWORKAPI_GELF_HOST = os.getenv('NETWORKAPI_GELF_HOST',
 LOG_QUEUE = os.getenv('NETWORKAPI_LOG_QUEUE', '0') == '1'
 
 # Aplicação rodando em modo Debug
-DEBUG = os.getenv('NETWORKAPI_DEBUG', '0') == '1'
+# DEBUG = os.getenv('NETWORKAPI_DEBUG', '0') == '1'
+DEBUG = True
 
 ALLOWED_HOSTS = os.getenv('NETWORKAPI_ALLOWED_HOSTS',
                           '10.0.0.2,localhost,127.0.0.1').split(',')
@@ -64,14 +67,17 @@ RQ_SHOW_ADMIN_LINK = True
 
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 NETWORKAPI_DATABASE_NAME = os.getenv('NETWORKAPI_DATABASE_NAME', 'networkapi')
 NETWORKAPI_DATABASE_USER = os.getenv('NETWORKAPI_DATABASE_USER', 'root')
-NETWORKAPI_DATABASE_PASSWORD = os.getenv('NETWORKAPI_DATABASE_PASSWORD', '')
-NETWORKAPI_DATABASE_HOST = os.getenv('NETWORKAPI_DATABASE_HOST', 'localhost')
+NETWORKAPI_DATABASE_PASSWORD = os.getenv('NETWORKAPI_DATABASE_PASSWORD', 'SuperSecret')
+NETWORKAPI_DATABASE_HOST = os.getenv('NETWORKAPI_DATABASE_HOST', 'db')
 NETWORKAPI_DATABASE_PORT = os.getenv('NETWORKAPI_DATABASE_PORT', '3306')
 NETWORKAPI_DATABASE_OPTIONS = os.getenv(
     'NETWORKAPI_DATABASE_OPTIONS',
-    '{"init_command": "SET storage_engine=INNODB"}')
+    '{"init_command": "SET default_storage_engine=INNODB"}')
 
 # Configurações de banco de dados
 DATABASES = {
@@ -87,14 +93,29 @@ DATABASES = {
 }
 
 # CONFIGURAÇÃO DO MEMCACHED
-CACHE_BACKEND = 'memcached://localhost:11211/'
+# TODO
+# Original config
+# CACHE_BACKEND = 'memcached://localhost:11211/'
+
+CACHE_BACKEND = 'memcached://127.0.0.1:49154/'
+
+# TODO
+# Original config
+# NETWORKAPI_MEMCACHE_HOSTS = os.getenv(
+#     'NETWORKAPI_MEMCACHE_HOSTS', '127.0.0.1:11211')
 
 NETWORKAPI_MEMCACHE_HOSTS = os.getenv(
-    'NETWORKAPI_MEMCACHE_HOSTS', '127.0.0.1:11211')
+    'NETWORKAPI_MEMCACHE_HOSTS', '127.0.0.1:49154')
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': NETWORKAPI_MEMCACHE_HOSTS.split(',')
+#     }
+# }
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
         'LOCATION': NETWORKAPI_MEMCACHE_HOSTS.split(',')
     }
 }
@@ -176,7 +197,7 @@ LOGGING = {
         },
         'gelf': {
             'level': LOG_LEVEL,
-            'class': 'graypy.GELFHandler',
+            'class': 'graypy.GELFTCPHandler',
             'host': NETWORKAPI_GELF_HOST,
             'port': 12201,
             'filters': [
@@ -265,24 +286,40 @@ MEDIA_URL = ''
 ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'ry@zgop%w80_nu83#!tbz)m&7*i@1)d-+ki@5^d#%6-&^216sg')
 
 VLAN_CACHE_TIME = None
 EQUIPMENT_CACHE_TIME = None
 
 # List of callables that know how to import templates from various sources.
-MIDDLEWARE_CLASSES = (
-    'networkapi.extra_logging.middleware.ExtraLoggingMiddleware',
+# MIDDLEWARE_CLASSES = (
+#     'networkapi.extra_logging.middleware.ExtraLoggingMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'networkapi.processExceptionMiddleware.LoggingMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'networkapi.middlewares.TrackingRequestOnThreadLocalMiddleware',
+# )
+
+MIDDLEWARE = (
+    # 'networkapi.extra_logging.middleware.ExtraLoggingMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'networkapi.processExceptionMiddleware.LoggingMiddleware',
+    # 'networkapi.processExceptionMiddleware.LoggingMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'networkapi.middlewares.TrackingRequestOnThreadLocalMiddleware',
 )
 
+# TODO
+# if LOG_SHOW_SQL:
+#     MIDDLEWARE_CLASSES += (
+#         'networkapi.middlewares.SQLLogMiddleware',
+#     )
+
 if LOG_SHOW_SQL:
-    MIDDLEWARE_CLASSES += (
+    MIDDLEWARE += (
         'networkapi.middlewares.SQLLogMiddleware',
     )
 
@@ -305,11 +342,51 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 )
 
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #     'django.template.loaders.eggs.Loader',
-)
+# TEMPLATE_LOADERS = (
+#     'django.template.loaders.filesystem.Loader',
+#     'django.template.loaders.app_directories.Loader',
+#     #     'django.template.loaders.eggs.Loader',
+#
+# )
+
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [],
+#         'APP_DIRS': True,  # Isso é equivalente a 'django.template.loaders.app_directories.Loader'
+#         'OPTIONS': {
+#             'loaders': [
+#                 'django.template.loaders.filesystem.Loader',
+#                 'django.template.loaders.app_directories.Loader',
+#                 # 'django.template.loaders.eggs.Loader',
+#             ],
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#             ],
+#         },
+#     },
+# ]
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates"
@@ -347,7 +424,6 @@ PROJECT_APPS = (
     'networkapi.api_peer_group',
     'networkapi.api_route_map',
     'networkapi.api_list_config_bgp',
-    'networkapi.api_neighbor',
     'networkapi.blockrules',
     'networkapi.config',
     'networkapi.equipamento',
@@ -363,6 +439,7 @@ PROJECT_APPS = (
     'networkapi.rack',
     'networkapi.requisicaovips',
     'networkapi.roteiro',
+    'networkapi.semaforo',
     'networkapi.snippets',
     'networkapi.system',
     'networkapi.tipoacesso',
@@ -726,7 +803,7 @@ VIP_REALS_v6_CHECK = 'gerador_vips -i %s --id_ipv6 %s --port_ip %s --port_vip %s
 BROKER_CONNECT_TIMEOUT = os.getenv('NETWORKAPI_BROKER_CONNECT_TIMEOUT', '2')
 BROKER_DESTINATION = os.getenv('NETWORKAPI_BROKER_DESTINATION', 'tasks')
 BROKER_URL = os.getenv('NETWORKAPI_BROKER_URL',
-                       u'networkapi:networkapi@localhost:5672')
+                      u'networkapi:networkapi@localhost:5672')
 
 
 ##################################

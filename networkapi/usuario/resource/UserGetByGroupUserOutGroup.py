@@ -72,7 +72,7 @@ class UserGetByGroupUserOutGroup(RestResource):
 
             return self.response(dumps_networkapi(user_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:
@@ -81,5 +81,5 @@ class UserGetByGroupUserOutGroup(RestResource):
         except UGrupoNotFoundError:
             return self.response_error(180, id_ugroup)
 
-        except GrupoError, e:
+        except GrupoError as e:
             return self.response_error(1)

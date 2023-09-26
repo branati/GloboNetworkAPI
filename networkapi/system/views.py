@@ -16,7 +16,7 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
@@ -40,7 +40,7 @@ log = logging.getLogger(__name__)
 class VariableView(APIView):
 
     @permission_classes((IsAuthenticated, Write))
-    @commit_on_success
+    @atomic
     def post(self, *args, **kwargs):
         try:
             log.info("VariableView")
@@ -78,7 +78,7 @@ class VariableView(APIView):
             log.exception(exception)
             raise exception
 
-        except Exception, exception:
+        except Exception as exception:
             log.exception(exception)
             raise api_exceptions.NetworkAPIException()
 
@@ -92,12 +92,12 @@ class VariableView(APIView):
 
             return Response(serializer_variable.data)
 
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             log.error(exception)
             raise api_exceptions.ObjectDoesNotExistException(
                 'Variable Does Not Exist')
 
-        except Exception, exception:
+        except Exception as exception:
             log.exception(exception)
             raise api_exceptions.NetworkAPIException()
 
@@ -121,10 +121,10 @@ class VariablebyPkView(APIView):
 
             return Response(data, status=status.HTTP_200_OK)
 
-        except ObjectDoesNotExist, exception:
+        except ObjectDoesNotExist as exception:
             log.error(exception)
             raise exceptions.VariableDoesNotExistException()
 
-        except Exception, exception:
+        except Exception as exception:
             log.exception(exception)
             raise api_exceptions.ValidationException('Variable id invalid.')

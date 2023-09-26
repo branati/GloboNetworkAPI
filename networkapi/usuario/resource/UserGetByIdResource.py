@@ -67,7 +67,7 @@ class UserGetByIdResource(RestResource):
 
             return self.response(dumps_networkapi(user_map))
 
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
 
         except UserNotAuthorizedError:

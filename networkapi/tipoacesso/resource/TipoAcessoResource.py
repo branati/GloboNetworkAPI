@@ -115,7 +115,7 @@ class TipoAcessoResource(RestResource):
             try:
                 # save access type
                 access_type.save()
-            except Exception, e:
+            except Exception as e:
                 self.log.error(u'Failed to save TipoAcesso.')
                 raise TipoAcessoError(e, u'Failed to save TipoAcesso.')
 
@@ -123,9 +123,9 @@ class TipoAcessoResource(RestResource):
 
         except UserNotAuthorizedError:
             return self.not_authorized()
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except DuplicateProtocolError:
@@ -187,20 +187,20 @@ class TipoAcessoResource(RestResource):
                 try:
                     # save access type
                     tpa.save()
-                except Exception, e:
+                except Exception as e:
                     self.log.error(u'Failed to update TipoAcesso.')
                     raise TipoAcessoError(e, u'Failed to update TipoAcesso.')
 
             return self.response(dumps_networkapi({}))
 
-        except XMLError, x:
+        except XMLError as x:
             self.log.error(u'Erro ao ler o XML da requisição.')
             return self.response_error(3, x)
         except UserNotAuthorizedError:
             return self.not_authorized()
         except AccessTypeNotFoundError:
             return self.response_error(171, tipo_acesso_id)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except DuplicateProtocolError:
             return self.response_error(203, protocol)
@@ -247,7 +247,7 @@ class TipoAcessoResource(RestResource):
             return self.not_authorized()
         except AccessTypeNotFoundError:
             return self.response_error(171, tipo_acesso_id)
-        except InvalidValueError, e:
+        except InvalidValueError as e:
             return self.response_error(269, e.param, e.value)
         except AccessTypeUsedByEquipmentError:
             return self.response_error(204, tipo_acesso_id)

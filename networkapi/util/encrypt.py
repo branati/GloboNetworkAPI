@@ -13,10 +13,12 @@ def encrypt_key(text, salt_key):
         padding_size = bs - extra_bytes
         padding = chr(padding_size) * padding_size
         padded_text = text + padding
-
+        # TODO
+        # Atualização da biblioteca exigiu modificação na chamada do crypt_obj.encrypt()
+        # transformando string para bytes.
+        padded_text_bytes = padded_text.encode('utf-8')
         crypt_obj = Blowfish.new(salt_key, Blowfish.MODE_ECB)
-
-        cipher = crypt_obj.encrypt(padded_text)
+        cipher = crypt_obj.encrypt(padded_text_bytes)
 
         return cipher
     except Exception as ERROR:

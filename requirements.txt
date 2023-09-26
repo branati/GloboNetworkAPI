@@ -26,10 +26,11 @@ kombu==5.3.1
 mysqlclient==2.2.0
 netaddr==0.8.0
 #django-ldap-basic-auth==0.0.4
-newrelic==8.11.0
+# newrelic==8.11.0
 paramiko==3.3.1
 # pycrypto==2.6.1 Substituto pelo pycryptodome
-pycryptodome==3.18
+pycryptodome==3.19.0
+Crypto==1.4.1
 python-foreman==0.4.20
 # python-ldap==3.4.3 ponto de atenção
 python-memcached==1.59

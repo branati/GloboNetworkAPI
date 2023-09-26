@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.conf.urls import include
-from django.conf.urls import patterns
-from django.conf.urls import url
+# from django.conf.urls import patterns
+# from django.conf.urls import url
+from django.urls import re_path
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.http import HttpResponse
@@ -13,132 +14,131 @@ from networkapi.check.CheckAction import CheckAction
 
 api_prefix = r'^api/'
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     # new API URL patterns are all prefixed with '/api/'
-    url(api_prefix, include('networkapi.api_asn.urls')),
-    url(api_prefix, include('networkapi.api_aws.urls')),
-    url(api_prefix, include('networkapi.api_deploy.urls')),
-    url(api_prefix, include('networkapi.api_environment.urls')),
-    url(api_prefix, include('networkapi.api_environment_vip.urls')),
-    url(api_prefix, include('networkapi.api_equipment.urls')),
-    # url(api_prefix, include('networkapi.api_healthcheck.urls')),
-    url(api_prefix, include('networkapi.api_interface.urls')),
-    url(api_prefix, include('networkapi.api_channel.urls')),
-    url(api_prefix, include('networkapi.api_ip.urls')),
-    url(api_prefix, include('networkapi.api_list_config_bgp.urls')),
-    url(api_prefix, include('networkapi.api_neighbor.urls')),
-    url(api_prefix, include('networkapi.api_network.urls')),
-    url(api_prefix, include('networkapi.api_ogp.urls')),
-    url(api_prefix, include('networkapi.api_peer_group.urls')),
-    url(api_prefix, include('networkapi.api_pools.urls')),
-    url(api_prefix, include('networkapi.api_rack.urls')),
-    url(api_prefix, include('networkapi.api_rest.urls')),
-    url(api_prefix, include('networkapi.api_route_map.urls')),
-    url(api_prefix, include('networkapi.api_task.urls')),
-    url(api_prefix, include('networkapi.api_vip_request.urls')),
-    url(api_prefix, include('networkapi.api_vlan.urls')),
-    url(api_prefix, include('networkapi.api_vrf.urls')),
-    url(api_prefix, include('networkapi.api_vrf.urls')),
+    re_path(api_prefix, include('networkapi.api_asn.urls')),
+    re_path(api_prefix, include('networkapi.api_aws.urls')),
+    re_path(api_prefix, include('networkapi.api_deploy.urls')),
+    re_path(api_prefix, include('networkapi.api_environment.urls')),
+    re_path(api_prefix, include('networkapi.api_environment_vip.urls')),
+    re_path(api_prefix, include('networkapi.api_equipment.urls')),
+    # re_path(api_prefix, include('networkapi.api_healthcheck.urls')),
+    re_path(api_prefix, include('networkapi.api_interface.urls')),
+    re_path(api_prefix, include('networkapi.api_channel.urls')),
+    re_path(api_prefix, include('networkapi.api_ip.urls')),
+    re_path(api_prefix, include('networkapi.api_list_config_bgp.urls')),
+    re_path(api_prefix, include('networkapi.api_neighbor.urls')),
+    re_path(api_prefix, include('networkapi.api_network.urls')),
+    re_path(api_prefix, include('networkapi.api_ogp.urls')),
+    re_path(api_prefix, include('networkapi.api_peer_group.urls')),
+    re_path(api_prefix, include('networkapi.api_pools.urls')),
+    re_path(api_prefix, include('networkapi.api_rack.urls')),
+    re_path(api_prefix, include('networkapi.api_rest.urls')),
+    re_path(api_prefix, include('networkapi.api_route_map.urls')),
+    re_path(api_prefix, include('networkapi.api_task.urls')),
+    re_path(api_prefix, include('networkapi.api_vip_request.urls')),
+    re_path(api_prefix, include('networkapi.api_vlan.urls')),
+    re_path(api_prefix, include('networkapi.api_vrf.urls')),
+    re_path(api_prefix, include('networkapi.api_vrf.urls')),
 
-    # url(api_prefix, include('networkapi.snippets.urls')),
-    url(api_prefix, include('networkapi.system.urls')),
+    # re_path(api_prefix, include('networkapi.snippets.urls')),
+    re_path(api_prefix, include('networkapi.system.urls')),
 
     # app healthchecks
-    url(r'^check$', CheckAction().check, name='check'),
-    url(r'^healthcheck$', lambda _: HttpResponse('WORKING')),
+    re_path(r'^check$', CheckAction().check, name='check'),
+    re_path(r'^healthcheck$', lambda _: HttpResponse('WORKING')),
 
     # equipamento
-    url(r'^equipamento/', include('networkapi.equipamento.urls')),
-    url(r'^equipment/', include('networkapi.equipamento.urls_equipment')),
-    url(r'^equipamentoacesso/',
+    re_path(r'^equipamento/', include('networkapi.equipamento.urls')),
+    re_path(r'^equipment/', include('networkapi.equipamento.urls_equipment')),
+    re_path(r'^equipamentoacesso/',
         include('networkapi.equipamento.urls_equipamentoacesso')),
-    url(r'^equipamentogrupo/', include('networkapi.equipamento.urls_equipamentogrupo')),
-    url(r'^equipmenttype/', include('networkapi.equipamento.urls_equipmenttype')),
-    url(r'^equipamentoambiente/',
+    re_path(r'^equipamentogrupo/', include('networkapi.equipamento.urls_equipamentogrupo')),
+    re_path(r'^equipmenttype/', include('networkapi.equipamento.urls_equipmenttype')),
+    re_path(r'^equipamentoambiente/',
         include('networkapi.equipamento.urls_equipamentoambiente')),
-    url(r'^equipmentscript/', include('networkapi.equipamento.urls_equipmentscript')),
-    url(r'^equipamentoroteiro/',
+    re_path(r'^equipmentscript/', include('networkapi.equipamento.urls_equipmentscript')),
+    re_path(r'^equipamentoroteiro/',
         include('networkapi.equipamento.urls_equipamentoroteiro')),
-    url(r'^brand/', include('networkapi.equipamento.urls_brand')),
-    url(r'^model/', include('networkapi.equipamento.urls_model')),
+    re_path(r'^brand/', include('networkapi.equipamento.urls_brand')),
+    re_path(r'^model/', include('networkapi.equipamento.urls_model')),
 
     # ambiente
-    url(r'^ambiente/', include('networkapi.ambiente.urls')),
-    url(r'^environment/', include('networkapi.ambiente.urls_environment')),
-    url(r'^divisiondc/', include('networkapi.ambiente.urls_divisiondc')),
-    url(r'^groupl3/', include('networkapi.ambiente.urls_groupl3')),
-    url(r'^logicalenvironment/',
+    re_path(r'^ambiente/', include('networkapi.ambiente.urls')),
+    re_path(r'^environment/', include('networkapi.ambiente.urls_environment')),
+    re_path(r'^divisiondc/', include('networkapi.ambiente.urls_divisiondc')),
+    re_path(r'^groupl3/', include('networkapi.ambiente.urls_groupl3')),
+    re_path(r'^logicalenvironment/',
         include('networkapi.ambiente.urls_logicalenvironment')),
-    url(r'^ipconfig/', include('networkapi.ambiente.urls_ipconfig')),
+    re_path(r'^ipconfig/', include('networkapi.ambiente.urls_ipconfig')),
 
     # rules
-    url(r'^rule/', include('networkapi.blockrules.urls')),
+    re_path(r'^rule/', include('networkapi.blockrules.urls')),
 
     # vlan
-    url(r'^vlan/', include('networkapi.vlan.urls')),
-    url(r'^net_type/', include('networkapi.vlan.urls_net_type')),
+    re_path(r'^vlan/', include('networkapi.vlan.urls')),
+    re_path(r'^net_type/', include('networkapi.vlan.urls_net_type')),
 
     # ip
-    url(r'^ip/', include('networkapi.ip.urls')),
-    url(r'^ipv4/', include('networkapi.ip.urls_ipv4')),
-    url(r'^ipv6/', include('networkapi.ip.urls_ipv6')),
-    url(r'^network/', include('networkapi.ip.urls_network')),
-    url(r'^ip4/', include('networkapi.ip.urls_ip4')),
+    re_path(r'^ip/', include('networkapi.ip.urls')),
+    re_path(r'^ipv4/', include('networkapi.ip.urls_ipv4')),
+    re_path(r'^ipv6/', include('networkapi.ip.urls_ipv6')),
+    re_path(r'^network/', include('networkapi.ip.urls_network')),
+    re_path(r'^ip4/', include('networkapi.ip.urls_ip4')),
 
     # scripts
-    url(r'^script/', include('networkapi.roteiro.urls')),
-    url(r'^scripttype/', include('networkapi.roteiro.urls_scripttype')),
+    re_path(r'^script/', include('networkapi.roteiro.urls')),
+    re_path(r'^scripttype/', include('networkapi.roteiro.urls_scripttype')),
 
     # healthcheckexpect
-    url(r'^healthcheckexpect/', include('networkapi.healthcheckexpect.urls')),
+    re_path(r'^healthcheckexpect/', include('networkapi.healthcheckexpect.urls')),
 
     # vips
-    url(r'^vip/', include('networkapi.requisicaovips.urls')),
-    url(r'^requestvip/', include('networkapi.requisicaovips.urls_requestvip')),
-    url(r'^real/', include('networkapi.requisicaovips.urls_real')),
-    url(r'^environment-vip/', include('networkapi.requisicaovips.urls_environment-vip')),
-    url(r'^environmentvip/', include('networkapi.requisicaovips.urls_environmentvip')),
-    url(r'^optionvip/', include('networkapi.requisicaovips.urls_optionvip')),
+    re_path(r'^vip/', include('networkapi.requisicaovips.urls')),
+    re_path(r'^requestvip/', include('networkapi.requisicaovips.urls_requestvip')),
+    re_path(r'^real/', include('networkapi.requisicaovips.urls_real')),
+    re_path(r'^environment-vip/', include('networkapi.requisicaovips.urls_environment-vip')),
+    re_path(r'^environmentvip/', include('networkapi.requisicaovips.urls_environmentvip')),
+    re_path(r'^optionvip/', include('networkapi.requisicaovips.urls_optionvip')),
 
     # grupovirtual
-    url(r'^grupovirtual/', include('networkapi.grupovirtual.urls')),
+    re_path(r'^grupovirtual/', include('networkapi.grupovirtual.urls')),
 
     # interface
-    url(r'^interface/', include('networkapi.interface.urls')),
-    url(r'^int/', include('networkapi.interface.urls_int')),
-    url(r'^interfacetype/', include('networkapi.interface.urls_interfacetype')),
-    url(r'^channel/', include('networkapi.interface.urls_channel')),
+    re_path(r'^interface/', include('networkapi.interface.urls')),
+    re_path(r'^int/', include('networkapi.interface.urls_int')),
+    re_path(r'^interfacetype/', include('networkapi.interface.urls_interfacetype')),
+    re_path(r'^channel/', include('networkapi.interface.urls_channel')),
 
     # usuario
-    url(r'^usuario/', include('networkapi.usuario.urls')),
-    url(r'^user/', include('networkapi.usuario.urls_user')),
-    url(r'^authenticate/', include('networkapi.usuario.urls_authenticate')),
-    url(r'^user-change-pass/', include('networkapi.usuario.urls_user-change-pass')),
-    url(r'^usergroup/', include('networkapi.usuario.urls_usergroup')),
+    re_path(r'^usuario/', include('networkapi.usuario.urls')),
+    re_path(r'^user/', include('networkapi.usuario.urls_user')),
+    re_path(r'^authenticate/', include('networkapi.usuario.urls_authenticate')),
+    re_path(r'^user-change-pass/', include('networkapi.usuario.urls_user-change-pass')),
+    re_path(r'^usergroup/', include('networkapi.usuario.urls_usergroup')),
 
     # tipoacesso
-    url(r'^tipoacesso/', include('networkapi.tipoacesso.urls')),
+    re_path(r'^tipoacesso/', include('networkapi.tipoacesso.urls')),
 
     # grupos
-    url(r'^ugroup/', include('networkapi.grupo.urls')),
-    url(r'^egroup/', include('networkapi.grupo.urls_egroup')),
-    url(r'^egrupo/', include('networkapi.grupo.urls_egrupo')),
-    url(r'^perms/', include('networkapi.grupo.urls_perms')),
-    url(r'^aperms/', include('networkapi.grupo.urls_aperms')),
-    url(r'^direitosgrupoequipamento/',
+    re_path(r'^ugroup/', include('networkapi.grupo.urls')),
+    re_path(r'^egroup/', include('networkapi.grupo.urls_egroup')),
+    re_path(r'^egrupo/', include('networkapi.grupo.urls_egrupo')),
+    re_path(r'^perms/', include('networkapi.grupo.urls_perms')),
+    re_path(r'^aperms/', include('networkapi.grupo.urls_aperms')),
+    re_path(r'^direitosgrupoequipamento/',
         include('networkapi.grupo.urls_direitosgrupoequipamento')),
 
     # filter
-    url(r'^filter/', include('networkapi.filter.urls')),
+    re_path(r'^filter/', include('networkapi.filter.urls')),
 
     # rack
-    url(r'^rack/', include('networkapi.rack.urls')),
+    re_path(r'^rack/', include('networkapi.rack.urls')),
 
     # eventlog
-    url(r'^eventlog/', include('networkapi.eventlog.urls')),
+    re_path(r'^eventlog/', include('networkapi.eventlog.urls')),
 
-)
+]
 
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
