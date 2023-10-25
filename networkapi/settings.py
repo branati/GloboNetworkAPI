@@ -97,7 +97,7 @@ DATABASES = {
 # Original config
 # CACHE_BACKEND = 'memcached://localhost:11211/'
 
-CACHE_BACKEND = 'memcached://127.0.0.1:49154/'
+CACHE_BACKEND = 'memcached://127.0.0.1:49153/'
 
 # TODO
 # Original config
@@ -105,7 +105,7 @@ CACHE_BACKEND = 'memcached://127.0.0.1:49154/'
 #     'NETWORKAPI_MEMCACHE_HOSTS', '127.0.0.1:11211')
 
 NETWORKAPI_MEMCACHE_HOSTS = os.getenv(
-    'NETWORKAPI_MEMCACHE_HOSTS', '127.0.0.1:49154')
+    'NETWORKAPI_MEMCACHE_HOSTS', '127.0.0.1:49153')
 
 # CACHES = {
 #     'default': {
