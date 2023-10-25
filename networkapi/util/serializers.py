@@ -76,7 +76,8 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
         super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
 
         # Prepare field for serializer
-        self.context = {'serializers': dict()}
+        # self.context = {'serializers': dict()}
+        self.context['serializers'] = dict()
 
         # Use default_fields when exists
         existing = set(self.fields.keys())
@@ -139,7 +140,11 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 })
 
     def extends_serializer(self, obj, default_field):
-
+        # self.context = obj
+        # from django.core.serializers import serialize
+        # data = serialize('json', obj)
+        # data_obj = json.loads(data)
+        # key = data
         key = self.context.get('serializers').get(default_field, default_field)
 
         slr_model = self.mapping.get(key, {})
@@ -226,7 +231,7 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 eager_loading = mapping.get(key, {}).get('eager_loading')
                 if eager_loading:
                     queryset = eager_loading(queryset)
-        except Exception, e:
+        except Exception as e:
             log.info(e)
             pass
         return queryset

@@ -65,7 +65,7 @@ def raise_json_validate(info=None):
             try:
                 return func(self, request, *args, **kwargs)
 
-            except ValidationError, error:
+            except ValidationError as error:
 
                 msg = list()
 
@@ -93,34 +93,34 @@ def raise_json_validate(info=None):
                         protocol, request.get_host(), info)
                 log.error(res)
                 raise rest_exceptions.ValidationExceptionJson(res)
-            except exceptions_api.AuthenticationFailed, error:
+            except exceptions_api.AuthenticationFailed as error:
                 log.exception(error)
                 raise error
-            except exceptions_api.MethodNotAllowed, error:
+            except exceptions_api.MethodNotAllowed as error:
                 log.exception(error)
                 raise error
-            except exceptions_api.NotAcceptable, error:
+            except exceptions_api.NotAcceptable as error:
                 log.exception(error)
                 raise error
-            except exceptions_api.NotAuthenticated, error:
+            except exceptions_api.NotAuthenticated as error:
                 log.exception(error)
                 raise error
-            except exceptions_api.ParseError, error:
+            except exceptions_api.ParseError as error:
                 log.exception(error)
                 raise error
-            except exceptions_api.PermissionDenied, error:
+            except exceptions_api.PermissionDenied as error:
                 log.exception(error)
                 raise error
-            except rest_exceptions.ValidationAPIException, error:
+            except rest_exceptions.ValidationAPIException as error:
                 log.exception(error)
                 raise error
-            except rest_exceptions.ObjectDoesNotExistException, error:
+            except rest_exceptions.ObjectDoesNotExistException as error:
                 log.exception(error)
                 raise error
-            except exceptions_api.APIException, error:
+            except exceptions_api.APIException as error:
                 log.exception(error)
                 raise rest_exceptions.NetworkAPIException(error)
-            except Exception, error:
+            except Exception as error:
                 log.error(error)
                 raise rest_exceptions.NetworkAPIException(error)
         return inner

@@ -5,9 +5,14 @@ import random
 import urllib
 from time import sleep
 
-from django.db.models.loading import AppCache
-from django.db.models.loading import import_module
-from django.db.models.loading import module_has_submodule
+from django.apps import apps
+
+from importlib import import_module
+#from django.db.models.loading import AppCache
+#from django.db.models.loading import import_module
+#from django.db.models.loading import module_has_submodule
+
+
 from rest_framework.response import Response
 
 from networkapi.distributedlock import distributedlock
@@ -26,7 +31,8 @@ class CustomResponse(Response):
         if request:
             headers_default = {
                 'X-Request-Id': local.request_id,
-                'X-Request-Context': local.request_context
+                'X-Request-Context': getattr(local.request_context, 'request_context', '')
+                # 'X-Request-Context': local.request_context
             }
             headers = headers.update(headers) if headers else headers_default
 
@@ -181,56 +187,94 @@ def render_to_json(serializer_obj, **kwargs):
     return data
 
 
-class AppCacheExtend(AppCache):
+# class AppCacheExtend(AppCache):
+#
+#     module = 'models'
+#
+#     def __init__(self, *args, **kwargs):
+#         super(AppCacheExtend, self).__init__(*args, **kwargs)
+#
+#     def load_app(self, app_name, can_postpone=False):
+#         """
+#         Loads the app with the provided fully qualified name, and returns the
+#         model module.
+#         """
+#         self.handled[app_name] = None
+#         self.nesting_level += 1
+#         app_module = import_module(app_name)
+#         try:
+#             models = import_module('.%s' % self.module, app_name)
+#         except ImportError:
+#             self.nesting_level -= 1
+#             # If the app doesn't have a models module, we can just ignore the
+#             # ImportError and return no models for it.
+#             if not module_has_submodule(app_module, 'models'):
+#                 return None
+#             # But if the app does have a models module, we need to figure out
+#             # whether to suppress or propagate the error. If can_postpone is
+#             # True then it may be that the package is still being imported by
+#             # Python and the models module isn't available yet. So we add the
+#             # app to the postponed list and we'll try it again after all the
+#             # recursion has finished (in populate). If can_postpone is False
+#             # then it's time to raise the ImportError.
+#             else:
+#                 if can_postpone:
+#                     self.postponed.append(app_name)
+#                     return None
+#                 else:
+#                     raise
+#
+#         self.nesting_level -= 1
+#         if models not in self.app_store:
+#             self.app_store[models] = len(self.app_store)
+#             self.app_labels[self._label_for(models)] = models
+#         return models
+#
+#     def get_app(self, app_label, module_label='models', emptyok=False):
+#
+#         self.module = module_label
+#
+#         return super(AppCacheExtend, self).get_app(app_label, emptyOK=emptyok)
+
+
+
+class AppCacheExtend:
 
     module = 'models'
-
-    def __init__(self, *args, **kwargs):
-        super(AppCacheExtend, self).__init__(*args, **kwargs)
 
     def load_app(self, app_name, can_postpone=False):
         """
         Loads the app with the provided fully qualified name, and returns the
         model module.
         """
-        self.handled[app_name] = None
-        self.nesting_level += 1
-        app_module = import_module(app_name)
-        try:
-            models = import_module('.%s' % self.module, app_name)
-        except ImportError:
-            self.nesting_level -= 1
-            # If the app doesn't have a models module, we can just ignore the
-            # ImportError and return no models for it.
-            if not module_has_submodule(app_module, 'models'):
+        app_config = apps.get_app_config(app_name)
+        if not app_config:
+            if can_postpone:
+                # Aqui, você pode adicionar o nome da aplicação a uma lista de adiamentos,
+                # se ainda tiver essa lógica.
                 return None
-            # But if the app does have a models module, we need to figure out
-            # whether to suppress or propagate the error. If can_postpone is
-            # True then it may be that the package is still being imported by
-            # Python and the models module isn't available yet. So we add the
-            # app to the postponed list and we'll try it again after all the
-            # recursion has finished (in populate). If can_postpone is False
-            # then it's time to raise the ImportError.
             else:
-                if can_postpone:
-                    self.postponed.append(app_name)
-                    return None
-                else:
-                    raise
-
-        self.nesting_level -= 1
-        if models not in self.app_store:
-            self.app_store[models] = len(self.app_store)
-            self.app_labels[self._label_for(models)] = models
-        return models
+                raise ImportError(f"No app named {app_name} found.")
+        return app_config.models_module
 
     def get_app(self, app_label, module_label='models', emptyok=False):
-
         self.module = module_label
+        app_config = apps.get_app_config(app_label)
+        if not app_config:
+            if emptyok:
+                return None
+            else:
+                raise LookupError(f"No app named {app_label} found.")
+        return app_config.models_module
 
-        return super(AppCacheExtend, self).get_app(app_label, emptyOK=emptyok)
+    def get_model(self, app_label, model_name):
+        """
+        Retrieves a specific model from the specified app.
+        """
+        return get_model(app_label, model_name)
 
-    # def get_model(self, app_label, item_name, module_label='models',
+
+    # def apps.get_model(self, app_label, item_name, module_label='models',
     #               seed_cache=True, only_installed=True):
 
     #     self.module = module_label

@@ -210,7 +210,7 @@ def is_valid_string_minsize(param, minsize=None, required=True):
     if '' == param.strip():
         return False
 
-    if param is not None and not isinstance(param, basestring):
+    if param is not None and not isinstance(param, str):
         return False
 
     if param is not None and minsize is not None:
